@@ -1,0 +1,10 @@
+﻿{
+  "kind": "SCALAR",
+  "name": "Boolean",
+  "description": null,
+  "fields": [],
+  "inputFields": [],
+  "interfaces": [],
+  "enumValues": [],
+  "possibleTypes": []
+}

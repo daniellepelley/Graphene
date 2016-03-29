@@ -1,0 +1,10 @@
+﻿{
+  "kind": "SCALAR",
+  "name": "String",
+  "description": null,
+  "fields": [],
+  "inputFields": [],
+  "interfaces": [],
+  "enumValues": [],
+  "possibleTypes": []
+}
