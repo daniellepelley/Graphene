@@ -1,75 +1,52 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
 
 namespace Graphene
 {
-    public interface IJsonBuilder
-    {
-        string Build();
-    }
-
     public class TypeJsonBuilder : IJsonBuilder
     {
         private readonly string _kind;
         private readonly string _name;
 
-        public IJsonBuilder FieldJsonBuilder { get; set; }
+        public List<IJsonBuilder> FieldJsonBuilders { get; set; }
 
         public TypeJsonBuilder(string kind, string name)
         {
             _name = name;
             _kind = kind;
+            FieldJsonBuilders = new List<IJsonBuilder>();
         }
 
         public string Build()
         {
-            var jObject = new JObject
-            {
-                {"kind", new JValue(_kind)},
-                {"name", new JValue(_name)},
-                {"description", new JRaw("null")},
-                {"fields", FieldJsonBuilder == null ? (JToken)new JArray() : (JToken)new JRaw(FieldJsonBuilder.Build())},
-                {"inputFields", new JArray()},
-                {"interfaces", new JArray()},
-                {"enumValues", new JArray()},
-                {"possibleTypes", new JArray()}
-            };
-
-            return jObject.ToString();
+            var jObject = new JObject();
+            jObject.Add("kind", new JValue(_kind));
+            jObject.Add("name", new JValue(_name));
+            jObject.Add("description", new JRaw("null"));
+            jObject.Add("fields", BuildFields());
+            jObject.Add("inputFields", new JArray());
+            jObject.Add("interfaces", new JArray());
+            jObject.Add("enumValues", new JArray());
+            jObject.Add("possibleTypes", new JArray());
+           
+            return jObject.ToString(Newtonsoft.Json.Formatting.None);
         }
-    }
 
-    public class FieldJsonBuilder : IJsonBuilder
-    {
-        public string Build()
+        private JToken BuildFields()
         {
-  //            "name": "hero",
-  //"description": null,
-  //"args": [],
-  //"type": {
-  //  "kind": "INTERFACE",
-  //  "name": "Character",
-  //  "ofType": null
-  //},
-  //"isDeprecated": false,
-  //"deprecationReason": null
-
-            var jObject = new JObject
+            if (!FieldJsonBuilders.Any())
             {
-                {"name", new JValue(_kind)},
-                {"description", new JValue(_name)},
-                {"args", new JRaw("null")},
-                {"inputFields", new JArray()},
-                {"interfaces", new JArray()},
-                {"enumValues", new JArray()},
-                {"possibleTypes", new JArray()}
-            };
+                return new JArray();
+            }
 
-            return jObject.ToString();
+            var array = new JArray();
+            foreach(var t in FieldJsonBuilders.Select(x => new JRaw(x.Build())))
+            {
+                array.Add(t);                
+            }
+
+            return array;
         }
     }
 }
