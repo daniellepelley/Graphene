@@ -1,7 +1,4 @@
-﻿using System.CodeDom;
-using System.IO;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
+﻿using System.IO;
 using NUnit.Framework;
 
 namespace Graphene.Test
@@ -43,18 +40,153 @@ namespace Graphene.Test
         {
             var json = File.ReadAllText("InterfaceFieldExample.json");
 
-            //var sut = new FieldJsonBuilder("hero", null);
-            //sut.FieldTypeJsonBuilder = new FieldTypeJsonBuilder(new[]
-            //{
-            //    new[] {"INTERFACE", "Character"}
-            //});
+            var sut = new GraphQlField
+            {
+                Name = "hero",
+                Type = new GraphQlFieldType
+                {
+                    Kind = "INTERFACE",
+                    Name = "Character"
+                }
+            };
+            var actual = Json.Serialize(sut);
 
-            //{"name":"hero","description":null,"args":[],"type":{"kind":"INTERFACE","name":"Character","ofType":null},"isDeprecated":false,"deprecationReason":null}
+            Assert.AreEqual(json, actual);
+        }
+
+        [Test]
+        public void FieldTypeTest()
+        {
+            var json = File.ReadAllText("FieldTypeExample.json");
+
+            var sut = new GraphQlFieldType
+            {
+                Kind = "NON_NULL",
+                OfType = new GraphQlFieldType
+                {
+                    Kind = "LIST",
+                    OfType = new GraphQlFieldType
+                    {
+                        Kind = "OBJECT",
+                        Name = "__Directive"
+                    }
+                }
+            };
+
+            var actual = Json.Serialize(sut);
+
+            Assert.AreEqual(json, actual);
+        }
+
+        [Test]
+        public void HumanFieldTest()
+        {
+            var json = File.ReadAllText("HumanFieldExample.json");
+
+            var sut = new GraphQlField
+            {
+                Name = "human",
+                Args = new[]
+                {
+                    new GraphQlArg
+                    {
+                        Name = "id",
+                        Description = "idofthehuman",
+                        Type = new GraphQlFieldType
+                        {
+                            Kind = "NON_NULL",
+                            OfType = new GraphQlFieldType
+                            {
+                                Kind = "SCALAR",
+                                Name = "String"
+                            }
+                        }
+                    }
+                },
+                Type = new GraphQlFieldType
+                {
+                    Kind = "OBJECT",
+                    Name = "Human"
+                }
+            };
+            var actual = Json.Serialize(sut);
+
+            Assert.AreEqual(json, actual);
+        }
+
+        [Test]
+        public void QueryTypeTest()
+        {
+            var json = File.ReadAllText("QueryExample.json");
 
             var sut = new GraphQlType
             {
-                Kind = "INTERFACE",
-                Name = "Character"
+                Kind = "OBJECT",
+                Name = "Query",
+                Fields = new[]
+                {
+                    new GraphQlField
+                    {
+                        Name = "hero",
+                        Type = new GraphQlFieldType
+                        {
+                            Kind = "INTERFACE",
+                            Name = "Character"
+                        }
+                    },
+                    new GraphQlField
+                    {
+                        Name = "human",
+                        Args = new[]
+                        {
+                            new GraphQlArg
+                            {
+                                Name = "id",
+                                Description = "idofthehuman",
+                                Type = new GraphQlFieldType
+                                {
+                                    Kind = "NON_NULL",
+                                    OfType = new GraphQlFieldType
+                                    {
+                                        Kind = "SCALAR",
+                                        Name = "String"
+                                    }
+                                }
+                            }
+                        },
+                        Type = new GraphQlFieldType
+                        {
+                            Kind = "OBJECT",
+                            Name = "Human"
+                        }
+                    },
+                    new GraphQlField
+                    {
+                        Name = "droid",
+                        Args = new[]
+                        {
+                            new GraphQlArg
+                            {
+                                Name = "id",
+                                Description = "idofthedroid",
+                                Type = new GraphQlFieldType
+                                {
+                                    Kind = "NON_NULL",
+                                    OfType = new GraphQlFieldType
+                                    {
+                                        Kind = "SCALAR",
+                                        Name = "String"
+                                    }
+                                }
+                            }
+                        },
+                        Type = new GraphQlFieldType
+                        {
+                            Kind = "OBJECT",
+                            Name = "Droid"
+                        }
+                    }
+                }
             };
             var actual = Json.Serialize(sut);
 

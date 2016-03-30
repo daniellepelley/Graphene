@@ -7,7 +7,7 @@ namespace Graphene
         public string Kind { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-        public string[] Fields { get; set; }
+        public GraphQlField[] Fields { get; set; }
         public string[] InputFields { get; set; }
         public string[] Interfaces { get; set; }
         public string[] EnumValues { get; set; }
@@ -16,7 +16,7 @@ namespace Graphene
         public GraphQlType()
         {
             Description = null;
-            Fields = new string[0];
+            Fields = new GraphQlField[0];
             InputFields = new string[0];
             Interfaces = new string[0];
             EnumValues = new string[0];
@@ -27,18 +27,30 @@ namespace Graphene
     public class GraphQlFieldType
     {
         public string Kind { get; set; }
-        public string Name { get; set; }        
+        public string Name { get; set; }
+        public GraphQlFieldType OfType { get; set; }
     }
 
     public class GraphQlField
     {
         public string Name { get; set; }
         public string Description { get; set; }
-        public string Args { get; set; }
+        public GraphQlArg[] Args { get; set; }
         public GraphQlFieldType Type { get; set; }
         public bool IsDeprecated { get; set; }
-        "isDeprecated":false,"deprecationReason":null}
+        public string DeprecationReason { get; set; }
 
+        public GraphQlField()
+        {
+            Args = new GraphQlArg[0];
+        }
+    }
 
+    public class GraphQlArg
+    {
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public GraphQlFieldType Type { get; set; }
+        public string DefaultValue { get; set; }
     }
 }

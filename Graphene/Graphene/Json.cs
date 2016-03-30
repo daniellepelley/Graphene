@@ -12,7 +12,7 @@ namespace Graphene
                 ContractResolver = new CamelCasePropertyNamesContractResolver()
             };
 
-            return JsonConvert.SerializeObject(value, Formatting.None, settings);
+            return JsonConvert.SerializeObject(value, Formatting.Indented, settings);
         }
     }
 }

@@ -1,1 +1,27 @@
-{"name":"human","description":null,"args":[{"name":"id","description":"idofthehuman","type":{"kind":"NON_NULL","name":null,"ofType":{"kind":"SCALAR","name":"String","ofType":null}},"defaultValue":null}],"type":{"kind":"OBJECT","name":"Human","ofType":null},"isDeprecated":false,"deprecationReason":null}
+{
+  "name": "human",
+  "description": null,
+  "args": [
+    {
+      "name": "id",
+      "description": "idofthehuman",
+      "type": {
+        "kind": "NON_NULL",
+        "name": null,
+        "ofType": {
+          "kind": "SCALAR",
+          "name": "String",
+          "ofType": null
+        }
+      },
+      "defaultValue": null
+    }
+  ],
+  "type": {
+    "kind": "OBJECT",
+    "name": "Human",
+    "ofType": null
+  },
+  "isDeprecated": false,
+  "deprecationReason": null
+}
