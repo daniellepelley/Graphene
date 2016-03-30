@@ -11,9 +11,9 @@ namespace Graphene.Test
         {
             var json = File.ReadAllText("StringType.json");
 
-            var sut = new TypeJsonBuilder();
+            var sut = new TypeJsonBuilder("SCALAR", "String");
 
-            var actual = sut.Build("SCALAR", "String");
+            var actual = sut.Build();
 
             Assert.AreEqual(json, actual);
         }
@@ -23,9 +23,9 @@ namespace Graphene.Test
         {
             var json = File.ReadAllText("BooleanType.json");
 
-            var sut = new TypeJsonBuilder();
+            var sut = new TypeJsonBuilder("SCALAR", "Boolean");
 
-            var actual = sut.Build("SCALAR", "Boolean");
+            var actual = sut.Build();
 
             Assert.AreEqual(json, actual);
         }
@@ -35,9 +35,21 @@ namespace Graphene.Test
         {
             var json = File.ReadAllText("ObjectType.json");
 
-            var sut = new TypeJsonBuilder();
+            var sut = new TypeJsonBuilder("OBJECT", "__Type");
 
-            var actual = sut.Build("OBJECT", "__Type");
+            var actual = sut.Build();
+
+            Assert.AreEqual(json, actual);
+        }
+
+        [Test]
+        public void QueryTypeTest()
+        {
+            var json = File.ReadAllText("QueryExample.json");
+
+            var sut = new TypeJsonBuilder("OBJECT", "Query");
+
+            var actual = sut.Build();
 
             Assert.AreEqual(json, actual);
         }

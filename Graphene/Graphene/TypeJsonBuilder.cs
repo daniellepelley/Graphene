@@ -7,21 +7,38 @@ using Newtonsoft.Json.Linq;
 
 namespace Graphene
 {
-    public class TypeJsonBuilder
+    public interface IJsonBuilder
     {
-        public string Build(string kind, string name)
+        string Build();
+    }
+
+    public class TypeJsonBuilder : IJsonBuilder
+    {
+        private readonly string _kind;
+        private readonly string _name;
+
+        public IJsonBuilder FieldJsonBuilder { get; set; }
+
+        public TypeJsonBuilder(string kind, string name)
+        {
+            _name = name;
+            _kind = kind;
+        }
+
+        public string Build()
         {
             var jObject = new JObject
             {
-                {"kind", new JValue(kind)},
-                {"name", new JValue(name)},
+                {"kind", new JValue(_kind)},
+                {"name", new JValue(_name)},
                 {"description", new JRaw("null")},
-                {"fields", new JArray()},
+                {"fields", FieldJsonBuilder == null ? (JToken)new JArray() : (JToken)new JRaw(FieldJsonBuilder.Build())},
                 {"inputFields", new JArray()},
                 {"interfaces", new JArray()},
                 {"enumValues", new JArray()},
                 {"possibleTypes", new JArray()}
             };
+
             return jObject.ToString();
         }
     }

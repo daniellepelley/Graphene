@@ -57,6 +57,9 @@
     <None Include="BooleanType.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="QueryExample.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="StringType.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
