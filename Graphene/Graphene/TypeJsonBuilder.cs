@@ -42,4 +42,34 @@ namespace Graphene
             return jObject.ToString();
         }
     }
+
+    public class FieldJsonBuilder : IJsonBuilder
+    {
+        public string Build()
+        {
+  //            "name": "hero",
+  //"description": null,
+  //"args": [],
+  //"type": {
+  //  "kind": "INTERFACE",
+  //  "name": "Character",
+  //  "ofType": null
+  //},
+  //"isDeprecated": false,
+  //"deprecationReason": null
+
+            var jObject = new JObject
+            {
+                {"name", new JValue(_kind)},
+                {"description", new JValue(_name)},
+                {"args", new JRaw("null")},
+                {"inputFields", new JArray()},
+                {"interfaces", new JArray()},
+                {"enumValues", new JArray()},
+                {"possibleTypes", new JArray()}
+            };
+
+            return jObject.ToString();
+        }
+    }
 }

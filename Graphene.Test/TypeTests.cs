@@ -31,16 +31,28 @@ namespace Graphene.Test
         }
 
         [Test]
-        public void ObjectTypeTest()
+        public void FieldTest()
         {
-            var json = File.ReadAllText("ObjectType.json");
+            var json = File.ReadAllText("InterfaceFieldExample.json");
 
-            var sut = new TypeJsonBuilder("OBJECT", "__Type");
+            var sut = new TypeJsonBuilder("OBJECT", "Query");
 
             var actual = sut.Build();
 
             Assert.AreEqual(json, actual);
         }
+
+        //[Test]
+        //public void ObjectTypeTest()
+        //{
+        //    var json = File.ReadAllText("ObjectType.json");
+
+        //    var sut = new TypeJsonBuilder("OBJECT", "__Type");
+
+        //    var actual = sut.Build();
+
+        //    Assert.AreEqual(json, actual);
+        //}
 
         [Test]
         public void QueryTypeTest()

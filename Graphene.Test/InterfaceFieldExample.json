@@ -1,0 +1,12 @@
+{
+  "name": "hero",
+  "description": null,
+  "args": [],
+  "type": {
+	"kind": "INTERFACE",
+	"name": "Character",
+	"ofType": null
+  },
+  "isDeprecated": false,
+  "deprecationReason": null
+}
