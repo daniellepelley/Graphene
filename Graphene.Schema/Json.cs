@@ -1,7 +1,7 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
-namespace Graphene
+namespace Graphene.Schema
 {
     public static class Json
     {

@@ -45,16 +45,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ArgsJsonBuilder.cs" />
-    <Compile Include="FieldJsonBuilder.cs" />
-    <Compile Include="GraphQlType.cs" />
-    <Compile Include="IJsonBuilder.cs" />
-    <Compile Include="Json.cs" />
-    <Compile Include="TypeJsonBuilder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Schema\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
