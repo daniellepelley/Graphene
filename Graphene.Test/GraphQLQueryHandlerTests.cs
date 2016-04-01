@@ -4,7 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Graphene.Core;
+using Graphene.Schema;
 using Moq;
+using Newtonsoft.Json;
 using NUnit.Framework;
 
 namespace Graphene.Test
@@ -29,11 +31,11 @@ namespace Graphene.Test
             AssertResponse(@"{user(id:""3""){name}}", @"{""data"":{""user"":{""name"":""Nick""}}}");
         }
 
-        private static void AssertResponse(string query, string expected)
+        private void AssertResponse(string query, string expected)
         {
             var mockParser = new Mock<IGraphQLParser>();
 
-            var func = new Func<int, string>(x => expected);
+            var func = new Func<int, string>(x => TestUserToJson(GetData().First(user => user.Id == x)));
 
             var sut = new GraphQLQueryHandler(mockParser.Object, func);
             var actual = sut.Handle(query);
@@ -76,11 +78,25 @@ namespace Graphene.Test
                 }
             };
         }
+
+        private string TestUserToJson(TestUser testUser)
+        {
+            return Json.Serialize(
+                new Result
+                {
+                    Data = new { User =new { testUser.Name } }
+                }, Formatting.None);
+        }
     }
 
     public class TestUser
     {
         public int Id { get; set; }
         public string Name { get; set; }
+    }
+
+    public class Result
+    {
+        public object Data { get; set; }
     }
 }

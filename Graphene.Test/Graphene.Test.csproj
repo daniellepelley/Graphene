@@ -51,6 +51,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GraphQLParserTests.cs" />
     <Compile Include="GraphQLQueryHandlerTests.cs" />
     <Compile Include="QueryTest.cs" />
     <Compile Include="Schema\TypeSerializationTests.cs" />
