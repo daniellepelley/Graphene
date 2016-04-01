@@ -2,6 +2,6 @@
 {
     public interface IGraphQLParser
     {
-        object Parse(string query);
+        QueryObject Parse(string query);
     }
 }

@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using Graphene.Core;
 using NUnit.Framework;
 
@@ -12,7 +14,7 @@ namespace Graphene.Test
 
             var result = sut.Parse(@"{user(id:""1""){name}}");
 
-            Assert.AreEqual(@"{user(id:""1""){name}}", result);
+            Assert.AreEqual(result.Args.First().Value, "1");
         }
     }
 }
