@@ -2,16 +2,16 @@
 using Graphene.Schema;
 using NUnit.Framework;
 
-namespace Graphene.Test
+namespace Graphene.Test.Schema
 {
     public class TypeSerializationTests
     {
         [Test]
         public void StringTypeTest()
         {
-            var json = File.ReadAllText("StringType.json");
+            var json = File.ReadAllText(@"Schema\StringType.json");
 
-            var sut = new GraphQlType
+            var sut = new GraphQLType
             {
                 Kind = "SCALAR",
                 Name = "String"
@@ -24,9 +24,9 @@ namespace Graphene.Test
         [Test]
         public void BooleanTypeTest()
         {
-            var json = File.ReadAllText("BooleanType.json");
+            var json = File.ReadAllText(@"Schema\BooleanType.json");
 
-            var sut = new GraphQlType
+            var sut = new GraphQLType
             {
                 Kind = "SCALAR",
                 Name = "Boolean"
@@ -39,12 +39,12 @@ namespace Graphene.Test
         [Test]
         public void InterfaceFieldTest()
         {
-            var json = File.ReadAllText("InterfaceFieldExample.json");
+            var json = File.ReadAllText(@"Schema\InterfaceFieldExample.json");
 
-            var sut = new GraphQlField
+            var sut = new GraphQLField
             {
                 Name = "hero",
-                Type = new GraphQlFieldType
+                Type = new GraphQLFieldType
                 {
                     Kind = "INTERFACE",
                     Name = "Character"
@@ -58,15 +58,15 @@ namespace Graphene.Test
         [Test]
         public void FieldTypeTest()
         {
-            var json = File.ReadAllText("FieldTypeExample.json");
+            var json = File.ReadAllText(@"Schema\FieldTypeExample.json");
 
-            var sut = new GraphQlFieldType
+            var sut = new GraphQLFieldType
             {
                 Kind = "NON_NULL",
-                OfType = new GraphQlFieldType
+                OfType = new GraphQLFieldType
                 {
                     Kind = "LIST",
-                    OfType = new GraphQlFieldType
+                    OfType = new GraphQLFieldType
                     {
                         Kind = "OBJECT",
                         Name = "__Directive"
@@ -82,21 +82,21 @@ namespace Graphene.Test
         [Test]
         public void HumanFieldTest()
         {
-            var json = File.ReadAllText("HumanFieldExample.json");
+            var json = File.ReadAllText(@"Schema\HumanFieldExample.json");
 
-            var sut = new GraphQlField
+            var sut = new GraphQLField
             {
                 Name = "human",
                 Args = new[]
                 {
-                    new GraphQlArg
+                    new GraphQLArg
                     {
                         Name = "id",
                         Description = "idofthehuman",
-                        Type = new GraphQlFieldType
+                        Type = new GraphQLFieldType
                         {
                             Kind = "NON_NULL",
-                            OfType = new GraphQlFieldType
+                            OfType = new GraphQLFieldType
                             {
                                 Kind = "SCALAR",
                                 Name = "String"
@@ -104,7 +104,7 @@ namespace Graphene.Test
                         }
                     }
                 },
-                Type = new GraphQlFieldType
+                Type = new GraphQLFieldType
                 {
                     Kind = "OBJECT",
                     Name = "Human"
@@ -118,36 +118,36 @@ namespace Graphene.Test
         [Test]
         public void QueryTypeTest()
         {
-            var json = File.ReadAllText("QueryExample.json");
+            var json = File.ReadAllText(@"Schema\QueryExample.json");
 
-            var sut = new GraphQlType
+            var sut = new GraphQLType
             {
                 Kind = "OBJECT",
                 Name = "Query",
                 Fields = new[]
                 {
-                    new GraphQlField
+                    new GraphQLField
                     {
                         Name = "hero",
-                        Type = new GraphQlFieldType
+                        Type = new GraphQLFieldType
                         {
                             Kind = "INTERFACE",
                             Name = "Character"
                         }
                     },
-                    new GraphQlField
+                    new GraphQLField
                     {
                         Name = "human",
                         Args = new[]
                         {
-                            new GraphQlArg
+                            new GraphQLArg
                             {
                                 Name = "id",
                                 Description = "idofthehuman",
-                                Type = new GraphQlFieldType
+                                Type = new GraphQLFieldType
                                 {
                                     Kind = "NON_NULL",
-                                    OfType = new GraphQlFieldType
+                                    OfType = new GraphQLFieldType
                                     {
                                         Kind = "SCALAR",
                                         Name = "String"
@@ -155,25 +155,25 @@ namespace Graphene.Test
                                 }
                             }
                         },
-                        Type = new GraphQlFieldType
+                        Type = new GraphQLFieldType
                         {
                             Kind = "OBJECT",
                             Name = "Human"
                         }
                     },
-                    new GraphQlField
+                    new GraphQLField
                     {
                         Name = "droid",
                         Args = new[]
                         {
-                            new GraphQlArg
+                            new GraphQLArg
                             {
                                 Name = "id",
                                 Description = "idofthedroid",
-                                Type = new GraphQlFieldType
+                                Type = new GraphQLFieldType
                                 {
                                     Kind = "NON_NULL",
-                                    OfType = new GraphQlFieldType
+                                    OfType = new GraphQLFieldType
                                     {
                                         Kind = "SCALAR",
                                         Name = "String"
@@ -181,7 +181,7 @@ namespace Graphene.Test
                                 }
                             }
                         },
-                        Type = new GraphQlFieldType
+                        Type = new GraphQLFieldType
                         {
                             Kind = "OBJECT",
                             Name = "Droid"

@@ -1,17 +1,17 @@
 namespace Graphene.Schema
 {
-    public class GraphQlField
+    public class GraphQLField
     {
         public string Name { get; set; }
         public string Description { get; set; }
-        public GraphQlArg[] Args { get; set; }
-        public GraphQlFieldType Type { get; set; }
+        public GraphQLArg[] Args { get; set; }
+        public GraphQLFieldType Type { get; set; }
         public bool IsDeprecated { get; set; }
         public string DeprecationReason { get; set; }
 
-        public GraphQlField()
+        public GraphQLField()
         {
-            Args = new GraphQlArg[0];
+            Args = new GraphQLArg[0];
         }
     }
 }

@@ -1,9 +1,9 @@
 namespace Graphene.Schema
 {
-    public class GraphQlFieldType
+    public class GraphQLFieldType
     {
         public string Kind { get; set; }
         public string Name { get; set; }
-        public GraphQlFieldType OfType { get; set; }
+        public GraphQLFieldType OfType { get; set; }
     }
 }
