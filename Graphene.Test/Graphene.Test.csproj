@@ -32,6 +32,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Moq">
+      <HintPath>..\packages\Moq.4.2.1510.2205\lib\net40\Moq.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Graphene\packages\Newtonsoft.Json.8.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -48,6 +51,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GraphQLQueryHandlerTests.cs" />
     <Compile Include="QueryTest.cs" />
     <Compile Include="Schema\TypeSerializationTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -77,6 +81,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Graphene.Core\Graphene.Core.csproj">
+      <Project>{7F25ECD1-89CA-4D83-93EF-8B53AB5595D2}</Project>
+      <Name>Graphene.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Graphene.Schema\Graphene.Schema.csproj">
       <Project>{fc11e4de-0ee7-44a0-9f59-874a34042ed8}</Project>
       <Name>Graphene.Schema</Name>

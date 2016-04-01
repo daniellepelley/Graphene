@@ -39,6 +39,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IGraphQLParser.cs" />
     <Compile Include="IGraphQLQueryHandler.cs" />
     <Compile Include="GraphQLQueryHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
