@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Graphene.Core;
 using Moq;
+using Newtonsoft.Json;
 using NUnit.Framework;
 
 namespace Graphene.Test
@@ -26,6 +27,8 @@ namespace Graphene.Test
         [Test]
         public void SimpleQueryReturnsCorrectResponse3()
         {
+            JsonConvert.DeserializeObject<TestUser>(@"{""data"":{""user"":{""name"":""Nick""}}}");
+
             AssertResponse(@"{user(id:""3""){name}}", @"{""data"":{""user"":{""name"":""Nick""}}}");
         }
 

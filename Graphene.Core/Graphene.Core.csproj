@@ -39,6 +39,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Argument.cs" />
+    <Compile Include="ArgumentsParser.cs" />
+    <Compile Include="DirectiveParser.cs" />
     <Compile Include="IGraphQLParser.cs" />
     <Compile Include="IGraphQLQueryHandler.cs" />
     <Compile Include="GraphQLQueryHandler.cs" />
