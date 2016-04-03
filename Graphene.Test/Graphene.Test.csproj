@@ -53,7 +53,9 @@
   <ItemGroup>
     <Compile Include="ArgumentsParserTests.cs" />
     <Compile Include="DirectiveParserTests.cs" />
+    <Compile Include="FieldsParserTest.cs" />
     <Compile Include="GraphQLQueryHandlerTests.cs" />
+    <Compile Include="OperationParserTests.cs" />
     <Compile Include="QueryTest.cs" />
     <Compile Include="Schema\TypeSerializationTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

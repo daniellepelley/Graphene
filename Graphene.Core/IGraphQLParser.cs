@@ -32,6 +32,16 @@ namespace Graphene.Core
             _index++;
             return output;
         }
+
+        public string Peek()
+        {
+            return _text[_index].ToString();
+        }
+
+        public void Advance()
+        {
+            _index++;            
+        }
     }
 
     public class GraphQLParser : IGraphQLParser

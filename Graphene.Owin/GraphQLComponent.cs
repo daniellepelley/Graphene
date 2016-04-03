@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Graphene.Core;
 using Microsoft.Owin;
 
 namespace Graphene.Owin
@@ -30,19 +31,6 @@ namespace Graphene.Owin
             {
                 await _appFunc(environment);   
             }
-        }
-    }
-
-    public interface IGraphQLQueryHandler
-    {
-        string Handle(string query);
-    }
-
-    public class GraphQLQueryHandler : IGraphQLQueryHandler
-    {
-        public string Handle(string query)
-        {
-            return @"{""data"": {""user"": null}}";
         }
     }
 }

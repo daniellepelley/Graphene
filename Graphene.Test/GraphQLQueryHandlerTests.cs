@@ -38,21 +38,17 @@ namespace Graphene.Test
 
             var func = new Func<int, string>(x => expected);
 
-            var sut = new GraphQLQueryHandler(mockParser.Object, func);
+            var sut = new GraphQLQueryHandler(mockParser.Object);
             var actual = sut.Handle(query);
 
             Assert.AreEqual(expected, actual);
         }
 
-
         [Test]
         public void HandleCallsParser()
         {
             var mockParser = new Mock<IGraphQLParser>();
-
-            var func = new Func<int, string>(x => string.Empty);
-
-            var sut = new GraphQLQueryHandler(mockParser.Object, func);
+            var sut = new GraphQLQueryHandler(mockParser.Object);
             sut.Handle(@"{user(id:""2""){name}}");
             
             mockParser.Verify(x => x.Parse(@"{user(id:""2""){name}}"), Times.Once);

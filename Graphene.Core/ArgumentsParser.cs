@@ -11,6 +11,11 @@ namespace Graphene.Core
 
             while (!characterFeed.IsComplete())
             {
+                if (characterFeed.Peek() == "{")
+                {
+                    return output.ToArray();
+                }
+
                 var argument = GetArgument(characterFeed);
                 output.Add(argument);
             }
@@ -31,7 +36,7 @@ namespace Graphene.Core
                 {
                     continue;
                 }
-
+                
                 switch (current)
                 {
                     case ":":
@@ -48,13 +53,6 @@ namespace Graphene.Core
             }
 
             argument.Value = stringBuilder.ToString();
-
-            //if (string.IsNullOrEmpty(argument.Name) ||
-            //    string.IsNullOrEmpty(argument.Value))
-            //{
-            //    throw new Exception();
-            //}
-
             return argument;
         }
     }
