@@ -36,19 +36,20 @@ namespace Graphene.Core
                 {
                     continue;
                 }
-                
-                switch (current)
+
+                if (current == ":")
                 {
-                    case ":":
-                        argument.Name = stringBuilder.ToString();
-                        stringBuilder = new StringBuilder();
-                        break;
-                    case ")":
-                        argument.Value = stringBuilder.ToString();
-                        return argument;
-                    default:
-                        stringBuilder.Append(current);
-                        break;
+                    argument.Name = stringBuilder.ToString();
+                    stringBuilder = new StringBuilder();
+                }
+                else if (current == ")")
+                {
+                    argument.Value = stringBuilder.ToString();
+                    return argument;
+                }
+                else
+                {
+                    stringBuilder.Append(current);
                 }
             }
 

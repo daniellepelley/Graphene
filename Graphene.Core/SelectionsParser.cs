@@ -39,15 +39,15 @@ namespace Graphene.Core
                     };
 
                     output.Add(selection);
+                    stringBuilder = new StringBuilder();
                 }
-
                 else if (current == "}")
                 {
                     if (!string.IsNullOrEmpty(name))
                     {
                         output.Add(new Selection{ Field = new Field { Name = name }});
-                        return output.ToArray();
                     }
+                    return output.ToArray();
                 }
                 else if (current == "," ||
                          current == ((char)10).ToString() ||

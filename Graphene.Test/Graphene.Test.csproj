@@ -56,9 +56,11 @@
     <Compile Include="FieldsParserTest.cs" />
     <Compile Include="GraphQLQueryHandlerTests.cs" />
     <Compile Include="OperationParserTests.cs" />
+    <Compile Include="ParserFeedTest.cs" />
     <Compile Include="QueryTest.cs" />
     <Compile Include="Schema\TypeSerializationTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SelectionParserTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Schema\FieldTypeExample.json">

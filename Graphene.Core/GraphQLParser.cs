@@ -1,23 +1,38 @@
 ﻿using System.Collections.Generic;
+using System.Text;
 
 namespace Graphene.Core
 {
     public class GraphQLParser : IGraphQLParser
     {
-        public QueryObject Parse(string query)
+        public object Parse(string query)
         {
-            return new QueryObject
+            var characterFeed = new CharacterFeed(query);
+            var sb = new StringBuilder();
+
+            var write = false;
+
+            while (!characterFeed.IsComplete())
             {
-                Name = "User",
-                Args = new List<QueryFieldArgs>
+                var current = characterFeed.Next();
+
+                switch (current)
                 {
-                    new QueryFieldArgs
-                    {
-                        Field = "id",
-                        Value = "1"
-                    }
+                    case "{":
+                        write = true;
+                        break;
+                    case "}":
+                        write = false;
+                        break;
+                    default:
+                        if (write)
+                        {
+                            sb.Append(current);
+                        }
+                        break;
                 }
-            };
+            }
+            return sb.ToString();
         }
     }
 }

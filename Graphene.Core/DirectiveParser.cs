@@ -5,59 +5,41 @@ namespace Graphene.Core
 {
     public class DirectiveParser
     {
+        private Directive _directive;
+        private StringBuilder _stringBuilder;
+        private string _current;
+
         public Directive Parse(CharacterFeed characterFeed)
         {
-            var directive = new Directive();
+            _directive = new Directive();
 
-            var stringBuilder = new StringBuilder();
+            _stringBuilder = new StringBuilder();
 
             while (!characterFeed.IsComplete())
             {
-                var current = characterFeed.Next();
+                _current = characterFeed.Next();
 
-                if (" ".Contains(current))
+                if (" ".Contains(_current))
                 {
                     continue;
                 }
 
-                switch (current)
+                switch (_current)
                 {
                     case "(":
-                        directive.Name = stringBuilder.ToString();
-                        directive.Arguments = new ArgumentsParser().GetArguments(characterFeed);
+                        _directive.Name = _stringBuilder.ToString();
+                        _directive.Arguments = new ArgumentsParser().GetArguments(characterFeed);
                         break;
                     case "{":
-                        if (string.IsNullOrEmpty(directive.Name))
+                        if (string.IsNullOrEmpty(_directive.Name))
                             break;
-                        return directive;
+                        return _directive;
                     default:
-                        stringBuilder.Append(current);
+                        _stringBuilder.Append(_current);
                         break;
                 }
             }
-            return directive;
+            return _directive;
         }
-    }
-
-    public class OperationParser
-    {
-        public Operation Parse(CharacterFeed characterFeed)
-        {
-            var operation = new Operation
-            {
-                Directives = new[] {new DirectiveParser().Parse(characterFeed)},
-                Selections = new SelectionsParser().Parse(characterFeed)
-            };
-            return operation;
-        }
-    }
-
-    public class Operation
-    {
-        public string Name { get; set; }
-
-        public Directive[] Directives { get; set; }
-
-        public Selection[] Selections { get; set; }
     }
 }
