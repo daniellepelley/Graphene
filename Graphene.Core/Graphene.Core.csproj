@@ -39,12 +39,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="GraphQLParser.cs" />
+    <Compile Include="Argument.cs" />
+    <Compile Include="ArgumentsParser.cs" />
+    <Compile Include="DirectiveParser.cs" />
+    <Compile Include="FieldsParser.cs" />
     <Compile Include="IGraphQLParser.cs" />
     <Compile Include="IGraphQLQueryHandler.cs" />
     <Compile Include="GraphQLQueryHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="QueryObject.cs" />
+    <Compile Include="SelectionsParser.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

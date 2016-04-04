@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Graphene.Core;
-using Graphene.Schema;
 using Moq;
 using Newtonsoft.Json;
 using NUnit.Framework;
@@ -28,30 +27,35 @@ namespace Graphene.Test
         [Test]
         public void SimpleQueryReturnsCorrectResponse3()
         {
+            JsonConvert.DeserializeObject<TestUser>(@"{""data"":{""user"":{""name"":""Nick""}}}");
+
             AssertResponse(@"{user(id:""3""){name}}", @"{""data"":{""user"":{""name"":""Nick""}}}");
         }
 
-        private void AssertResponse(string query, string expected)
+        private static void AssertResponse(string query, string expected)
         {
             var mockParser = new Mock<IGraphQLParser>();
 
-            var func = new Func<int, string>(x => TestUserToJson(GetData().First(user => user.Id == x)));
+            mockParser.Setup(x => x.Parse(query))
+                .Returns(expected);
 
-            var sut = new GraphQLQueryHandler(mockParser.Object, func);
+            var func = new Func<int, string>(x => expected);
+
+            var sut = new GraphQLQueryHandler(mockParser.Object);
             var actual = sut.Handle(query);
 
             Assert.AreEqual(expected, actual);
         }
-
 
         [Test]
         public void HandleCallsParser()
         {
             var mockParser = new Mock<IGraphQLParser>();
 
-            var func = new Func<int, string>(x => string.Empty);
+            mockParser.Setup(x => x.Parse(It.IsAny<string>()))
+                .Returns(string.Empty);
 
-            var sut = new GraphQLQueryHandler(mockParser.Object, func);
+            var sut = new GraphQLQueryHandler(mockParser.Object);
             sut.Handle(@"{user(id:""2""){name}}");
             
             mockParser.Verify(x => x.Parse(@"{user(id:""2""){name}}"), Times.Once);
@@ -78,25 +82,11 @@ namespace Graphene.Test
                 }
             };
         }
-
-        private string TestUserToJson(TestUser testUser)
-        {
-            return Json.Serialize(
-                new Result
-                {
-                    Data = new { User =new { testUser.Name } }
-                }, Formatting.None);
-        }
     }
 
     public class TestUser
     {
         public int Id { get; set; }
         public string Name { get; set; }
-    }
-
-    public class Result
-    {
-        public object Data { get; set; }
     }
 }
