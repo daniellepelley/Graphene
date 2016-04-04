@@ -12,8 +12,13 @@ namespace Graphene.Test
         public void Test1(int index, string expected)
         {
             var parserFeed = new ParserFeed("name{}");
-            var output = parserFeed.Next().ToArray();
-            Assert.AreEqual(expected, output[index]);
+            var output = new[]
+            {
+                parserFeed.Next(),
+                parserFeed.Next(),
+                parserFeed.Next()
+            };
+            Assert.AreEqual(expected, output[index].Value);
         }
 
         [TestCase(0, "person")]
@@ -23,8 +28,8 @@ namespace Graphene.Test
         public void Test2(int index, string expected)
         {
             var parserFeed = new ParserFeed("person {name}");
-            var output = parserFeed.Next().ToArray();
-            Assert.AreEqual(expected, output[index]);
+            var output = parserFeed.All().ToArray();
+            Assert.AreEqual(expected, output[index].Value);
         }
 
         [TestCase(0, "person")]
@@ -41,8 +46,8 @@ namespace Graphene.Test
         public void Test3(int index, string expected)
         {
             var parserFeed = new ParserFeed("person {name, address { street, town }}");
-            var output = parserFeed.Next().ToArray();
-            Assert.AreEqual(expected, output[index]);
+            var output = parserFeed.All().ToArray();
+            Assert.AreEqual(expected, output[index].Value);
         }
     }
 }

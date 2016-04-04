@@ -9,7 +9,7 @@ namespace Graphene.Test
         public void ParseWithoutBrackets()
         {
             var sut = new DirectiveParser();
-            var result = sut.Parse(new CharacterFeed("customer(id : 1)"));
+            var result = sut.Parse(new ParserFeed("customer(id : 1)"));
             Assert.AreEqual("customer", result.Name);
         }
 
@@ -17,7 +17,7 @@ namespace Graphene.Test
         public void ParseWithBrackets()
         {
             var sut = new DirectiveParser();
-            var result = sut.Parse(new CharacterFeed("{customer(id : 1)}"));
+            var result = sut.Parse(new ParserFeed("{customer(id : 1)}"));
             Assert.AreEqual("customer", result.Name);
         }
     }

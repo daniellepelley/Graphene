@@ -2,12 +2,12 @@
 {
     public class OperationParser
     {
-        public Operation Parse(CharacterFeed characterFeed)
+        public Operation Parse(ParserFeed parserFeed)
         {
             var operation = new Operation
             {
-                Directives = new[] {new DirectiveParser().Parse(characterFeed)},
-                Selections = new SelectionsParser().Parse(characterFeed)
+                Directives = new[] {new DirectiveParser().Parse(parserFeed)},
+                Selections = new SelectionsParser().Parse(parserFeed)
             };
             return operation;
         }

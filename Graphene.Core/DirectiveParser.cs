@@ -6,37 +6,31 @@ namespace Graphene.Core
     public class DirectiveParser
     {
         private Directive _directive;
-        private StringBuilder _stringBuilder;
-        private string _current;
+        //private StringBuilder _stringBuilder;
+        private ParsedPart _current;
 
-        public Directive Parse(CharacterFeed characterFeed)
+        public Directive Parse(ParserFeed parserFeed)
         {
             _directive = new Directive();
 
-            _stringBuilder = new StringBuilder();
-
-            while (!characterFeed.IsComplete())
+            while (!parserFeed.IsComplete())
             {
-                _current = characterFeed.Next();
+                _current = parserFeed.Next();
 
-                if (" ".Contains(_current))
+                if (_current.ParseType == ParseType.Name)
                 {
-                    continue;
+                    _directive.Name = _current.Value;
                 }
-
-                switch (_current)
+                else if (_current.ParseType == ParseType.Open)
                 {
-                    case "(":
-                        _directive.Name = _stringBuilder.ToString();
-                        _directive.Arguments = new ArgumentsParser().GetArguments(characterFeed);
-                        break;
-                    case "{":
-                        if (string.IsNullOrEmpty(_directive.Name))
-                            break;
+                    if (_current.Value == "(")
+                    {
+                        _directive.Arguments = new ArgumentsParser().GetArguments(parserFeed);
+                    }
+                    else if (!string.IsNullOrEmpty(_directive.Name))
+                    {
                         return _directive;
-                    default:
-                        _stringBuilder.Append(_current);
-                        break;
+                    }
                 }
             }
             return _directive;

@@ -5,56 +5,31 @@ namespace Graphene.Core
 {
     public class ArgumentsParser
     {
-        public Argument[] GetArguments(CharacterFeed characterFeed)
+        public Argument[] GetArguments(ParserFeed parserFeed)
         {
             var output = new List<Argument>();
 
-            while (!characterFeed.IsComplete())
+            while (!parserFeed.IsComplete())
             {
-                if (characterFeed.Peek() == "{")
-                {
-                    return output.ToArray();
-                }
+                var current = parserFeed.Next();
 
-                var argument = GetArgument(characterFeed);
-                output.Add(argument);
+                if (current.ParseType == ParseType.Name)
+                {
+                    var argument = new Argument();
+
+                    argument.Name = current.Value;
+                    parserFeed.Next();
+                    argument.Value = parserFeed.Next().Value;
+
+                    output.Add(argument);
+                }
+               
+                if (current.ParseType == ParseType.Close)
+                {
+                    break;
+                }
             }
             return output.ToArray();
-        }
-
-        private Argument GetArgument(CharacterFeed characterFeed)
-        {
-            var argument = new Argument();
-
-            var stringBuilder = new StringBuilder();
-
-            while (!characterFeed.IsComplete())
-            {
-                var current = characterFeed.Next();
-
-                if ("( ".Contains(current))
-                {
-                    continue;
-                }
-
-                if (current == ":")
-                {
-                    argument.Name = stringBuilder.ToString();
-                    stringBuilder = new StringBuilder();
-                }
-                else if (current == ")")
-                {
-                    argument.Value = stringBuilder.ToString();
-                    return argument;
-                }
-                else
-                {
-                    stringBuilder.Append(current);
-                }
-            }
-
-            argument.Value = stringBuilder.ToString();
-            return argument;
         }
     }
 }

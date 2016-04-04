@@ -37,6 +37,26 @@ namespace Graphene.Core
         }
     }
 
+    public class ParsedPart
+    {
+        public string Value { get; set; }
+        public ParseType ParseType { get; set; }
+
+        public ParsedPart(string value, ParseType parseType)
+        {
+            Value = value;
+            ParseType = parseType;
+        }
+    }
+
+    public enum ParseType
+    {
+        Name,
+        Open,
+        Close,
+        Seperator
+    }
+
     public class ParserFeed
     {
         private int _index;
@@ -44,15 +64,26 @@ namespace Graphene.Core
         private readonly string _text;
 
         private string _namingLetters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_";
-        private string _symbols = "({}),";
+        private string _open = "({";
+        private string _close = "})";
+        private string _seperator = ":,";
         private string _ignore = " ";
 
         public ParserFeed(string text)
         {
             _text = text;
+            _seperator = _seperator + (char)13;
         }
 
-        public IEnumerable<string> Next()
+        public IEnumerable<ParsedPart> All()
+        {
+            while (_index < _text.Length)
+            {
+                yield return Next();
+            }
+        }
+
+        public ParsedPart Next()
         {
             while (_index < _text.Length)
             {
@@ -68,21 +99,42 @@ namespace Graphene.Core
                 }
                 else if (_namingLetters.Contains(current))
                 {
-                    yield return GetName();
+                    return GetName();
                 }
-                else if (_symbols.Contains(current))
+                else if (_open.Contains(current))
                 {
                     _index++;
-                    yield return current;
+                    return new ParsedPart(current, ParseType.Open);
+                }
+                else if (_close.Contains(current))
+                {
+                    _index++;
+                    return new ParsedPart(current, ParseType.Close);
+                }
+                else if (_seperator.Contains(current))
+                {
+                    _index++;
+                    return new ParsedPart(current, ParseType.Seperator);
                 }
                 else
                 {
                     _index++;
                 }
             }
+            return null;
         }
 
-        private string GetName()
+        public bool IsComplete()
+        {
+            return _index >= _text.Length;
+        }
+
+        public CharacterFeed ToCharacterFeed()
+        {
+            return new CharacterFeed(_text.Substring(_index, _text.Length - _index));
+        }
+
+        private ParsedPart GetName()
         {
             var current = _text[_index].ToString();
             var stringBuilder = new StringBuilder();
@@ -90,9 +142,15 @@ namespace Graphene.Core
             {
                 stringBuilder.Append(current);
                 _index++;
+
+                if (_index >= _text.Length)
+                {
+                    break;
+                }
+
                 current = _text[_index].ToString();
             }
-            return stringBuilder.ToString();
+            return new ParsedPart(stringBuilder.ToString(), ParseType.Name);
         }
     }
 }

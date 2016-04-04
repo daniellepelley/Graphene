@@ -1,70 +1,38 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Graphene.Core
 {
     public class SelectionsParser
     {
-        public Selection[] Parse(CharacterFeed characterFeed)
+        public Selection[] Parse(ParserFeed parserFeed)
         {
             var output = new List<Selection>();
 
-            var stringBuilder = new StringBuilder();
-
-            while (!characterFeed.IsComplete())
+            while (!parserFeed.IsComplete())
             {
-                var current = characterFeed.Next();
+                var current = parserFeed.Next();
 
-                if (" ".Contains(current))
+                if (current.ParseType == ParseType.Name)
                 {
-                    continue;
-                }
-
-                var name = stringBuilder.ToString();
-
-                if (current == "{")
-                {
-                    if (string.IsNullOrEmpty(name))
-                    {
-                        continue;
-                    }
-
-                    var selection = new Selection
+                    output.Add(new Selection
                     {
                         Field = new Field
                         {
-                            Name = name,
-                            Selections = Parse(characterFeed)
+                            Name = current.Value
                         }
-                    };
-
-                    output.Add(selection);
-                    stringBuilder = new StringBuilder();
+                    });
                 }
-                else if (current == "}")
+                else if (current.ParseType == ParseType.Open && output.Any())
                 {
-                    if (!string.IsNullOrEmpty(name))
-                    {
-                        output.Add(new Selection{ Field = new Field { Name = name }});
-                    }
+                    output.Last().Field.Selections = new SelectionsParser().Parse(parserFeed); 
+                }
+                else if (current.ParseType == ParseType.Close)
+                {
                     return output.ToArray();
                 }
-                else if (current == "," ||
-                         current == ((char)10).ToString() ||
-                         current == ((char)13).ToString())
-                {
-                    if (!string.IsNullOrEmpty(name))
-                    {
-                        output.Add(new Selection { Field = new Field { Name = name } });
-                    }
-                    stringBuilder = new StringBuilder();
-                }
-                else
-                {
-                    stringBuilder.Append(current);
-                }
             }
-
             return output.ToArray();
         }
     }
