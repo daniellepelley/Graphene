@@ -36,6 +36,9 @@ namespace Graphene.Test
         {
             var mockParser = new Mock<IGraphQLParser>();
 
+            mockParser.Setup(x => x.Parse(query))
+                .Returns(expected);
+
             var func = new Func<int, string>(x => expected);
 
             var sut = new GraphQLQueryHandler(mockParser.Object);
@@ -48,6 +51,10 @@ namespace Graphene.Test
         public void HandleCallsParser()
         {
             var mockParser = new Mock<IGraphQLParser>();
+
+            mockParser.Setup(x => x.Parse(It.IsAny<string>()))
+                .Returns(string.Empty);
+
             var sut = new GraphQLQueryHandler(mockParser.Object);
             sut.Handle(@"{user(id:""2""){name}}");
             

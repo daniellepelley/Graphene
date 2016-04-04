@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Linq;
+using System.Text;
 
 namespace Graphene.Core
 {
@@ -45,7 +46,7 @@ namespace Graphene.Core
             var operation = new Operation
             {
                 Directives = new[] {new DirectiveParser().Parse(characterFeed)},
-                Fields = new FieldsParser().Parse(characterFeed)
+                Selections = new SelectionsParser().Parse(characterFeed)
             };
             return operation;
         }
@@ -57,6 +58,6 @@ namespace Graphene.Core
 
         public Directive[] Directives { get; set; }
 
-        public string[] Fields { get; set; }
+        public Selection[] Selections { get; set; }
     }
 }

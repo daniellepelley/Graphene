@@ -1,14 +1,13 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+using System.Collections.Generic;
 using System.Text;
 
 namespace Graphene.Core
 {
-    public class FieldsParser
+    public class SelectionsParser
     {
-        public Field[] Parse(CharacterFeed characterFeed)
+        public Selection[] Parse(CharacterFeed characterFeed)
         {
-            var output = new List<Field>();
+            var output = new List<Selection>();
 
             var stringBuilder = new StringBuilder();
 
@@ -30,35 +29,33 @@ namespace Graphene.Core
                         continue;
                     }
 
-                    var field = new Field
+                    var selection = new Selection
                     {
-                        Name = name,
-                        Selections = new[]
+                        Field = new Field
                         {
-                            new Selection
-                            {
-                                Field = new FieldsParser().Parse(characterFeed).First()
-                            }
+                            Name = name,
+                            Selections = Parse(characterFeed)
                         }
                     };
 
-                    output.Add(field); 
+                    output.Add(selection);
                 }
-                    
+
                 else if (current == "}")
                 {
                     if (!string.IsNullOrEmpty(name))
                     {
-                        output.Add(new Field { Name = name });                                    
+                        output.Add(new Selection{ Field = new Field { Name = name }});
+                        return output.ToArray();
                     }
                 }
                 else if (current == "," ||
-                    current == ((char)10).ToString() ||
-                    current == ((char)13).ToString())
+                         current == ((char)10).ToString() ||
+                         current == ((char)13).ToString())
                 {
                     if (!string.IsNullOrEmpty(name))
                     {
-                        output.Add(new Field { Name = name });
+                        output.Add(new Selection { Field = new Field { Name = name } });
                     }
                     stringBuilder = new StringBuilder();
                 }
@@ -70,16 +67,5 @@ namespace Graphene.Core
 
             return output.ToArray();
         }
-    }
-
-    public class Field
-    {
-        public string Name { get; set; }
-        public Selection[] Selections { get; set; }
-    }
-
-    public class Selection
-    {
-        public Field Field { get; set; }
     }
 }

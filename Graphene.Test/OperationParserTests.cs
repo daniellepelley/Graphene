@@ -13,7 +13,7 @@ namespace Graphene.Test
             var result = sut.Parse(new CharacterFeed(@"{user(id:1){name}}"));
             Assert.AreEqual(null, result.Name);
             Assert.AreEqual("user", result.Directives.First().Name);
-            Assert.AreEqual("name", result.Fields.First());
+            Assert.AreEqual("name", result.Selections.First().Field.Name);
         }
 
         [Test]
@@ -23,7 +23,7 @@ namespace Graphene.Test
             var result = sut.Parse(new CharacterFeed(@"user(id:1){name}"));
             Assert.AreEqual(null, result.Name);
             Assert.AreEqual("user", result.Directives.First().Name);
-            Assert.AreEqual("name", result.Fields.First());
+            Assert.AreEqual("name", result.Selections.First().Field.Name);
         }
 
         [Test]
@@ -33,8 +33,8 @@ namespace Graphene.Test
             var result = sut.Parse(new CharacterFeed(@"user(id:1){name,age}"));
             Assert.AreEqual(null, result.Name);
             Assert.AreEqual("user", result.Directives.First().Name);
-            Assert.AreEqual("name", result.Fields.ElementAt(0));
-            Assert.AreEqual("age", result.Fields.ElementAt(1));
+            Assert.AreEqual("name", result.Selections.ElementAt(0).Field.Name);
+            Assert.AreEqual("age", result.Selections.ElementAt(1).Field.Name);
         }
     }
 }
