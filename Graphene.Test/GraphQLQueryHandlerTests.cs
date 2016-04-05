@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Graphene.Core;
+using Graphene.Core.Model;
+using Graphene.Core.Parsers;
 using Moq;
 using Newtonsoft.Json;
 using NUnit.Framework;
@@ -34,26 +32,26 @@ namespace Graphene.Test
 
         private static void AssertResponse(string query, string expected)
         {
-            var mockParser = new Mock<IGraphQLParser>();
+            var mockParser = new Mock<IDocumentParser>();
 
             mockParser.Setup(x => x.Parse(query))
-                .Returns(expected);
+                .Returns(new Document());
 
             var func = new Func<int, string>(x => expected);
 
             var sut = new GraphQLQueryHandler(mockParser.Object);
             var actual = sut.Handle(query);
 
-            Assert.AreEqual(expected, actual);
+            Assert.AreEqual(typeof(Document).FullName, actual);
         }
 
         [Test]
         public void HandleCallsParser()
         {
-            var mockParser = new Mock<IGraphQLParser>();
+            var mockParser = new Mock<IDocumentParser>();
 
             mockParser.Setup(x => x.Parse(It.IsAny<string>()))
-                .Returns(string.Empty);
+                .Returns(new Document());
 
             var sut = new GraphQLQueryHandler(mockParser.Object);
             sut.Handle(@"{user(id:""2""){name}}");

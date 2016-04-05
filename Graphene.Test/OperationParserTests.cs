@@ -1,5 +1,4 @@
 using System.Linq;
-using Graphene.Core;
 using Graphene.Core.Parsers;
 using NUnit.Framework;
 

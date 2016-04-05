@@ -1,19 +1,19 @@
-﻿using System;
+﻿using Graphene.Core.Parsers;
 
 namespace Graphene.Core
 {
     public class GraphQLQueryHandler : IGraphQLQueryHandler
     {
-        private readonly IGraphQLParser _graphQLParser;
+        private readonly IDocumentParser _documentParser;
 
-        public GraphQLQueryHandler(IGraphQLParser graphQLParser)
+        public GraphQLQueryHandler(IDocumentParser documentParser)
         {
-            _graphQLParser = graphQLParser;
+            _documentParser = documentParser;
         }
 
         public string Handle(string query)
         {
-            return _graphQLParser.Parse(query).ToString();
+            return _documentParser.Parse(query).ToString();
         }
     }
 }

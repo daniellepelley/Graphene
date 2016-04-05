@@ -2,7 +2,7 @@ using Graphene.Core.Model;
 
 namespace Graphene.Core.Parsers
 {
-    public class DocumentParser
+    public class DocumentParser : IDocumentParser
     {
         public Document Parse(string query)
         {
@@ -10,7 +10,7 @@ namespace Graphene.Core.Parsers
 
             var document = new Document
             {
-                Operations = new[] { new OperationParser().Parse(parserFeed) }
+                Operations = new[] {new OperationParser().Parse(parserFeed)}
             };
             return document;
         }

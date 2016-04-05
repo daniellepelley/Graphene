@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Graphene.Core
+namespace Graphene.Core.Parsers
 {
     public class ParserFeed
     {
@@ -73,11 +73,6 @@ namespace Graphene.Core
         public bool IsComplete()
         {
             return _index >= _text.Length;
-        }
-
-        public CharacterFeed ToCharacterFeed()
-        {
-            return new CharacterFeed(_text.Substring(_index, _text.Length - _index));
         }
 
         private ParsedPart GetName()
