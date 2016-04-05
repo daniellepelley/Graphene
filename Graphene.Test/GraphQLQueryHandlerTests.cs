@@ -3,6 +3,7 @@ using Graphene.Core;
 using Graphene.Core.Model;
 using Graphene.Core.Parsers;
 using Graphene.Test.Execution;
+using Graphene.Test.Spike;
 using Moq;
 using Newtonsoft.Json;
 using NUnit.Framework;
