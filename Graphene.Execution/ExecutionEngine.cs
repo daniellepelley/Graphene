@@ -7,7 +7,7 @@ using Graphene.Core.Model;
 
 namespace Graphene.Execution
 {
-    public class ExecutionEngine
+    public class ExecutionEngine : IExecutionEngine
     {
         public string Execute(Document document)
         {
