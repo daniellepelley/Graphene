@@ -2,6 +2,7 @@
 using Graphene.Core;
 using Graphene.Core.Model;
 using Graphene.Core.Parsers;
+using Graphene.Test.Execution;
 using Moq;
 using Newtonsoft.Json;
 using NUnit.Framework;
@@ -59,32 +60,6 @@ namespace Graphene.Test
             mockParser.Verify(x => x.Parse(@"{user(id:""2""){name}}"), Times.Once);
         }
 
-        private TestUser[] GetData()
-        {
-            return new[]
-            {
-                new TestUser
-                {
-                    Id = 1,
-                    Name= "Dan"
-                },
-                                new TestUser
-                {
-                    Id = 2,
-                    Name= "Lee"
-                },
-                                new TestUser
-                {
-                    Id = 3,
-                    Name= "Nick"
-                }
-            };
-        }
-    }
 
-    public class TestUser
-    {
-        public int Id { get; set; }
-        public string Name { get; set; }
     }
 }

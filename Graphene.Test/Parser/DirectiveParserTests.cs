@@ -1,7 +1,7 @@
 using Graphene.Core.Parsers;
 using NUnit.Framework;
 
-namespace Graphene.Test
+namespace Graphene.Test.Parser
 {
     public class DirectiveParserTests
     {

@@ -51,17 +51,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ArgumentsParserTests.cs" />
-    <Compile Include="DirectiveParserTests.cs" />
-    <Compile Include="DocumentParserTests.cs" />
-    <Compile Include="FieldsParserTest.cs" />
+    <Compile Include="Execution\ExecutionEngineTests.cs" />
+    <Compile Include="Parser\ArgumentsParserTests.cs" />
+    <Compile Include="Parser\DirectiveParserTests.cs" />
+    <Compile Include="Parser\DocumentParserTests.cs" />
+    <Compile Include="Parser\FieldsParserTest.cs" />
     <Compile Include="GraphQLQueryHandlerTests.cs" />
-    <Compile Include="OperationParserTests.cs" />
-    <Compile Include="ParserFeedTest.cs" />
+    <Compile Include="Parser\OperationParserTests.cs" />
+    <Compile Include="Parser\ParserFeedTest.cs" />
     <Compile Include="QueryTest.cs" />
     <Compile Include="Schema\TypeSerializationTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SelectionParserTest.cs" />
+    <Compile Include="Parser\SelectionParserTest.cs" />
+    <Compile Include="Execution\TestUser.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Schema\FieldTypeExample.json">
@@ -91,6 +93,10 @@
     <ProjectReference Include="..\Graphene.Core\Graphene.Core.csproj">
       <Project>{7F25ECD1-89CA-4D83-93EF-8B53AB5595D2}</Project>
       <Name>Graphene.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Graphene.Execution\Graphene.Execution.csproj">
+      <Project>{0F97B45B-7646-4F7D-8A33-D197852061C5}</Project>
+      <Name>Graphene.Execution</Name>
     </ProjectReference>
     <ProjectReference Include="..\Graphene.Schema\Graphene.Schema.csproj">
       <Project>{fc11e4de-0ee7-44a0-9f59-874a34042ed8}</Project>

@@ -1,4 +1,4 @@
-namespace Graphene.Test
+namespace Graphene.Test.Parser
 {
     //public class FieldsParserTest
     //{

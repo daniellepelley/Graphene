@@ -13,7 +13,9 @@ namespace Graphene.Core
 
         public string Handle(string query)
         {
-            return _documentParser.Parse(query).ToString();
+            var document = _documentParser.Parse(query);
+
+            return document.ToString();
         }
     }
 }
