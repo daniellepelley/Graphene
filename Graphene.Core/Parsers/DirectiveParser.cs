@@ -1,7 +1,6 @@
-﻿using System.Linq;
-using System.Text;
+﻿using Graphene.Core.Model;
 
-namespace Graphene.Core
+namespace Graphene.Core.Parsers
 {
     public class DirectiveParser
     {

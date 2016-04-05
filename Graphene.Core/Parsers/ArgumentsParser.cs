@@ -1,7 +1,7 @@
 using System.Collections.Generic;
-using System.Text;
+using Graphene.Core.Model;
 
-namespace Graphene.Core
+namespace Graphene.Core.Parsers
 {
     public class ArgumentsParser
     {

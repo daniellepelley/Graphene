@@ -1,8 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
-namespace Graphene.Core
+namespace Graphene.Core.Parsers
 {
     public class SelectionsParser
     {

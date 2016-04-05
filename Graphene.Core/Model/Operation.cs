@@ -1,4 +1,6 @@
-﻿namespace Graphene.Core
+﻿using Graphene.Core.Parsers;
+
+namespace Graphene.Core.Model
 {
     public class Operation
     {

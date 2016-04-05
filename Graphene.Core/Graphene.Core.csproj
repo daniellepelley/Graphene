@@ -39,20 +39,23 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Argument.cs" />
-    <Compile Include="ArgumentsParser.cs" />
+    <Compile Include="Model\Argument.cs" />
+    <Compile Include="Parsers\ArgumentsParser.cs" />
     <Compile Include="CharacterFeed.cs" />
-    <Compile Include="Directive.cs" />
-    <Compile Include="DirectiveParser.cs" />
-    <Compile Include="FieldsParser.cs" />
+    <Compile Include="Model\Directive.cs" />
+    <Compile Include="Parsers\DirectiveParser.cs" />
+    <Compile Include="Model\Document.cs" />
+    <Compile Include="Parsers\DocumentParser.cs" />
+    <Compile Include="Parsers\FieldsParser.cs" />
     <Compile Include="GraphQLParser.cs" />
     <Compile Include="IGraphQLParser.cs" />
     <Compile Include="IGraphQLQueryHandler.cs" />
     <Compile Include="GraphQLQueryHandler.cs" />
-    <Compile Include="Operation.cs" />
-    <Compile Include="OperationParser.cs" />
+    <Compile Include="Model\Operation.cs" />
+    <Compile Include="Parsers\OperationParser.cs" />
+    <Compile Include="ParserFeed.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SelectionsParser.cs" />
+    <Compile Include="Parsers\SelectionsParser.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

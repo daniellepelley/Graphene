@@ -1,4 +1,4 @@
-﻿namespace Graphene.Core
+﻿namespace Graphene.Core.Model
 {
     public class Directive
     {

@@ -53,6 +53,7 @@
   <ItemGroup>
     <Compile Include="ArgumentsParserTests.cs" />
     <Compile Include="DirectiveParserTests.cs" />
+    <Compile Include="DocumentParserTests.cs" />
     <Compile Include="FieldsParserTest.cs" />
     <Compile Include="GraphQLQueryHandlerTests.cs" />
     <Compile Include="OperationParserTests.cs" />
