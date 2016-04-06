@@ -1,0 +1,12 @@
+
+
+
+COMPILER
+
+Lexer to pull out list of key words and operators
+Pre-compile to add in fragments into the main query
+Arrange list into document elements
+Build document
+
+
+
