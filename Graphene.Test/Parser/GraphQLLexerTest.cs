@@ -12,12 +12,7 @@ namespace Graphene.Test.Parser
         public void Test1(int index, string expected)
         {
             var parserFeed = new GraphQLLexer("name{}");
-            var output = new[]
-            {
-                parserFeed.Next(),
-                parserFeed.Next(),
-                parserFeed.Next()
-            };
+            var output = parserFeed.All().ToArray();
             Assert.AreEqual(expected, ((LexerToken)output[index]).Value);
         }
 
