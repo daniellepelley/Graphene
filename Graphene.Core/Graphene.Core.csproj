@@ -47,8 +47,15 @@
   <ItemGroup>
     <Compile Include="Model\Argument.cs" />
     <Compile Include="Parsers\ArgumentsParser.cs" />
+    <Compile Include="Parsers\GraphQLLexer.cs" />
+    <Compile Include="Parsers\GraphQLLexerCursor.cs" />
     <Compile Include="Parsers\IDocumentParser.cs" />
-    <Compile Include="Parsers\ParsedPart.cs" />
+    <Compile Include="Parsers\IgnoreGraphQLTokenizer.cs" />
+    <Compile Include="Parsers\IgnoreLeverToken.cs" />
+    <Compile Include="Parsers\IGraphQLTokenizer.cs" />
+    <Compile Include="Parsers\ILexerToken.cs" />
+    <Compile Include="Parsers\LexerToken.cs" />
+    <Compile Include="Parsers\MultipleGraphQLTokenizer.cs" />
     <Compile Include="Model\Directive.cs" />
     <Compile Include="Parsers\DirectiveParser.cs" />
     <Compile Include="Model\Document.cs" />
@@ -59,8 +66,8 @@
     <Compile Include="GraphQLQueryHandler.cs" />
     <Compile Include="Model\Operation.cs" />
     <Compile Include="Parsers\OperationParser.cs" />
-    <Compile Include="Parsers\ParserFeed.cs" />
-    <Compile Include="Parsers\ParseType.cs" />
+    <Compile Include="Parsers\GraphQLTokenType.cs" />
+    <Compile Include="Parsers\SingleGraphQLTokenizer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Parsers\SelectionsParser.cs" />
   </ItemGroup>

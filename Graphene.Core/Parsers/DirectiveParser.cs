@@ -6,9 +6,9 @@ namespace Graphene.Core.Parsers
     {
         private Directive _directive;
         //private StringBuilder _stringBuilder;
-        private ParsedPart _current;
+        private ILexerToken _current;
 
-        public Directive Parse(ParserFeed parserFeed)
+        public Directive Parse(GraphQLLexer parserFeed)
         {
             _directive = new Directive();
 
@@ -16,11 +16,11 @@ namespace Graphene.Core.Parsers
             {
                 _current = parserFeed.Next();
 
-                if (_current.ParseType == ParseType.Name)
+                if (_current.Type == GraphQLTokenType.Name)
                 {
                     _directive.Name = _current.Value;
                 }
-                else if (_current.ParseType == ParseType.Open)
+                else if (_current.Type == GraphQLTokenType.Open)
                 {
                     if (_current.Value == "(")
                     {

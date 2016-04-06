@@ -10,7 +10,7 @@ namespace Graphene.Test.Parser
         public void Parse()
         {
             var sut = new OperationParser();
-            var result = sut.Parse(new ParserFeed(@"{user(id:1){name}}"));
+            var result = sut.Parse(new GraphQLLexer(@"{user(id:1){name}}"));
             Assert.AreEqual(null, result.Name);
             Assert.AreEqual("user", result.Directives.First().Name);
             Assert.AreEqual("name", result.Selections.First().Field.Name);
@@ -20,7 +20,7 @@ namespace Graphene.Test.Parser
         public void WithoutBrackets()
         {
             var sut = new OperationParser();
-            var result = sut.Parse(new ParserFeed(@"user(id:1){name}"));
+            var result = sut.Parse(new GraphQLLexer(@"user(id:1){name}"));
             Assert.AreEqual(null, result.Name);
             Assert.AreEqual("user", result.Directives.First().Name);
             Assert.AreEqual("name", result.Selections.First().Field.Name);
@@ -30,7 +30,7 @@ namespace Graphene.Test.Parser
         public void Without2Fields()
         {
             var sut = new OperationParser();
-            var result = sut.Parse(new ParserFeed(@"user(id:1){name,age}"));
+            var result = sut.Parse(new GraphQLLexer(@"user(id:1){name,age}"));
             Assert.AreEqual(null, result.Name);
             Assert.AreEqual("user", result.Directives.First().Name);
             Assert.AreEqual("name", result.Selections.ElementAt(0).Field.Name);

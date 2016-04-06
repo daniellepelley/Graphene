@@ -6,11 +6,14 @@ namespace Graphene.Core.Parsers
     {
         public Document Parse(string query)
         {
-            var parserFeed = new ParserFeed(query);
+            var graphQLLexer = new GraphQLLexer(query);
 
             var document = new Document
             {
-                Operations = new[] {new OperationParser().Parse(parserFeed)}
+                Operations = new[]
+                {
+                    new OperationParser().Parse(graphQLLexer)
+                }
             };
             return document;
         }

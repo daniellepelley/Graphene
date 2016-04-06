@@ -4,12 +4,12 @@ namespace Graphene.Core.Parsers
 {
     public class OperationParser
     {
-        public Operation Parse(ParserFeed parserFeed)
+        public Operation Parse(GraphQLLexer graphQLLexer)
         {
             var operation = new Operation
             {
-                Directives = new[] {new DirectiveParser().Parse(parserFeed)},
-                Selections = new SelectionsParser().Parse(parserFeed)
+                Directives = new[] {new DirectiveParser().Parse(graphQLLexer)},
+                Selections = new SelectionsParser().Parse(graphQLLexer)
             };
             return operation;
         }

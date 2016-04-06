@@ -4,21 +4,21 @@ using NUnit.Framework;
 
 namespace Graphene.Test.Parser
 {
-    public class ParserFeedTest
+    public class GraphQLLexerTest
     {
         [TestCase(0, "name")]
         [TestCase(1, "{")]
         [TestCase(2, "}")]
         public void Test1(int index, string expected)
         {
-            var parserFeed = new ParserFeed("name{}");
+            var parserFeed = new GraphQLLexer("name{}");
             var output = new[]
             {
                 parserFeed.Next(),
                 parserFeed.Next(),
                 parserFeed.Next()
             };
-            Assert.AreEqual(expected, output[index].Value);
+            Assert.AreEqual(expected, ((LexerToken)output[index]).Value);
         }
 
         [TestCase(0, "person")]
@@ -27,9 +27,9 @@ namespace Graphene.Test.Parser
         [TestCase(3, "}")]
         public void Test2(int index, string expected)
         {
-            var parserFeed = new ParserFeed("person {name}");
+            var parserFeed = new GraphQLLexer("person {name}");
             var output = parserFeed.All().ToArray();
-            Assert.AreEqual(expected, output[index].Value);
+            Assert.AreEqual(expected, ((LexerToken)output[index]).Value);
         }
 
         [TestCase(0, "person")]
@@ -45,9 +45,9 @@ namespace Graphene.Test.Parser
         [TestCase(10, "}")]
         public void Test3(int index, string expected)
         {
-            var parserFeed = new ParserFeed("person {name, address { street, town }}");
+            var parserFeed = new GraphQLLexer("person {name, address { street, town }}");
             var output = parserFeed.All().ToArray();
-            Assert.AreEqual(expected, output[index].Value);
+            Assert.AreEqual(expected, ((LexerToken)output[index]).Value);
         }
     }
 }

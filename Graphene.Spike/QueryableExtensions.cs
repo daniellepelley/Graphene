@@ -4,9 +4,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Reflection.Emit;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using Graphene.Core.Model;
 
 namespace Graphene.Spike
@@ -38,9 +36,9 @@ namespace Graphene.Spike
             var sourceItem = Expression.Parameter(source.ElementType, "t");
             var paramRewriter = new PredicateRewriterVisitor(sourceItem);
 
-            Dictionary<string, Tuple<Expression, Type>> dynamicFields = new Dictionary<string, Tuple<Expression, Type>>();
-            int dynamicFieldsCounter = 0;
-            foreach (Expression<Func<T, object>> includeExpession in includeExpessions)
+            var dynamicFields = new Dictionary<string, Tuple<Expression, Type>>();
+            var dynamicFieldsCounter = 0;
+            foreach (var includeExpession in includeExpessions)
             {
                 Type typeDetected;
                 if ((includeExpession.Body.NodeType == ExpressionType.Convert) ||
@@ -51,12 +49,11 @@ namespace Graphene.Spike
                         typeDetected = unary.Operand.Type;
                 }
                 typeDetected = includeExpession.Body.Type;
-                //Save into List
                 dynamicFields.Add("f" + dynamicFieldsCounter, new Tuple<Expression, Type>(
                     paramRewriter.ReplaceParameter(includeExpession.Body, includeExpession.Parameters[0]),
                     typeDetected
                     ));
-                //Count
+
                 dynamicFieldsCounter++;
             }
 
@@ -105,7 +102,7 @@ namespace Graphene.Spike
 
             private static string GetTypeKey(Dictionary<string, Type> fields)
             {
-                string key = string.Empty;
+                var key = string.Empty;
                 foreach (var field in fields.OrderBy(v => v.Key).ThenBy(v => v.Value.Name))
                     key += field.Key + ";" + field.Value.Name + ";";
                 return key;
@@ -121,13 +118,13 @@ namespace Graphene.Spike
                 try
                 {
                     Monitor.Enter(builtTypes);
-                    string typeKey = GetTypeKey(fields);
+                    var typeKey = GetTypeKey(fields);
 
                     if (builtTypes.ContainsKey(typeKey))
                         return builtTypes[typeKey].Item2;
 
-                    string typeName = "DynamicLinqType" + builtTypes.Count.ToString();
-                    TypeBuilder typeBuilder = moduleBuilder.DefineType(typeName, TypeAttributes.Public | TypeAttributes.Class | TypeAttributes.Serializable, null, Type.EmptyTypes);
+                    var typeName = "DynamicLinqType" + builtTypes.Count.ToString();
+                    var typeBuilder = moduleBuilder.DefineType(typeName, TypeAttributes.Public | TypeAttributes.Class | TypeAttributes.Serializable, null, Type.EmptyTypes);
 
                     foreach (var field in fields)
                         typeBuilder.DefineField(field.Key, field.Value, FieldAttributes.Public);

@@ -11,7 +11,7 @@ namespace Graphene.Test.Parser
         public void Parse1()
         {
             var sut = new SelectionsParser();
-            var result = sut.Parse(new ParserFeed(@"{name}"));
+            var result = sut.Parse(new GraphQLLexer(@"{name}"));
             Assert.AreEqual("name", result.First().Field.Name);
         }
 
@@ -19,7 +19,7 @@ namespace Graphene.Test.Parser
         public void Parse2()
         {
             var sut = new SelectionsParser();
-            var result = sut.Parse(new ParserFeed(@"{name,age}"));
+            var result = sut.Parse(new GraphQLLexer(@"{name,age}"));
             Assert.AreEqual("name", result.ElementAt(0).Field.Name);
             Assert.AreEqual("age", result.ElementAt(1).Field.Name);
         }
@@ -47,7 +47,7 @@ namespace Graphene.Test.Parser
             var query = sb.ToString();
 
             var sut = new SelectionsParser();
-            var result = sut.Parse(new ParserFeed(query));
+            var result = sut.Parse(new GraphQLLexer(query));
             Assert.AreEqual("me", result.First().Field.Name);
             Assert.AreEqual("id", result.First().Field.Selections.ElementAt(0).Field.Name);
             Assert.AreEqual("firstName", result.First().Field.Selections.ElementAt(1).Field.Name);

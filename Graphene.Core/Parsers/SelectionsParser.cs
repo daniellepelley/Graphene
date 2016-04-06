@@ -6,7 +6,7 @@ namespace Graphene.Core.Parsers
 {
     public class SelectionsParser
     {
-        public Selection[] Parse(ParserFeed parserFeed)
+        public Selection[] Parse(GraphQLLexer parserFeed)
         {
             var output = new List<Selection>();
 
@@ -14,7 +14,7 @@ namespace Graphene.Core.Parsers
             {
                 var current = parserFeed.Next();
 
-                if (current.ParseType == ParseType.Name)
+                if (current.Type == GraphQLTokenType.Name)
                 {
                     output.Add(new Selection
                     {
@@ -24,11 +24,11 @@ namespace Graphene.Core.Parsers
                         }
                     });
                 }
-                else if (current.ParseType == ParseType.Open && output.Any())
+                else if (current.Type == GraphQLTokenType.Open && output.Any())
                 {
                     output.Last().Field.Selections = new SelectionsParser().Parse(parserFeed); 
                 }
-                else if (current.ParseType == ParseType.Close)
+                else if (current.Type == GraphQLTokenType.Close)
                 {
                     return output.ToArray();
                 }

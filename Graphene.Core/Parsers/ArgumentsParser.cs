@@ -5,26 +5,26 @@ namespace Graphene.Core.Parsers
 {
     public class ArgumentsParser
     {
-        public Argument[] GetArguments(ParserFeed parserFeed)
+        public Argument[] GetArguments(GraphQLLexer graphQLLexer)
         {
             var output = new List<Argument>();
 
-            while (!parserFeed.IsComplete())
+            while (!graphQLLexer.IsComplete())
             {
-                var current = parserFeed.Next();
+                var current = graphQLLexer.Next();
 
-                if (current.ParseType == ParseType.Name)
+                if (current.Type == GraphQLTokenType.Name)
                 {
                     var argument = new Argument();
 
                     argument.Name = current.Value;
-                    parserFeed.Next();
-                    argument.Value = parserFeed.Next().Value;
+                    graphQLLexer.Next();
+                    argument.Value = graphQLLexer.Next().Value;
 
                     output.Add(argument);
                 }
-               
-                if (current.ParseType == ParseType.Close)
+
+                if (current.Type == GraphQLTokenType.Close)
                 {
                     break;
                 }
