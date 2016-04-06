@@ -1,4 +1,8 @@
-﻿using Graphene.Schema;
+﻿using Graphene.Core.Model;
+using Graphene.Core.Parsers;
+using Graphene.Core.Types;
+using Graphene.Execution;
+using Newtonsoft.Json;
 using NUnit.Framework;
 
 namespace Graphene.Test
@@ -8,17 +12,39 @@ namespace Graphene.Test
         [Test]
         public void CanBuildAQuery()
         {
+            var userType = new GraphQLObjectType{
+                Name = "User",
+                Fields =new [] {
+                    new GraphQLFieldType
+                    {
+                        Name = "id",
+                        OfType = new GraphQLFieldType
+                        {
+                            Kind = "STRING"
+                        }
+                    },
+                    new GraphQLFieldType
+                    {
+                        Name = "name",
+                        OfType = new GraphQLFieldType
+                        {
+                            Kind = "STRING"
+                        }
+                    }
+                }
+            };
+
             var schema = new GraphQLSchema
             {
-                Query = new GraphQLType
+                Query = new GraphQLObjectType
                 {
                     Name= "Query",
                     Fields = new []
                     {
-                        new GraphQLField
+                        new GraphQLFieldType
                         {
                             Name = "user",
-                            Type = new GraphQLFieldType
+                            OfType = new GraphQLFieldType
                             {
                                 Kind = "STRING"
                             }
@@ -26,6 +52,22 @@ namespace Graphene.Test
                     }
                 }
             };
+
+            var document = new DocumentParser().Parse(@"{__schema{queryType{name},mutationType{name},subscriptionType{name},types{kind,name,description}}}");
+
+            var expected = @"{""data"":{""__schema"":{""types"":[";        
+        }
+
+        [Test]
+        public void QueryType()
+        {
+            var stringType = new GraphQLString();
+
+            var actual = JsonConvert.SerializeObject(stringType);
+
+            var expected = @"{""Name"":""String"",""Description"":""This is a string"",""Kind"":""SCALAR""}";
+
+            Assert.AreEqual(expected, actual);
         }
     }
 }

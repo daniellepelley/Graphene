@@ -10,7 +10,7 @@ namespace Graphene.Core
         {
             _documentParser = documentParser;
         }
-
+        
         public string Handle(string query)
         {
             var document = _documentParser.Parse(query);
