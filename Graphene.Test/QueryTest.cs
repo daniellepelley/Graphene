@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Linq;
 using Graphene.Core.Model;
 using Graphene.Core.Parsers;
 using Graphene.Core.Types;
@@ -33,7 +34,7 @@ namespace Graphene.Test
                             Kind = "STRING"
                         }
                     }
-                }
+                }.ToList()
             };
 
             var schema = new GraphQLSchema
@@ -51,7 +52,7 @@ namespace Graphene.Test
                                 Kind = "STRING"
                             }
                         }
-                    }
+                    }.ToList()
                 }
             };
 

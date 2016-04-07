@@ -1,9 +1,15 @@
+using System.Collections.Generic;
 using System.Linq;
 using Graphene.Core.Model;
 using Graphene.Core.Parsers;
+using Graphene.Core.Types;
+using Graphene.Execution;
+using Graphene.Schema;
 using Graphene.Spike;
 using NUnit.Framework;
 using NUnit.Framework.Compatibility;
+using GraphQLFieldType = Graphene.Core.Types.GraphQLFieldType;
+using GraphQLSchema = Graphene.Core.Types.GraphQLSchema;
 
 namespace Graphene.Test.Spike
 {
@@ -31,35 +37,6 @@ namespace Graphene.Test.Spike
             var expected = @"[{""Id"":""1"",""Name"":""Dan_Smith""},{""Id"":""2"",""Name"":""Lee_Smith""},{""Id"":""3"",""Name"":""Nick_Smith""}]";
 
             Assert.AreEqual(expected, json);
-        }
-
-        [Test]
-        [Ignore("Speed Test")]
-        public void IsFast()
-        { 
-            var query = "{ user(id: 1) {Id, Name, birthday}}";
-
-            var document = new DocumentParser().Parse(query);
-            ExecuteQuery(document);
-
-            var documentStopWatch = new Stopwatch();
-            documentStopWatch.Start();
-            foreach (var i in Enumerable.Range(0, 1000))
-            {
-                new DocumentParser().Parse(query);
-            }
-            documentStopWatch.Stop();
-
-            var executeStopWatch = new Stopwatch();
-            executeStopWatch.Start();
-            foreach (var i in Enumerable.Range(0, 1000))
-            {
-                ExecuteQuery(document);
-            }
-            executeStopWatch.Stop();
-              
-            Assert.Less(executeStopWatch.ElapsedMilliseconds, 1000);
-            Assert.Less(documentStopWatch.ElapsedMilliseconds, 50);
         }
 
         [Test]
@@ -110,6 +87,46 @@ namespace Graphene.Test.Spike
             Assert.AreEqual(expected, json);
         }
 
+        [Test]
+        public void QueryUserNamesWithSchema()
+        {
+            var schema = new GraphQLSchema
+            {
+                Query = new GraphQLObjectType
+                {
+                    Fields = new[]
+                    {
+                        new GraphQLFieldType
+                        {
+                            Name = "Name",
+                            Resolve = context => "Dan_Smith"
+                        },
+                        new GraphQLFieldType
+                        {
+                            Name = "Id",
+                            Resolve = context => "1"
+                        }
+                    }.ToList()
+                }
+            };
+
+            var query = "{user{Name}}";
+
+            var document = new DocumentParser().Parse(query);
+            var json = ExecuteQuery(schema, document);
+            var expected = @"[{""Name"":""Dan_Smith""}]";
+
+            Assert.AreEqual(expected, json);
+        }
+
+
+
+        private string ExecuteQuery(GraphQLSchema schema, Document document)
+        {
+            var executionEngine = new ExecutionEngine();
+            return executionEngine.Execute(schema, document);
+        }
+
         private string ExecuteQuery(Document document)
         {
             var executionEngine = new SpikeExecutionEngine<TestUser>(GetData());
@@ -150,6 +167,36 @@ namespace Graphene.Test.Spike
                 }
             }.AsQueryable();
 
+        }
+
+
+        [Test]
+        [Ignore("Speed Test")]
+        public void IsFast()
+        {
+            var query = "{ user(id: 1) {Id, Name, birthday}}";
+
+            var document = new DocumentParser().Parse(query);
+            ExecuteQuery(document);
+
+            var documentStopWatch = new Stopwatch();
+            documentStopWatch.Start();
+            foreach (var i in Enumerable.Range(0, 1000))
+            {
+                new DocumentParser().Parse(query);
+            }
+            documentStopWatch.Stop();
+
+            var executeStopWatch = new Stopwatch();
+            executeStopWatch.Start();
+            foreach (var i in Enumerable.Range(0, 1000))
+            {
+                ExecuteQuery(document);
+            }
+            executeStopWatch.Stop();
+
+            Assert.Less(executeStopWatch.ElapsedMilliseconds, 1000);
+            Assert.Less(documentStopWatch.ElapsedMilliseconds, 50);
         }
     }
 }

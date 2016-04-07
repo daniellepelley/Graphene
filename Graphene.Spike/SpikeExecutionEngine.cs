@@ -20,7 +20,7 @@ namespace Graphene.Spike
             return ExecuteQuery(_source, document);
         }
 
-        private string ExecuteQuery<T>(IQueryable<T> source, Document document)
+        private string ExecuteQuery(IQueryable<T> source, Document document)
         {
             var operation = document.Operations.First();
             var fields = operation.Selections.Select(x => x.Field.Name);

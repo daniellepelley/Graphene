@@ -17,13 +17,18 @@ namespace Graphene.Execution
         {
             GraphQLSchema schema = (GraphQLSchema)iGraphQLSchema;
 
+            if (schema.Query == null)
+            {
+                throw new Exception("Query empty");    
+            }
+
             var operation = document.Operations.First();
 
-            var output = new Dictionary<string, object>();
+            var output = new List<object>();
 
             var fieldValues = new Dictionary<string, object>();
 
-            output.Add("user", fieldValues);
+            output.Add(fieldValues);
 
             foreach (var selection in operation.Selections)
             {
@@ -34,7 +39,14 @@ namespace Graphene.Execution
                     throw new Exception(string.Format("Field {0} does not exist", selection.Field.Name));
                 }
 
-                fieldValues.Add(schemaField.Name, schemaField.Resolve());
+                var context = new ResolveFieldContext
+                {
+                    Schema = schema,
+                    FieldName = selection.Field.Name,
+                    Operation = operation
+                };
+
+                fieldValues.Add(schemaField.Name, schemaField.Resolve(context));
             }
 
             return JsonConvert.SerializeObject(output);

@@ -23,8 +23,6 @@ namespace Graphene.Test.Execution
         {
             var sut = new ExecutionEngine();
 
-            var type = new GraphQLObjectType();
-
             var schema = new GraphQLSchema
             {
                 Query = new GraphQLObjectType
@@ -34,14 +32,14 @@ namespace Graphene.Test.Execution
                         new GraphQLFieldType
                         {
                             Name = "Id",
-                            Resolve = () => "42"
+                            Resolve = context => "42"
                         },
                         new GraphQLFieldType
                         {
                             Name = "Name",
-                            Resolve = () => "foo"
+                            Resolve = context => "foo"
                         }
-                    }
+                    }.ToList()
                 }
             };
 
@@ -49,15 +47,13 @@ namespace Graphene.Test.Execution
             var document = new DocumentParser().Parse(query); ;
 
             var result = sut.Execute(schema, document);
-            Assert.AreEqual(@"{""user"":{""Id"":""42"",""Name"":""foo""}}", result);
+            Assert.AreEqual(@"[{""Id"":""42"",""Name"":""foo""}]", result);
         }
 
         [Test]
         public void RunsExecute2()
         {
             var sut = new ExecutionEngine();
-
-            var type = new GraphQLObjectType();
 
             var schema = new GraphQLSchema
             {
@@ -68,14 +64,14 @@ namespace Graphene.Test.Execution
                         new GraphQLFieldType
                         {
                             Name = "Id",
-                            Resolve = () => "42"
+                            Resolve = context => "42"
                         },
                         new GraphQLFieldType
                         {
                             Name = "Name",
-                            Resolve = () => "foo"
+                            Resolve = context => "foo"
                         }
-                    }
+                    }.ToList()
                 }
             };
 
@@ -83,7 +79,7 @@ namespace Graphene.Test.Execution
             var document = new DocumentParser().Parse(query); ;
 
             var result = sut.Execute(schema, document);
-            Assert.AreEqual(@"{""user"":{""Name"":""foo""}}", result);
+            Assert.AreEqual(@"[{""Name"":""foo""}]", result);
         }
     }
 }
