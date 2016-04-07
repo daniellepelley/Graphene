@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Graphene.Core.Types
 {
-    public abstract class FieldSelector<T>
+    public abstract class Mapper<T>
     {
         private IDictionary<string, Func<T, string>> _selectors;
 
@@ -13,12 +13,12 @@ namespace Graphene.Core.Types
             _selectors = selectors;
         }
 
-        public IDictionary<string, string> Process(T graphQLType, string[] fields)
+        public IDictionary<string, string> Process(T source, string[] fields)
         {
             return fields.Where(field =>
                 _selectors.ContainsKey(field))
                 .ToDictionary(field => field, field =>
-                    _selectors[field](graphQLType));
+                    _selectors[field](source));
         }
     }
 }

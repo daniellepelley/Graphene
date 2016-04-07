@@ -31,14 +31,15 @@ namespace Graphene.Test.Execution
                 {
                     Fields = new[]
                     {
-                        new ResolveableGraphQLFieldType<string>
+                        new GraphQLFieldType
                         {
                             Name = "Id",
-                            Resolve = s => "Ah Yeah"
+                            Resolve = () => "42"
                         },
                         new GraphQLFieldType
                         {
-                            Name = "Name"
+                            Name = "Name",
+                            Resolve = () => "foo"
                         }
                     }
                 }
@@ -48,7 +49,41 @@ namespace Graphene.Test.Execution
             var document = new DocumentParser().Parse(query); ;
 
             var result = sut.Execute(schema, document);
-            Assert.AreEqual("json", result);
+            Assert.AreEqual(@"{""user"":{""Id"":""42"",""Name"":""foo""}}", result);
+        }
+
+        [Test]
+        public void RunsExecute2()
+        {
+            var sut = new ExecutionEngine();
+
+            var type = new GraphQLObjectType();
+
+            var schema = new GraphQLSchema
+            {
+                Query = new GraphQLObjectType
+                {
+                    Fields = new[]
+                    {
+                        new GraphQLFieldType
+                        {
+                            Name = "Id",
+                            Resolve = () => "42"
+                        },
+                        new GraphQLFieldType
+                        {
+                            Name = "Name",
+                            Resolve = () => "foo"
+                        }
+                    }
+                }
+            };
+
+            var query = "{user {Name}}";
+            var document = new DocumentParser().Parse(query); ;
+
+            var result = sut.Execute(schema, document);
+            Assert.AreEqual(@"{""user"":{""Name"":""foo""}}", result);
         }
     }
 }

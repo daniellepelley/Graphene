@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Graphene.Core.Types
 {
-    public class GraphQlTypeSelector : FieldSelector<IGraphQLType>
+    public class GraphQlTypeSelector : Mapper<IGraphQLType>
     {
         public GraphQlTypeSelector()
         {
