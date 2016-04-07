@@ -9,33 +9,11 @@ namespace Graphene.Core.Parsers
     {
         private readonly GraphQLLexerCursor _cursor = new GraphQLLexerCursor();
 
-        private readonly List<IGraphQLTokenizer> tokenizers = new List<IGraphQLTokenizer>();
+        private readonly List<IGraphQLTokenizer> tokenizers;
 
         public GraphQLLexer(string text)
         {
-            tokenizers.Add(new SingleGraphQLTokenizer
-            {
-                Characters = "({",
-                TokenType = GraphQLTokenType.Open
-            });
-
-            tokenizers.Add(new SingleGraphQLTokenizer
-            {
-                Characters = "})",
-                TokenType = GraphQLTokenType.Close
-            });
-
-            tokenizers.Add(new SingleGraphQLTokenizer
-            {
-                Characters = ":," + (char)10 + (char)13,
-                TokenType = GraphQLTokenType.Seperator
-            });
-
-            tokenizers.Add(new MultipleGraphQLTokenizer
-            {
-                Characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_",
-                TokenType = GraphQLTokenType.Name
-            });
+            tokenizers = new GraphQLTokenizerBuilder().Build();
 
             tokenizers.Add(new IgnoreGraphQLTokenizer
             {

@@ -20,13 +20,13 @@ namespace Graphene.Core.Parsers
                 {
                     _directive.Name = _current.Value;
                 }
-                else if (_current.Type == GraphQLTokenType.Open)
+                else if (_current.Type == GraphQLTokenType.ParenL)
                 {
-                    if (_current.Value == "(")
-                    {
-                        _directive.Arguments = new ArgumentsParser().GetArguments(parserFeed);
-                    }
-                    else if (!string.IsNullOrEmpty(_directive.Name))
+                    _directive.Arguments = new ArgumentsParser().GetArguments(parserFeed);
+                }
+                else if (_current.Type == GraphQLTokenType.BraceL)
+                {
+                    if (!string.IsNullOrEmpty(_directive.Name))
                     {
                         return _directive;
                     }

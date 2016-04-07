@@ -27,22 +27,40 @@ namespace Graphene.Test.Parser
             Assert.AreEqual(expected, ((LexerToken)output[index]).Value);
         }
 
-        [TestCase(0, "person")]
-        [TestCase(1, "{")]
-        [TestCase(2, "name")]
-        [TestCase(3, ",")]
-        [TestCase(4, "address")]
-        [TestCase(5, "{")]
-        [TestCase(6, "street")]
-        [TestCase(7, ",")]
-        [TestCase(8, "town")]
-        [TestCase(9, "}")]
-        [TestCase(10, "}")]
-        public void Test3(int index, string expected)
+        [TestCase(0, "person", GraphQLTokenType.Name)]
+        [TestCase(1, "(", GraphQLTokenType.ParenL)]
+        [TestCase(2, "id", GraphQLTokenType.Name)]
+        [TestCase(3, ":", GraphQLTokenType.Colon)]
+        [TestCase(4, "1", GraphQLTokenType.Name)]
+        [TestCase(5, ")", GraphQLTokenType.ParenR)]
+        [TestCase(6, "{", GraphQLTokenType.BraceL)]
+        [TestCase(7, "name", GraphQLTokenType.Name)]
+        [TestCase(8, "address", GraphQLTokenType.Name)]
+        [TestCase(9, "{", GraphQLTokenType.BraceL)]
+        [TestCase(10, "street", GraphQLTokenType.Name)]
+        [TestCase(11, "town", GraphQLTokenType.Name)]
+        [TestCase(12, "}", GraphQLTokenType.BraceR)]
+        [TestCase(13, "}", GraphQLTokenType.BraceR)]
+        public void Test3(int index, string expectedValue, string expectedType)
         {
-            var parserFeed = new GraphQLLexer("person {name, address { street, town }}");
+            var parserFeed = new GraphQLLexer("person(id :  1)   {name, address { street, town }}");
             var output = parserFeed.All().ToArray();
-            Assert.AreEqual(expected, ((LexerToken)output[index]).Value);
+            Assert.AreEqual(expectedValue, ((LexerToken)output[index]).Value);
+            Assert.AreEqual(expectedType, ((LexerToken)output[index]).Type);
+        }
+
+        [TestCase(0, "should", GraphQLTokenType.Name)]
+        [TestCase(1, "pick", GraphQLTokenType.Name)]
+        [TestCase(2, "up", GraphQLTokenType.Name)]
+        [TestCase(3, "...", GraphQLTokenType.Spread)]
+        [TestCase(4, "{", GraphQLTokenType.BraceL)]
+        [TestCase(5, "spreads", GraphQLTokenType.Name)]
+        public void Test4(int index, string expectedValue, string expectedType)
+        {
+            var parserFeed = new GraphQLLexer("should pick up ...{ spreads");
+            var output = parserFeed.All().ToArray();
+            Assert.AreEqual(expectedValue, ((LexerToken)output[index]).Value);
+            Assert.AreEqual(expectedType, ((LexerToken)output[index]).Type);
         }
     }
 }

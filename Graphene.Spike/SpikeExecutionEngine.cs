@@ -1,5 +1,6 @@
 using System.Linq;
 using Graphene.Core.Model;
+using Graphene.Core.Types;
 using Graphene.Execution;
 using Newtonsoft.Json;
 
@@ -14,7 +15,7 @@ namespace Graphene.Spike
             _source = source;
         }
 
-        public string Execute(Document document)
+        public string Execute(IGraphQLSchema schema, Document document)
         {
             return ExecuteQuery(_source, document);
         }

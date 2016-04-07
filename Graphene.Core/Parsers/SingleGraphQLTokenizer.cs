@@ -8,7 +8,12 @@ namespace Graphene.Core.Parsers
 
         public ILexerToken Handle(GraphQLLexerCursor cursor)
         {
-            var current = cursor.Text[cursor.Index].ToString();
+            if (cursor.Text.Length < cursor.Index + Characters.Length)
+            {
+                return null;
+            }
+
+            var current = cursor.Text.Substring(cursor.Index, Characters.Length);
 
             if (!Characters.Contains(current))
             {

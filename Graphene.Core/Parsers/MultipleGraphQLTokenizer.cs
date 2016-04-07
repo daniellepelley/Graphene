@@ -31,7 +31,7 @@ namespace Graphene.Core.Parsers
             {
                 return null;
             }
-            return new LexerToken(GraphQLTokenType.Name.ToString(), stringBuilder.ToString());
+            return new LexerToken(GraphQLTokenType.Name, stringBuilder.ToString());
         }
     }
 }

@@ -65,6 +65,7 @@
     <Compile Include="Spike\TestUser.cs" />
     <Compile Include="Spike\ExecutionEngineTests.cs" />
     <Compile Include="Spike\TestUserDatabase.cs" />
+    <Compile Include="TypeIntrospectionTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Schema\FieldTypeExample.json">

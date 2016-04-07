@@ -24,11 +24,11 @@ namespace Graphene.Core.Parsers
                         }
                     });
                 }
-                else if (current.Type == GraphQLTokenType.Open && output.Any())
+                else if (current.Type == GraphQLTokenType.BraceL && output.Any())
                 {
                     output.Last().Field.Selections = new SelectionsParser().Parse(parserFeed); 
                 }
-                else if (current.Type == GraphQLTokenType.Close)
+                else if (current.Type == GraphQLTokenType.BraceR)
                 {
                     return output.ToArray();
                 }

@@ -24,7 +24,7 @@ namespace Graphene.Core.Parsers
                     output.Add(argument);
                 }
 
-                if (current.Type == GraphQLTokenType.Close)
+                if (current.Type == GraphQLTokenType.ParenR)
                 {
                     break;
                 }

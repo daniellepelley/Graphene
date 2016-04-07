@@ -113,7 +113,7 @@ namespace Graphene.Test.Spike
         private string ExecuteQuery(Document document)
         {
             var executionEngine = new SpikeExecutionEngine<TestUser>(GetData());
-            return executionEngine.Execute(document);
+            return executionEngine.Execute(null, document);
         }
 
         private IQueryable<TestUser> GetData()
