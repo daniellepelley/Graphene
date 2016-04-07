@@ -13,7 +13,14 @@
         }
     }
 
-    public class GraphQLString : GraphQLScalar
+    public interface IGraphQLType
+    {
+        string Kind { get; }
+        string Name { get; }
+        string Description { get; }
+    }
+
+    public class GraphQLString : GraphQLScalar, IGraphQLType
     {
         public string Name
         {
@@ -23,6 +30,19 @@
         public string Description
         {
             get { return "This is a string"; }
+        }
+    }
+
+    public class GraphQLBoolean : GraphQLScalar, IGraphQLType
+    {
+        public string Name
+        {
+            get { return "Boolean"; }
+        }
+
+        public string Description
+        {
+            get { return "This is a boolean"; }
         }
     }
 

@@ -70,7 +70,9 @@
     <Compile Include="Parsers\SingleGraphQLTokenizer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Parsers\SelectionsParser.cs" />
+    <Compile Include="Types\FieldSelector.cs" />
     <Compile Include="Types\GraphQLScalar.cs" />
+    <Compile Include="Types\GraphQlTypeSelector.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

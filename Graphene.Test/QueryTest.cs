@@ -1,4 +1,6 @@
-﻿using Graphene.Core.Model;
+﻿using System.Collections.Generic;
+using System.Diagnostics;
+using Graphene.Core.Model;
 using Graphene.Core.Parsers;
 using Graphene.Core.Types;
 using Graphene.Execution;
@@ -12,9 +14,11 @@ namespace Graphene.Test
         [Test]
         public void CanBuildAQuery()
         {
-            var userType = new GraphQLObjectType{
+            var userType = new GraphQLObjectType
+            {
                 Name = "User",
-                Fields =new [] {
+                Fields = new[]
+                {
                     new GraphQLFieldType
                     {
                         Name = "id",
@@ -38,8 +42,8 @@ namespace Graphene.Test
             {
                 Query = new GraphQLObjectType
                 {
-                    Name= "Query",
-                    Fields = new []
+                    Name = "Query",
+                    Fields = new[]
                     {
                         new GraphQLFieldType
                         {
@@ -53,21 +57,68 @@ namespace Graphene.Test
                 }
             };
 
-            var document = new DocumentParser().Parse(@"{__schema{queryType{name},mutationType{name},subscriptionType{name},types{kind,name,description}}}");
+            var document =
+                new DocumentParser().Parse(
+                    @"{__schema{queryType{name},mutationType{name},subscriptionType{name},types{kind,name,description}}}");
 
-            var expected = @"{""data"":{""__schema"":{""types"":[";        
+            var expected = @"{""data"":{""__schema"":{""types"":[";
         }
+    }
 
+    public class TypeIntrospectionTests
+    {
         [Test]
-        public void QueryType()
+        public void GraphQLStringAllFields()
         {
             var stringType = new GraphQLString();
 
-            var actual = JsonConvert.SerializeObject(stringType);
+            var actual = JsonConvert.SerializeObject(QueryType(stringType, new []{ "name", "description", "kind" }));
 
-            var expected = @"{""Name"":""String"",""Description"":""This is a string"",""Kind"":""SCALAR""}";
+            var expected = @"{""name"":""String"",""description"":""This is a string"",""kind"":""SCALAR""}";
 
             Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void GraphQLStringNameOnly()
+        {
+            var stringType = new GraphQLString();
+
+            var actual = JsonConvert.SerializeObject(QueryType(stringType, new[] { "name" }));
+
+            var expected = @"{""name"":""String""}";
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void GraphQLStringNameDescriptionAndKind()
+        {
+            var stringType = new GraphQLString();
+
+            var actual = JsonConvert.SerializeObject(QueryType(stringType, new[] { "description", "kind" }));
+
+            var expected = @"{""description"":""This is a string"",""kind"":""SCALAR""}";
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void GraphQLBooleanNameDescriptionAndKind()
+        {
+            var stringType = new GraphQLBoolean();
+
+            var actual = JsonConvert.SerializeObject(QueryType(stringType, new[] {"name", "description", "kind"}));
+
+            var expected = @"{""name"":""Boolean"",""description"":""This is a boolean"",""kind"":""SCALAR""}";
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        private IDictionary<string, string> QueryType(IGraphQLType graphQLType, string[] fields)
+        {
+            var graphQlTypeSelector = new GraphQlTypeSelector();
+            return graphQlTypeSelector.Process(graphQLType, fields);
         }
     }
 }
