@@ -20,10 +20,33 @@ namespace Graphene.Execution
                 throw new Exception("Query empty");    
             }
 
-            var operation = document.Operations.First();
-
             var output = new List<object>();
 
+            foreach (var operation in document.Operations)
+            {
+                var returnValue = ProcessOperation(operation, schema);
+
+                IEnumerable enumerable = null;
+
+                if (returnValue is IEnumerable)
+                {
+                    enumerable = (IEnumerable)returnValue;
+                }
+                else
+                {
+                    enumerable = new[] { returnValue };
+                }
+
+                foreach (var item in enumerable)
+                {
+                    output.Add(item);
+                } 
+            }
+            return JsonConvert.SerializeObject(output);
+        }
+
+        private static object ProcessOperation(Operation operation, GraphQLSchema schema)
+        {
             var argumentsDictionary = new Dictionary<string, object>();
 
             if (operation.Directives.Any())
@@ -40,37 +63,61 @@ namespace Graphene.Execution
             }
 
             var objectContext = new ResolveFieldContext
-                {
-                    Schema = schema,
-                    Operation = operation,
-                    Arguments = argumentsDictionary
-                };
+            {
+                Schema = schema,
+                Operation = operation,
+                Arguments = argumentsDictionary
+            };
 
             if (schema.Query.Name != operation.Directives.First().Name)
             {
                 throw new Exception(string.Format("Object {0} does not exist", operation.Directives.First().Name));
             }
 
-            var array = (IEnumerable)schema.Query.Resolve(objectContext);
+            var query = schema.Query;
 
-            foreach (var item in array)
-            {
-                var fieldValues = new Dictionary<string, object>();
-                output.Add(fieldValues);
-
-                foreach (var selection in operation.Selections)
-                {
-                    var keyPairValue = ProcessField(schema, selection, operation, item);
-                    fieldValues.Add(keyPairValue.Key, keyPairValue.Value);
-                }                
-            }
-
-            return JsonConvert.SerializeObject(output);
+            return ProcessObject(operation.Selections, query, objectContext);
         }
 
-        private static KeyValuePair<string, object> ProcessField(GraphQLSchema schema, Selection selection, Operation operation, object item)
+        private static object ProcessObject(Selection[] selections, GraphQLObjectType query, ResolveFieldContext objectContext)
         {
-            var schemaField = schema.Query.Fields.FirstOrDefault(x => x.Name == selection.Field.Name);
+            List<object> output = new List<object>();
+
+            var returnValue = query.Resolve(objectContext);
+
+            IEnumerable enumerable = null;
+
+            if (returnValue is IEnumerable)
+            {
+                enumerable = (IEnumerable) returnValue;
+                foreach (var item in enumerable)
+                {
+                    var fieldValues = new Dictionary<string, object>();
+                    output.Add(fieldValues);
+
+                    foreach (var selection in selections)
+                    {
+                        var keyPairValue = ProcessField(query, selection, item);
+                        fieldValues.Add(keyPairValue.Key, keyPairValue.Value);
+                    }
+                }
+                return output;
+            }
+            else
+            {
+                var fieldValues = new Dictionary<string, object>();
+                foreach (var selection in selections)
+                {
+                    var keyPairValue = ProcessField(query, selection, returnValue);
+                    fieldValues.Add(keyPairValue.Key, keyPairValue.Value);
+                }
+                return fieldValues;
+            }
+        }
+
+        private static KeyValuePair<string, object> ProcessField(GraphQLObjectType schema, Selection selection, object item)
+        {
+            var schemaField = schema.Fields.FirstOrDefault(x => x.Name == selection.Field.Name);
 
             if (schemaField == null)
             {
@@ -79,11 +126,21 @@ namespace Graphene.Execution
 
             var context = new ResolveFieldContext
             {
-                Schema = schema,
+                //Schema = schema,
                 FieldName = selection.Field.Name,
-                Operation = operation,
+                //Operation = operation,
                 Source = item
             };
+
+            if (schemaField is GraphQLObjectType)
+            {
+                var objectContext = new ResolveFieldContext
+                {
+                    Source = item
+                };
+
+                return new KeyValuePair<string, object>(schemaField.Name, ProcessObject(selection.Field.Selections, schemaField as GraphQLObjectType, objectContext));
+            }
 
             return new KeyValuePair<string, object>(schemaField.Name, schemaField.ResolveToObject(context));
         }

@@ -69,7 +69,7 @@ namespace Graphene.Owin
             }
             else
             {
-                await _appFunc(environment);   
+                await _appFunc(environment);
             }
         }
 
@@ -93,9 +93,11 @@ namespace Graphene.Owin
                             Data.GetData()
                                 .Where(
                                     x =>
-                                        (!context.Arguments.ContainsKey("id") || x.Id.ToString() == context.Arguments["id"].ToString()) &&
-                                        (!context.Arguments.ContainsKey("name") || x.Name.Contains(context.Arguments["name"].ToString()))),
-                    Fields = new GraphQLFieldType[]
+                                        (!context.Arguments.ContainsKey("id") ||
+                                         x.Id.ToString() == context.Arguments["id"].ToString()) &&
+                                        (!context.Arguments.ContainsKey("name") ||
+                                         x.Name.Contains(context.Arguments["name"].ToString()))),
+                    Fields = new IGraphQLFieldType[]
                     {
                         new GraphQLFieldType<int>
                         {
@@ -112,14 +114,36 @@ namespace Graphene.Owin
                             Name = "age",
                             Resolve = context => ((TestUser) context.Source).Age
                         },
-                        new GraphQLFieldType<string>
+                        new GraphQLObjectType
                         {
                             Name = "boss",
                             Resolve = context =>
                             {
                                 var boss = ((TestUser) context.Source).Boss;
-                                return boss != null ? string.Format("{0} ({1} years)", boss.Name, boss.Age) : null;
-                            }
+
+                                if (boss != null)
+                                    return boss;
+
+                                return new TestUser();
+                            },
+                            Fields = new IGraphQLFieldType[]
+                            {
+                                new GraphQLFieldType<int>
+                                {
+                                    Name = "id",
+                                    Resolve = context => ((TestUser) context.Source).Id
+                                },
+                                new GraphQLFieldType<string>
+                                {
+                                    Name = "name",
+                                    Resolve = context => ((TestUser) context.Source).Name
+                                },
+                                new GraphQLFieldType<int>
+                                {
+                                    Name = "age",
+                                    Resolve = context => ((TestUser) context.Source).Age
+                                }
+                            }.ToList()
                         }
                     }.ToList()
                 }

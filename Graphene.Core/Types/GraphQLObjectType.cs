@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Graphene.Core.Types
 {
-    public class GraphQLObjectType<TOutput> : IGraphObjectType
+    public class GraphQLObjectType<TOutput> : IGraphObjectType, IGraphQLFieldType
     {
         public string Kind
         {
@@ -12,6 +12,12 @@ namespace Graphene.Core.Types
 
         public string Name { get; set; }
         public string Description { get; set; }
+        public GraphQLFieldType OfType { get; set; }
+        public virtual object ResolveToObject(ResolveFieldContext context)
+        {
+            return Resolve(context);
+        }
+
         public List<IGraphQLFieldType> Fields { get; set; }
         public virtual Func<ResolveFieldContext, TOutput> Resolve { get; set; }
     }
