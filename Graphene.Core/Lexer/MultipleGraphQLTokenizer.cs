@@ -1,7 +1,6 @@
 using System.Text;
-using Graphene.Core.Lexer;
 
-namespace Graphene.Core.Parsers
+namespace Graphene.Core.Lexer
 {
     public class MultipleGraphQLTokenizer : IGraphQLTokenizer
     {

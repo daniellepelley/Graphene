@@ -1,6 +1,4 @@
-using Graphene.Core.Lexer;
-
-namespace Graphene.Core.Parsers
+namespace Graphene.Core.Lexer
 {
     public interface IGraphQLTokenizer
     {
