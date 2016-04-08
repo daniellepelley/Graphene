@@ -51,11 +51,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Execution\ExecutionEngineTests.cs" />
+    <Compile Include="Execution\NestedExecutionEngineTests.cs" />
+    <Compile Include="Execution\SimpleExecutionEngineTests.cs" />
     <Compile Include="Parser\ArgumentsParserTests.cs" />
     <Compile Include="Parser\DirectiveParserTests.cs" />
     <Compile Include="Parser\DocumentParserTests.cs" />
-    <Compile Include="GraphQLQueryHandlerTests.cs" />
     <Compile Include="Parser\GraphQLLexerTest.cs" />
     <Compile Include="Parser\OperationParserTests.cs" />
     <Compile Include="QueryTest.cs" />

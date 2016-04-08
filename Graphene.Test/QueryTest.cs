@@ -16,23 +16,15 @@ namespace Graphene.Test
             var userType = new GraphQLObjectType
             {
                 Name = "User",
-                Fields = new[]
+                Fields = new IGraphQLFieldType[]
                 {
-                    new GraphQLFieldType
+                    new GraphQLFieldType<string>
                     {
-                        Name = "id",
-                        OfType = new GraphQLFieldType
-                        {
-                            Kind = "STRING"
-                        }
+                        Name = "id"
                     },
-                    new GraphQLFieldType
+                    new GraphQLFieldType<string>
                     {
-                        Name = "name",
-                        OfType = new GraphQLFieldType
-                        {
-                            Kind = "STRING"
-                        }
+                        Name = "name"
                     }
                 }.ToList()
             };
@@ -42,15 +34,11 @@ namespace Graphene.Test
                 Query = new GraphQLObjectType
                 {
                     Name = "Query",
-                    Fields = new[]
+                    Fields = new IGraphQLFieldType[]
                     {
-                        new GraphQLFieldType
+                        new GraphQLFieldType<string>
                         {
                             Name = "user",
-                            OfType = new GraphQLFieldType
-                            {
-                                Kind = "STRING"
-                            }
                         }
                     }.ToList()
                 }

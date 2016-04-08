@@ -64,8 +64,6 @@
     <Compile Include="Parsers\DocumentParser.cs" />
     <Compile Include="Model\Field.cs" />
     <Compile Include="Model\Selection.cs" />
-    <Compile Include="IGraphQLQueryHandler.cs" />
-    <Compile Include="GraphQLQueryHandler.cs" />
     <Compile Include="Model\Operation.cs" />
     <Compile Include="Parsers\OperationParser.cs" />
     <Compile Include="Parsers\GraphQLTokenType.cs" />

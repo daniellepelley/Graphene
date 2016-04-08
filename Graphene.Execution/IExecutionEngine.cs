@@ -1,6 +1,4 @@
-﻿
-
-using Graphene.Core.Model;
+﻿using Graphene.Core.Model;
 using Graphene.Core.Types;
 
 namespace Graphene.Execution
