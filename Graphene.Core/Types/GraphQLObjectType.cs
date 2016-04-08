@@ -13,6 +13,7 @@ namespace Graphene.Core.Types
         public string Name { get; set; }
         public string Description { get; set; }
         public List<GraphQLFieldType> Fields { get; set; }
+        public virtual Func<ResolveFieldContext, object> Resolve { get; set; }
     }
 
     public static class Extensions

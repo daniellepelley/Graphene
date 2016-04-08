@@ -1,18 +1,9 @@
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
-using System.Reflection;
-using System.Reflection.Emit;
-using System.Threading;
-using Graphene.Core.Model;
 using Graphene.Core.Parsers;
 using Graphene.Core.Types;
 using Graphene.Execution;
 using Graphene.Test.Spike;
-using Newtonsoft.Json;
 using NUnit.Framework;
-using NUnit.Framework.Compatibility;
 
 namespace Graphene.Test.Execution
 {
@@ -23,31 +14,41 @@ namespace Graphene.Test.Execution
         {
             var sut = new ExecutionEngine();
 
+            var schema = CreateGraphQLSchema();
+
+            var query = "{user {Id, Name}}";
+            var document = new DocumentParser().Parse(query); ;
+
+            var expected =
+                @"[{""Id"":""1"",""Name"":""Dan_Smith""},{""Id"":""2"",""Name"":""Lee_Smith""},{""Id"":""3"",""Name"":""Nick_Smith""}]";
+            var result = sut.Execute(schema, document);
+            Assert.AreEqual(expected, result);
+        }
+
+        private static GraphQLSchema CreateGraphQLSchema()
+        {
             var schema = new GraphQLSchema
             {
                 Query = new GraphQLObjectType
                 {
+                    Name = "user",
+                    Resolve = context => TestUser.GetData().Where(x => !context.Arguments.ContainsKey("Id") || x.Id == context.Arguments.ContainsKey("Id").ToString()),
                     Fields = new[]
                     {
                         new GraphQLFieldType
                         {
                             Name = "Id",
-                            Resolve = context => "42"
+                            Resolve = context => ((TestUser) context.Source).Id
                         },
                         new GraphQLFieldType
                         {
                             Name = "Name",
-                            Resolve = context => "foo"
+                            Resolve = context => ((TestUser) context.Source).Name
                         }
                     }.ToList()
                 }
             };
-
-            var query = "{user {Id, Name}}";
-            var document = new DocumentParser().Parse(query); ;
-
-            var result = sut.Execute(schema, document);
-            Assert.AreEqual(@"[{""Id"":""42"",""Name"":""foo""}]", result);
+            return schema;
         }
 
         [Test]
@@ -55,31 +56,29 @@ namespace Graphene.Test.Execution
         {
             var sut = new ExecutionEngine();
 
-            var schema = new GraphQLSchema
-            {
-                Query = new GraphQLObjectType
-                {
-                    Fields = new[]
-                    {
-                        new GraphQLFieldType
-                        {
-                            Name = "Id",
-                            Resolve = context => "42"
-                        },
-                        new GraphQLFieldType
-                        {
-                            Name = "Name",
-                            Resolve = context => "foo"
-                        }
-                    }.ToList()
-                }
-            };
+            var schema = CreateGraphQLSchema();
 
             var query = "{user {Name}}";
             var document = new DocumentParser().Parse(query); ;
 
+            var expected = @"[{""Name"":""Dan_Smith""},{""Name"":""Lee_Smith""},{""Name"":""Nick_Smith""}]";
             var result = sut.Execute(schema, document);
-            Assert.AreEqual(@"[{""Name"":""foo""}]", result);
+            Assert.AreEqual(expected, result);
+        }
+
+        [Test]
+        public void RunsExecute3()
+        {
+            var sut = new ExecutionEngine();
+
+            var schema = CreateGraphQLSchema();
+
+            var query = "{user(Id :1) {Name}}";
+            var document = new DocumentParser().Parse(query); ;
+
+            var expected = @"[{""Name"":""Dan_Smith""}]";
+            var result = sut.Execute(schema, document);
+            Assert.AreEqual(expected, result);
         }
     }
 }

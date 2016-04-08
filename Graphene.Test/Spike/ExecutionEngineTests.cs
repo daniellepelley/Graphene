@@ -87,40 +87,6 @@ namespace Graphene.Test.Spike
             Assert.AreEqual(expected, json);
         }
 
-        [Test]
-        public void QueryUserNamesWithSchema()
-        {
-            var schema = new GraphQLSchema
-            {
-                Query = new GraphQLObjectType
-                {
-                    Fields = new[]
-                    {
-                        new GraphQLFieldType
-                        {
-                            Name = "Name",
-                            Resolve = context => "Dan_Smith"
-                        },
-                        new GraphQLFieldType
-                        {
-                            Name = "Id",
-                            Resolve = context => "1"
-                        }
-                    }.ToList()
-                }
-            };
-
-            var query = "{user{Name}}";
-
-            var document = new DocumentParser().Parse(query);
-            var json = ExecuteQuery(schema, document);
-            var expected = @"[{""Name"":""Dan_Smith""}]";
-
-            Assert.AreEqual(expected, json);
-        }
-
-
-
         private string ExecuteQuery(GraphQLSchema schema, Document document)
         {
             var executionEngine = new ExecutionEngine();
@@ -129,45 +95,10 @@ namespace Graphene.Test.Spike
 
         private string ExecuteQuery(Document document)
         {
-            var executionEngine = new SpikeExecutionEngine<TestUser>(GetData());
+            var executionEngine = new SpikeExecutionEngine<TestUser>(TestUser.GetData());
             return executionEngine.Execute(null, document);
         }
 
-        private IQueryable<TestUser> GetData()
-        {
-            return GetTestUsersFromDatabase().Select(x =>
-                new TestUser
-                {
-                    Id = x.Id,
-                    Name = x.Firstname + "_" + x.Lastname
-                });
-        }
-
-        private IQueryable<TestUserDatabase> GetTestUsersFromDatabase()
-        {
-            return new[]
-            {
-                new TestUserDatabase
-                {
-                    Id = "1",
-                    Firstname= "Dan",
-                    Lastname = "Smith"
-                },
-                new TestUserDatabase
-                {
-                    Id = "2",
-                    Firstname= "Lee",
-                    Lastname = "Smith"
-                },
-                new TestUserDatabase
-                {
-                    Id = "3",
-                    Firstname= "Nick",
-                    Lastname = "Smith"
-                }
-            }.AsQueryable();
-
-        }
 
 
         [Test]

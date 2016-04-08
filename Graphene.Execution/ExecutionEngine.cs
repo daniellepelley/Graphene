@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -26,27 +27,55 @@ namespace Graphene.Execution
 
             var output = new List<object>();
 
-            var fieldValues = new Dictionary<string, object>();
 
-            output.Add(fieldValues);
+            var argumentsDictionary = new Dictionary<string, object>();
 
-            foreach (var selection in operation.Selections)
+            if (operation.Directives.Any())
             {
-                var schemaField = schema.Query.Fields.FirstOrDefault(x => x.Name == selection.Field.Name);
+                var directive = operation.Directives.First();
 
-                if (schemaField == null)
+                if (directive.Arguments.Any())
                 {
-                    throw new Exception(string.Format("Field {0} does not exist", selection.Field.Name));
+                    foreach (var argument in directive.Arguments)
+                    {
+                        argumentsDictionary.Add(argument.Name, argument.Value);
+                    }
                 }
+            }
 
-                var context = new ResolveFieldContext
+            var objectContext = new ResolveFieldContext
                 {
                     Schema = schema,
-                    FieldName = selection.Field.Name,
-                    Operation = operation
+                    Operation = operation,
+                    Arguments = argumentsDictionary
                 };
 
-                fieldValues.Add(schemaField.Name, schemaField.Resolve(context));
+            var array = (IEnumerable)schema.Query.Resolve(objectContext);
+
+            foreach (var item in array)
+            {
+                var fieldValues = new Dictionary<string, object>();
+                output.Add(fieldValues);
+
+                foreach (var selection in operation.Selections)
+                {
+                    var schemaField = schema.Query.Fields.FirstOrDefault(x => x.Name == selection.Field.Name);
+
+                    if (schemaField == null)
+                    {
+                        throw new Exception(string.Format("Field {0} does not exist", selection.Field.Name));
+                    }
+
+                    var context = new ResolveFieldContext
+                    {
+                        Schema = schema,
+                        FieldName = selection.Field.Name,
+                        Operation = operation,
+                        Source = item
+                    };
+
+                    fieldValues.Add(schemaField.Name, schemaField.Resolve(context));
+                }                
             }
 
             return JsonConvert.SerializeObject(output);

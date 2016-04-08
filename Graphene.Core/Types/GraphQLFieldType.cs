@@ -10,7 +10,6 @@ namespace Graphene.Core.Types
         public string Name { get; set; }
         public string Description { get; set; }
         public virtual Func<ResolveFieldContext, string> Resolve { get; set; }
-
         public GraphQLFieldType OfType { get; set; }
     }
 
