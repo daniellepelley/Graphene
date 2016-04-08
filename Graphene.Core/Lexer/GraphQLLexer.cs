@@ -1,21 +1,20 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using Graphene.Core.Parsers;
 
-namespace Graphene.Core.Parsers
+namespace Graphene.Core.Lexer
 {
     public class GraphQLLexer
     {
         private readonly GraphQLLexerCursor _cursor = new GraphQLLexerCursor();
 
-        private readonly List<IGraphQLTokenizer> tokenizers;
+        private readonly List<IGraphQLTokenizer> _tokenizers;
 
         public GraphQLLexer(string text)
         {
-            tokenizers = new GraphQLTokenizerBuilder().Build();
+            _tokenizers = new GraphQLTokenizerBuilder().Build();
 
-            tokenizers.Add(new IgnoreGraphQLTokenizer
+            _tokenizers.Add(new IgnoreGraphQLTokenizer
             {
                 Characters = " " + (char)13
             });
@@ -54,7 +53,7 @@ namespace Graphene.Core.Parsers
 
         private ILexerToken GetLexerToken()
         {
-            return tokenizers
+            return _tokenizers
                 .Select(tokenizer => tokenizer.Handle(_cursor))
                 .FirstOrDefault(token => token != null);
         }

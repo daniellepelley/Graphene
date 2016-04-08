@@ -1,4 +1,4 @@
-﻿namespace Graphene.Core.Parsers
+﻿namespace Graphene.Core.Lexer
 {
     public static class GraphQLTokenType
     {
@@ -23,28 +23,4 @@
         
         public static string Seperator = "Seperator";
     }
-
-    public enum TokenKind : byte
-    {
-        Eof = 1,
-        Bang = 2,
-        Dollar = 3,
-        ParenL = 4,
-        ParenR = 5,
-        Spread = 6,
-        Colon = 7,
-        Equals = 8,
-        At = 9,
-        BracketL = 10,
-        BracketR = 11,
-        BraceL = 12,
-        Pipe = 13,
-        BraceR = 14,
-        Name = 15,
-        Int = 16,
-        Float = 17,
-        String = 18
-    }
-
-
 }

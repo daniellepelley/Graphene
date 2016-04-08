@@ -1,4 +1,5 @@
 using System.Linq;
+using Graphene.Core.Lexer;
 using Graphene.Core.Parsers;
 using NUnit.Framework;
 
@@ -23,7 +24,7 @@ namespace Graphene.Test.Parser
             Assert.AreEqual("id", result.First().Name);
             Assert.AreEqual("1", result.First().Value);
         }
-
+        
         [Test]
         public void ParseWithoutBracket()
         {

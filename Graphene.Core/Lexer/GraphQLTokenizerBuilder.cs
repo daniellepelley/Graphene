@@ -1,6 +1,7 @@
 using System.Collections.Generic;
+using Graphene.Core.Parsers;
 
-namespace Graphene.Core.Parsers
+namespace Graphene.Core.Lexer
 {
     public class GraphQLTokenizerBuilder
     {
@@ -31,7 +32,7 @@ namespace Graphene.Core.Parsers
             return _tokenizers;
         }
 
-        public void AddToken(string characters, string tokenType)
+        private void AddToken(string characters, string tokenType)
         {
             _tokenizers.Add(new SingleGraphQLTokenizer
             {
@@ -40,7 +41,7 @@ namespace Graphene.Core.Parsers
             });
         }
 
-        public void AddMultipleToken(string characters, string tokenType)
+        private void AddMultipleToken(string characters, string tokenType)
         {
             _tokenizers.Add(new MultipleGraphQLTokenizer
             {

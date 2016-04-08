@@ -1,4 +1,4 @@
-namespace Graphene.Core.Parsers
+namespace Graphene.Core.Lexer
 {
     public class GraphQLLexerCursor
     {

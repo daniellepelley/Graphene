@@ -1,3 +1,4 @@
+using Graphene.Core.Lexer;
 using Graphene.Core.Parsers;
 using NUnit.Framework;
 
