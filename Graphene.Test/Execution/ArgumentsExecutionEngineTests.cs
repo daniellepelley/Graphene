@@ -31,31 +31,37 @@ namespace Graphene.Test.Execution
         [Test]
         public void WhenArgumentIsNotFound()
         {
-            var sut = new ExecutionEngine();
-
-            var schema = CreateGraphQLSchema();
-
-            var query = "{user(id:1) {id, name}}";
-            var document = new DocumentParser().Parse(query); ;
-
-            var expected =
-                @"{""errors"":[{""message"":""Argument 'id' has invalid value 1. Expected type 'String'""}]}";
-            var result = Execute(sut, schema, document);
-            Assert.AreEqual(expected, result);
+            AssertArgumentTypeHandling(new GraphQLString(), "1", "Argument 'id' has invalid value 1. Expected type 'String'");
         }
 
         [Test]
         public void WhenArgumentIsNotFound2()
         {
+            AssertArgumentTypeHandling(new GraphQLString(), "2", "Argument 'id' has invalid value 2. Expected type 'String'");
+        }
+
+        [Test]
+        public void WhenArgumentIsNotFound3()
+        {
+            AssertArgumentTypeHandling(new GraphQLInt(), @"""42""", "Argument 'id' has invalid value 42. Expected type 'Int'");
+        }
+
+        private void AssertArgumentTypeHandling(IGraphQLType graphQLType, string queryValue, string expectedErrorMessage)
+        {
             var sut = new ExecutionEngine();
 
-            var schema = CreateGraphQLSchema();
+            var schema = CreateGraphQLSchema(new IGraphQLFieldType[] {
+                    new GraphQLFieldType<string>
+                    {
+                        Name = "id",
+                        OfType = graphQLType
+                    }});
 
-            var query = "{user(id:2) {id, name}}";
+            var query = "{user(id:" + queryValue + ") {id, name}}";
             var document = new DocumentParser().Parse(query); ;
 
             var expected =
-                @"{""errors"":[{""message"":""Argument 'id' has invalid value 2. Expected type 'String'""}]}";
+                @"{""errors"":[{""message"":""" + expectedErrorMessage + @"""}]}";
             var result = Execute(sut, schema, document);
             Assert.AreEqual(expected, result);
         }
@@ -65,18 +71,14 @@ namespace Graphene.Test.Execution
             return JsonConvert.SerializeObject(sut.Execute(schema, document));
         }
 
-        private static GraphQLSchema CreateGraphQLSchema()
+        private static GraphQLSchema CreateGraphQLSchema(IGraphQLFieldType[] arguments = null)
         {
             var schema = new GraphQLSchema
             {
                 Query = new GraphQLObjectType
                 {
                     Name = "user",
-                    Arguments = new [] { new GraphQLFieldType<string>
-                        {
-                            Name = "id",
-                            OfType = new GraphQLString()
-                    }},
+                    Arguments = arguments,
                     Resolve = context => Data.GetData().Where(x => !context.Arguments.ContainsKey("id") || x.Id == Convert.ToInt32(context.Arguments["id"])),
                     Fields = new IGraphQLFieldType[]
                     {

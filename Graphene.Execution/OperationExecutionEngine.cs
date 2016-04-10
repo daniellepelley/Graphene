@@ -61,6 +61,13 @@ namespace Graphene.Execution
                                 throw new Exception(string.Format(@"Argument 'id' has invalid value {0}. Expected type 'String'", value));
                             }
                         }
+                        else if (argument.OfType is GraphQLInt)
+                        {
+                            if (!(value is int))
+                            {
+                                throw new Exception(string.Format(@"Argument 'id' has invalid value {0}. Expected type 'Int'", value));                                                                
+                            }                          
+                        }
                     }
                 }
             }
