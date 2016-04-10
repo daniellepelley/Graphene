@@ -51,6 +51,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Execution\IntrospectionExecutionEngineTests.cs" />
     <Compile Include="Execution\NestedExecutionEngineTests.cs" />
     <Compile Include="Execution\SimpleExecutionEngineTests.cs" />
     <Compile Include="Parser\ArgumentsParserTests.cs" />

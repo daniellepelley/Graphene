@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Graphene.Core.Types
 {
-    public class GraphQLObjectType<TOutput> : IGraphObjectType, IGraphQLFieldType
+    public class GraphQLObjectType : IGraphObjectType, IGraphQLFieldType
     {
         public string Kind
         {
@@ -19,13 +19,9 @@ namespace Graphene.Core.Types
         }
 
         public List<IGraphQLFieldType> Fields { get; set; }
-        public virtual Func<ResolveFieldContext, TOutput> Resolve { get; set; }
+        public virtual Func<ResolveFieldContext, object> Resolve { get; set; }
     }
 
-    public class GraphQLObjectType : GraphQLObjectType<object>
-    {
-
-    }
 
     public static class Extensions
     {

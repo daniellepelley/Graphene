@@ -5,6 +5,6 @@ namespace Graphene.Execution
 {
     public interface IExecutionEngine
     {
-        string Execute(IGraphQLSchema schema, Document document);
+        object Execute(IGraphQLSchema schema, Document document);
     }
 }

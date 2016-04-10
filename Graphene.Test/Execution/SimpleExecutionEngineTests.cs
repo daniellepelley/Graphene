@@ -1,9 +1,12 @@
 using System;
 using System.Linq;
+using Graphene.Core.Model;
 using Graphene.Core.Parsers;
 using Graphene.Core.Types;
 using Graphene.Execution;
 using Graphene.Test.Spike;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using NUnit.Framework;
 
 namespace Graphene.Test.Execution
@@ -21,8 +24,8 @@ namespace Graphene.Test.Execution
             var document = new DocumentParser().Parse(query); ;
             
             var expected =
-                @"[{""Id"":1,""Name"":""Dan_Smith""},{""Id"":2,""Name"":""Lee_Smith""},{""Id"":3,""Name"":""Nick_Smith""}]";
-            var result = sut.Execute(schema, document);
+                @"{""data"":[{""Id"":1,""Name"":""Dan_Smith""},{""Id"":2,""Name"":""Lee_Smith""},{""Id"":3,""Name"":""Nick_Smith""}]}";
+            var result = Execute(sut, schema, document);
             Assert.AreEqual(expected, result);
         }
 
@@ -36,8 +39,8 @@ namespace Graphene.Test.Execution
             var query = "{user {Name}}";
             var document = new DocumentParser().Parse(query); ;
 
-            var expected = @"[{""Name"":""Dan_Smith""},{""Name"":""Lee_Smith""},{""Name"":""Nick_Smith""}]";
-            var result = sut.Execute(schema, document);
+            var expected = @"{""data"":[{""Name"":""Dan_Smith""},{""Name"":""Lee_Smith""},{""Name"":""Nick_Smith""}]}";
+            var result = Execute(sut, schema, document);
             Assert.AreEqual(expected, result);
         }
 
@@ -51,11 +54,11 @@ namespace Graphene.Test.Execution
             var query = "{user(Id :1) {Name}}";
             var document = new DocumentParser().Parse(query); ;
 
-            var expected = @"[{""Name"":""Dan_Smith""}]";
-            var result = sut.Execute(schema, document);
+            var expected = @"{""data"":[{""Name"":""Dan_Smith""}]}";
+            var result = Execute(sut, schema, document);
             Assert.AreEqual(expected, result);
         }
-
+        
         [Test]
         public void RunsExecuteWithUnknownType()
         {
@@ -65,8 +68,6 @@ namespace Graphene.Test.Execution
 
             var query = "{foo(Id :1) {Name}}";
             var document = new DocumentParser().Parse(query); ;
-
-            var expected = @"[{""Name"":""Dan_Smith""}]";
 
             Assert.Throws<Exception>(() => sut.Execute(schema, document));
         }
@@ -81,9 +82,12 @@ namespace Graphene.Test.Execution
             var query = "{foo(Id :1) {foo}}";
             var document = new DocumentParser().Parse(query); ;
 
-            var expected = @"[{""Name"":""Dan_Smith""}]";
-
             Assert.Throws<Exception>(() => sut.Execute(schema, document));
+        }
+
+        private static object Execute(ExecutionEngine sut, GraphQLSchema schema, Document document)
+        {
+            return JsonConvert.SerializeObject(sut.Execute(schema, document));
         }
 
         private static GraphQLSchema CreateGraphQLSchema()

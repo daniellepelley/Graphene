@@ -15,7 +15,7 @@ namespace Graphene.Spike
             _source = source;
         }
 
-        public string Execute(IGraphQLSchema schema, Document document)
+        public object Execute(IGraphQLSchema schema, Document document)
         {
             return ExecuteQuery(_source, document);
         }

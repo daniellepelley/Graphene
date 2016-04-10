@@ -15,7 +15,7 @@ namespace Graphene.Test
             var sut = new GraphQLString();
 
             var actual = Map(sut, new []{ "name", "description", "kind" });
-            var expected = @"{""name"":""String"",""description"":""This is a string"",""kind"":""SCALAR""}";
+            var expected = @"{""name"":""String"",""description"":""The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text."",""kind"":""SCALAR""}";
 
             Assert.AreEqual(expected, actual);
         }
@@ -26,7 +26,7 @@ namespace Graphene.Test
             var sut = new GraphQLString();
 
             var actual = Map(sut, new[] { "description", "kind", "name" });
-            var expected = @"{""description"":""This is a string"",""kind"":""SCALAR"",""name"":""String""}";
+            var expected = @"{""description"":""The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text."",""kind"":""SCALAR"",""name"":""String""}";
 
             Assert.AreEqual(expected, actual);
         }
@@ -48,7 +48,7 @@ namespace Graphene.Test
             var stringType = new GraphQLString();
 
             var actual = Map(stringType, new[] { "description", "kind" });
-            var expected = @"{""description"":""This is a string"",""kind"":""SCALAR""}";
+            var expected = @"{""description"":""The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text."",""kind"":""SCALAR""}";
 
             Assert.AreEqual(expected, actual);
         }

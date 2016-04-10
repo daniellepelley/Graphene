@@ -1,9 +1,11 @@
 using System;
 using System.Linq;
+using Graphene.Core.Model;
 using Graphene.Core.Parsers;
 using Graphene.Core.Types;
 using Graphene.Execution;
 using Graphene.Test.Spike;
+using Newtonsoft.Json;
 using NUnit.Framework;
 
 namespace Graphene.Test.Execution
@@ -21,8 +23,8 @@ namespace Graphene.Test.Execution
             var document = new DocumentParser().Parse(query);
 
             var expected =
-                @"[{""Id"":1,""Name"":""Dan_Smith"",""Boss"":{""Id"":4,""Name"":""Boss_Smith""}}]";
-            var result = sut.Execute(schema, document);
+                @"{""data"":[{""Id"":1,""Name"":""Dan_Smith"",""Boss"":{""Id"":4,""Name"":""Boss_Smith""}}]}";
+            var result = Execute(sut, schema, document);
             Assert.AreEqual(expected, result);
         }
 
@@ -37,9 +39,14 @@ namespace Graphene.Test.Execution
             var document = new DocumentParser().Parse(query);
 
             var expected =
-                @"[{""Name"":""Dan_Smith"",""Boss"":{""Name"":""Boss_Smith""}}]";
-            var result = sut.Execute(schema, document);
+                @"{""data"":[{""Name"":""Dan_Smith"",""Boss"":{""Name"":""Boss_Smith""}}]}";
+            var result = Execute(sut, schema, document);
             Assert.AreEqual(expected, result);
+        }
+
+        private static object Execute(ExecutionEngine sut, GraphQLSchema schema, Document document)
+        {
+            return JsonConvert.SerializeObject(sut.Execute(schema, document));
         }
 
         private static GraphQLSchema CreateGraphQLSchema()

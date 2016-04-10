@@ -70,7 +70,6 @@
     <Compile Include="Lexer\SingleGraphQLTokenizer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Parsers\SelectionsParser.cs" />
-    <Compile Include="Types\Mapper.cs" />
     <Compile Include="Types\GraphQLBoolean.cs" />
     <Compile Include="Types\GraphQLFieldType.cs" />
     <Compile Include="Types\GraphQLFloat.cs" />
@@ -92,6 +91,7 @@
     <Compile Include="Types\Introspection\__Schema.cs" />
     <Compile Include="Types\Introspection\__Type.cs" />
     <Compile Include="Types\Introspection\__TypeKind.cs" />
+    <Compile Include="Types\Mapper.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
