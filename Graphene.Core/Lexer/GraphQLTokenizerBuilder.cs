@@ -24,7 +24,7 @@ namespace Graphene.Core.Lexer
             AddToken("{", GraphQLTokenType.BraceL);
             AddToken("|", GraphQLTokenType.Pipe);
             AddToken("}", GraphQLTokenType.BraceR);
-            AddMultipleToken("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_", GraphQLTokenType.Name);
+            AddMultipleToken(@"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_""", GraphQLTokenType.Name);
             AddToken("Int", GraphQLTokenType.Int);
             AddToken("Float", GraphQLTokenType.Float);
             AddToken("String", GraphQLTokenType.String);

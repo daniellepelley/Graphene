@@ -1,3 +1,4 @@
+using Graphene.Core;
 using Graphene.Core.Model;
 using Graphene.Core.Types;
 

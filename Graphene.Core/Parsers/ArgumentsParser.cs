@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Graphene.Core.Lexer;
 using Graphene.Core.Model;
@@ -20,7 +21,7 @@ namespace Graphene.Core.Parsers
 
                     argument.Name = current.Value;
                     graphQLLexer.Next();
-                    argument.Value = graphQLLexer.Next().Value;
+                    argument.Value = GetValue(graphQLLexer.Next().Value);
 
                     output.Add(argument);
                 }
@@ -31,6 +32,19 @@ namespace Graphene.Core.Parsers
                 }
             }
             return output.ToArray();
+        }
+
+        private object GetValue(string value)
+        {
+            if (value.StartsWith(@"""") && value.EndsWith(@"""") && value.Length >= 2)
+            {
+                return value.Substring(1, value.Length - 2);
+            }
+            else if (value.Contains("."))
+            {
+                return Convert.ToDecimal(value);
+            }
+            return Convert.ToInt32(value);
         }
     }
 }

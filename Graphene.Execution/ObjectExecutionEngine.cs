@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Graphene.Core;
 using Graphene.Core.Model;
 using Graphene.Core.Types;
 
@@ -15,9 +16,13 @@ namespace Graphene.Execution
             var enumerable = returnValue as IEnumerable;
             if (enumerable != null)
             {
-                return enumerable
-                    .Cast<object>()
-                    .Select(item => GetFieldValues(selections, graphQLObject, item));
+                var output = new List<Dictionary<string, object>>();
+                foreach (var item in enumerable)
+                {
+                    output.Add(GetFieldValues(selections, graphQLObject, item));
+                }
+
+                return output;
             }
 
             return GetFieldValues(selections, graphQLObject, returnValue);

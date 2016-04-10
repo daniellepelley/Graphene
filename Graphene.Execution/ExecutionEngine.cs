@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Graphene.Core.Model;
 using Graphene.Core.Types;
-using GraphQLSchema = Graphene.Core.Types.GraphQLSchema;
 
 namespace Graphene.Execution
 {
@@ -32,10 +31,28 @@ namespace Graphene.Execution
 
             var operation = document.Operations.First();
 
-            return new Dictionary<string, object>
+            try
             {
-                {"data", _operationExecutionEngine.ProcessOperation(operation, schema)}
-            };
+                return new Dictionary<string, object>
+                {
+                    {"data", _operationExecutionEngine.ProcessOperation(operation, schema)}
+                };
+            }
+            catch (Exception ex)
+            {
+                return new Dictionary<string, object>
+                {
+                    {
+                        "errors", 
+                        new [] {
+                            new Dictionary<string, object>
+                            {
+                                { "message", ex.Message }
+                            }
+                        }
+                    }
+                };
+            }
         }
     }
 }

@@ -6,87 +6,56 @@ using Graphene.Core.Types;
 using Graphene.Execution;
 using Graphene.Test.Spike;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
 using NUnit.Framework;
 
 namespace Graphene.Test.Execution
 {
-    public class SimpleExecutionEngineTests
+    public class ArgumentsExecutionEngineTests
     {
         [Test]
-        public void RunsExecute()
+        public void WhenArgumentIsFound()
         {
             var sut = new ExecutionEngine();
 
             var schema = CreateGraphQLSchema();
 
-            var query = "{user {Id, Name}}";
-            var document = new DocumentParser().Parse(query); ;
-            
-            var expected =
-                @"{""data"":[{""Id"":1,""Name"":""Dan_Smith""},{""Id"":2,""Name"":""Lee_Smith""},{""Id"":3,""Name"":""Nick_Smith""}]}";
-            var result = Execute(sut, schema, document);
-            Assert.AreEqual(expected, result);
-        }
-
-        [Test]
-        public void RunsExecute2()
-        {
-            var sut = new ExecutionEngine();
-
-            var schema = CreateGraphQLSchema();
-
-            var query = "{user {Name}}";
-            var document = new DocumentParser().Parse(query); ;
-
-            var expected = @"{""data"":[{""Name"":""Dan_Smith""},{""Name"":""Lee_Smith""},{""Name"":""Nick_Smith""}]}";
-            var result = Execute(sut, schema, document);
-            Assert.AreEqual(expected, result);
-        }
-
-        [Test]
-        public void RunsExecute3()
-        {
-            var sut = new ExecutionEngine();
-
-            var schema = CreateGraphQLSchema();
-
-            var query = "{user(Id :1) {Name}}";
-            var document = new DocumentParser().Parse(query); ;
-
-            var expected = @"{""data"":[{""Name"":""Dan_Smith""}]}";
-            var result = Execute(sut, schema, document);
-            Assert.AreEqual(expected, result);
-        }
-        
-        [Test]
-        public void RunsExecuteWithUnknownType()
-        {
-            var sut = new ExecutionEngine();
-
-            var schema = CreateGraphQLSchema();
-
-            var query = "{foo(Id :1) {Name}}";
+            var query = @"{user(id:""1"") {id, name}}";
             var document = new DocumentParser().Parse(query); ;
 
             var expected =
-    @"{""errors"":[{""message"":""Object foo does not exist""}]}";
+                @"{""data"":[{""id"":1,""name"":""Dan_Smith""}]}";
             var result = Execute(sut, schema, document);
             Assert.AreEqual(expected, result);
         }
 
         [Test]
-        public void RunsExecuteWithUnknownField()
+        public void WhenArgumentIsNotFound()
         {
             var sut = new ExecutionEngine();
 
             var schema = CreateGraphQLSchema();
 
-            var query = "{user(Id :1) {foo}}";
+            var query = "{user(id:1) {id, name}}";
             var document = new DocumentParser().Parse(query); ;
 
             var expected =
-    @"{""errors"":[{""message"":""Field foo does not exist""}]}";
+                @"{""errors"":[{""message"":""Argument 'id' has invalid value 1. Expected type 'String'""}]}";
+            var result = Execute(sut, schema, document);
+            Assert.AreEqual(expected, result);
+        }
+
+        [Test]
+        public void WhenArgumentIsNotFound2()
+        {
+            var sut = new ExecutionEngine();
+
+            var schema = CreateGraphQLSchema();
+
+            var query = "{user(id:2) {id, name}}";
+            var document = new DocumentParser().Parse(query); ;
+
+            var expected =
+                @"{""errors"":[{""message"":""Argument 'id' has invalid value 2. Expected type 'String'""}]}";
             var result = Execute(sut, schema, document);
             Assert.AreEqual(expected, result);
         }
@@ -103,17 +72,22 @@ namespace Graphene.Test.Execution
                 Query = new GraphQLObjectType
                 {
                     Name = "user",
-                    Resolve = context => Data.GetData().Where(x => !context.Arguments.ContainsKey("Id") || x.Id == Convert.ToInt32(context.Arguments["Id"])),
+                    Arguments = new [] { new GraphQLFieldType<string>
+                        {
+                            Name = "id",
+                            OfType = new GraphQLString()
+                    }},
+                    Resolve = context => Data.GetData().Where(x => !context.Arguments.ContainsKey("id") || x.Id == Convert.ToInt32(context.Arguments["id"])),
                     Fields = new IGraphQLFieldType[]
                     {
                         new GraphQLFieldType<int>
                         {
-                            Name = "Id",
+                            Name = "id",
                             Resolve = context => ((TestUser) context.Source).Id
                         },
                         new GraphQLFieldType<string>
                         {
-                            Name = "Name",
+                            Name = "name",
                             Resolve = context => ((TestUser) context.Source).Name
                         }
                     }.ToList()

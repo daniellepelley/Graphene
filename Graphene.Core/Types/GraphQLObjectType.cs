@@ -12,7 +12,7 @@ namespace Graphene.Core.Types
 
         public string Name { get; set; }
         public string Description { get; set; }
-        public GraphQLFieldType OfType { get; set; }
+        public IGraphQLType OfType { get; set; }
         public virtual object ResolveToObject(ResolveFieldContext context)
         {
             return Resolve(context);
@@ -20,6 +20,7 @@ namespace Graphene.Core.Types
 
         public List<IGraphQLFieldType> Fields { get; set; }
         public virtual Func<ResolveFieldContext, object> Resolve { get; set; }
+        public IGraphQLFieldType[] Arguments { get; set; }
     }
 
 
