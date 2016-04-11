@@ -4,11 +4,6 @@ namespace Graphene.Core.Types
     {
         public GraphQLObjectType Query { get; set; }
 
-        public string GetQueryType()
-        {
-            throw new System.NotImplementedException();
-        }
-
         public string GetMutationType()
         {
             throw new System.NotImplementedException();
@@ -25,10 +20,10 @@ namespace Graphene.Core.Types
         }
     }
 
-    public class ObjectGraphType
-    {
+    //public class ObjectGraphType
+    //{
 
-    }
+    //}
 
     public interface IGraphQLSchema
     {

@@ -5,13 +5,13 @@ namespace Graphene.Core.Parsers
 {
     public class DirectiveParser
     {
-        public Directive Parse(GraphQLLexer parserFeed)
+        public Directive Parse(IGraphQLLexerFeed feed)
         {
             var directive = new Directive();
 
-            while (!parserFeed.IsComplete())
+            while (!feed.IsComplete())
             {
-                var current = parserFeed.Next();
+                var current = feed.Next();
 
                 if (current.Type == GraphQLTokenType.Name)
                 {
@@ -19,7 +19,7 @@ namespace Graphene.Core.Parsers
                 }
                 else if (current.Type == GraphQLTokenType.ParenL)
                 {
-                    directive.Arguments = new ArgumentsParser().GetArguments(parserFeed);
+                    directive.Arguments = new ArgumentsParser().GetArguments(feed);
                 }
                 else if (current.Type == GraphQLTokenType.BraceL)
                 {

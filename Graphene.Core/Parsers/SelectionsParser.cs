@@ -7,13 +7,13 @@ namespace Graphene.Core.Parsers
 {
     public class SelectionsParser
     {
-        public Selection[] Parse(GraphQLLexer parserFeed)
+        public Selection[] Parse(IGraphQLLexerFeed feed)
         {
             var output = new List<Selection>();
 
-            while (!parserFeed.IsComplete())
+            while (!feed.IsComplete())
             {
-                var current = parserFeed.Next();
+                var current = feed.Next();
 
                 if (current.Type == GraphQLTokenType.Name)
                 {
@@ -25,13 +25,27 @@ namespace Graphene.Core.Parsers
                         }
                     });
                 }
+                else if (current.Type == GraphQLTokenType.Spread)
+                {
+                    output.Add(new Selection
+                    {
+                        Field = new Field
+                        {
+                            Name = current.Value + feed.Next().Value
+                        }
+                    });
+                }
                 else if (current.Type == GraphQLTokenType.BraceL && output.Any())
                 {
-                    output.Last().Field.Selections = new SelectionsParser().Parse(parserFeed); 
+                    output.Last().Field.Selections = new SelectionsParser().Parse(feed); 
                 }
                 else if (current.Type == GraphQLTokenType.BraceR)
                 {
                     return output.ToArray();
+                }
+                else if (current.Type == GraphQLTokenType.ParenL)
+                {
+                    var arguments = new ArgumentsParser().GetArguments(feed);
                 }
             }
             return output.ToArray();

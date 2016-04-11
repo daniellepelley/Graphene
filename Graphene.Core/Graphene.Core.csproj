@@ -45,6 +45,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GraphQLException.cs" />
+    <Compile Include="Lexer\GraphQLLexerFeed.cs" />
+    <Compile Include="Lexer\IGraphQLLexerFeed.cs" />
     <Compile Include="Model\Argument.cs" />
     <Compile Include="Model\Fragment.cs" />
     <Compile Include="Model\IDocument.cs" />

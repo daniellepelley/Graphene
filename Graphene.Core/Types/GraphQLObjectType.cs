@@ -13,13 +13,13 @@ namespace Graphene.Core.Types
         public string Name { get; set; }
         public string Description { get; set; }
         public IGraphQLType OfType { get; set; }
-        public virtual object ResolveToObject(ResolveFieldContext context)
+        public virtual object ResolveToObject(IResolveObjectContext context)
         {
             return Resolve(context);
         }
 
         public List<IGraphQLFieldType> Fields { get; set; }
-        public virtual Func<ResolveFieldContext, object> Resolve { get; set; }
+        public virtual Func<IResolveObjectContext, object> Resolve { get; set; }
         public IGraphQLFieldType[] Arguments { get; set; }
     }
 

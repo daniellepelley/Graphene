@@ -18,6 +18,29 @@ namespace Graphene.Execution
 
         public object ProcessOperation(Operation operation, GraphQLSchema schema)
         {
+            var argumentsDictionary = GetArguments(operation);
+
+            if (schema.Query.Name != operation.Directives.First().Name)
+            {
+                throw new GraphQLException(string.Format("Object {0} does not exist", operation.Directives.First().Name));
+            }
+
+            ValidateArguments(schema, argumentsDictionary);
+
+            var objectContext = new ResolveObjectContext
+            {
+                Schema = schema,
+                Operation = operation,
+                Arguments = argumentsDictionary,
+                Selections = operation.Selections,
+                Current = schema.Query
+            };
+
+            return _objectExecutionEngine.Execute(objectContext);
+        }
+
+        private static Dictionary<string, object> GetArguments(Operation operation)
+        {
             var argumentsDictionary = new Dictionary<string, object>();
 
             if (operation.Directives.Any())
@@ -32,19 +55,11 @@ namespace Graphene.Execution
                     }
                 }
             }
+            return argumentsDictionary;
+        }
 
-            var objectContext = new ResolveFieldContext
-            {
-                Schema = schema,
-                Operation = operation,
-                Arguments = argumentsDictionary
-            };
-
-            if (schema.Query.Name != operation.Directives.First().Name)
-            {
-                throw new GraphQLException(string.Format("Object {0} does not exist", operation.Directives.First().Name));
-            }
-
+        private static void ValidateArguments(GraphQLSchema schema, Dictionary<string, object> argumentsDictionary)
+        {
             if (schema.Query.Arguments != null)
             {
                 foreach (var argument in schema.Query.Arguments)
@@ -58,23 +73,21 @@ namespace Graphene.Execution
                             var str = value as string;
                             if (string.IsNullOrEmpty(str))
                             {
-                                throw new GraphQLException(string.Format(@"Argument 'id' has invalid value {0}. Expected type 'String'", value));
+                                throw new GraphQLException(
+                                    string.Format(@"Argument 'id' has invalid value {0}. Expected type 'String'", value));
                             }
                         }
                         else if (argument.OfType is GraphQLInt)
                         {
                             if (!(value is int))
                             {
-                                throw new GraphQLException(string.Format(@"Argument 'id' has invalid value {0}. Expected type 'Int'", value));                                                                
-                            }                          
+                                throw new GraphQLException(
+                                    string.Format(@"Argument 'id' has invalid value {0}. Expected type 'Int'", value));
+                            }
                         }
                     }
                 }
             }
-
-            var query = schema.Query;
-
-            return _objectExecutionEngine.Execute(operation.Selections, query, objectContext);
         }
     }
 }

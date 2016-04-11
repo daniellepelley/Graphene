@@ -9,9 +9,9 @@ namespace Graphene.Execution
 {
     public class ObjectExecutionEngine : IObjectExecutionEngine
     {
-        public object Execute(Selection[] selections, GraphQLObjectType graphQLObject, ResolveFieldContext objectContext)
+        public object Execute(ResolveObjectContext objectContext)
         {
-            var returnValue = graphQLObject.Resolve(objectContext);
+            var returnValue = objectContext.Current.Resolve(objectContext);
 
             var enumerable = returnValue as IEnumerable;
             if (enumerable != null)
@@ -19,22 +19,29 @@ namespace Graphene.Execution
                 var output = new List<Dictionary<string, object>>();
                 foreach (var item in enumerable)
                 {
-                    output.Add(GetFieldValues(selections, graphQLObject, item));
+                    var newObjectContext  = objectContext.Clone();
+                    newObjectContext.Source = item;
+                    output.Add(GetFieldValues(newObjectContext));
                 }
 
                 return output;
             }
 
-            return GetFieldValues(selections, graphQLObject, returnValue);
+            var singleObjectContext = objectContext.Clone();
+            singleObjectContext.Source = returnValue;
+            return GetFieldValues(singleObjectContext);
         }
 
-        private Dictionary<string, object> GetFieldValues(Selection[] selections, GraphQLObjectType graphQLObject, object item)
+        private Dictionary<string, object> GetFieldValues(ResolveObjectContext objectContext)
         {
             var fieldValues = new Dictionary<string, object>();
 
-            foreach (var selection in selections)
+            foreach (var selection in objectContext.Selections)
             {
-                var keyPairValue = new FieldExecutionEngine(this).ProcessField(graphQLObject, selection, item);
+                var fieldContext = objectContext.Clone();
+                fieldContext.Selection = selection;
+
+                var keyPairValue = new FieldExecutionEngine(this).ProcessField(fieldContext);
                 fieldValues.Add(keyPairValue.Key, keyPairValue.Value);
             }
             return fieldValues;

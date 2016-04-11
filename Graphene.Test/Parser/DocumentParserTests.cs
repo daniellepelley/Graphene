@@ -1,4 +1,5 @@
 using System.Linq;
+using Graphene.Core;
 using Graphene.Core.Parsers;
 using NUnit.Framework;
 
@@ -129,6 +130,25 @@ namespace Graphene.Test.Parser
             Assert.AreEqual("IntrospectionQuery", operation.Directives.First().Name);
             Assert.AreEqual("__schema", operation.Selections.First().Field.Name);
             Assert.AreEqual(3, result.Fragments.Length);
+            Assert.AreEqual(6, result.Fragments.First().Selections.ElementAt(3).Field.Selections.Length);
+            Assert.AreEqual("...InputValue", result.Fragments.First().Selections.ElementAt(3).Field.Selections.ElementAt(2).Field.Selections.ElementAt(0).Field.Name);
+        }
+    }
+
+    public class InValidParserTests
+    {
+        [Test]
+        public void MissingParen()
+        {
+            var sut = new DocumentParser();
+            Assert.Throws<GraphQLException>(() => sut.Parse(@"{user(id:1{name}}"));
+        }
+
+        [Test]
+        public void MissingBrace()
+        {
+            var sut = new DocumentParser();
+            Assert.Throws<GraphQLException>(() => sut.Parse(@"{user(id:1){name}"));
         }
     }
 }

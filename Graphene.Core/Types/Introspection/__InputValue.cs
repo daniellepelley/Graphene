@@ -29,19 +29,19 @@ namespace Graphene.Core.Types.Introspection
                     {
                         Name = "name",
                         OfType = typeof (GraphQLNonNull<GraphQLString>),
-                        Resolve = schema => schema.GetQueryType()
+                        Resolve = schema => string.Empty
                     },
                     new GraphQLSchemaFieldType
                     {
                         Name = "description",
                         OfType = typeof (GraphQLString),
-                        Resolve = schema => schema.GetQueryType()
+                        Resolve = schema => string.Empty
                     },
                     new GraphQLSchemaFieldType
                     {
                         Name = "type",
                         OfType = typeof (GraphQLNonNull<GraphQLString>),
-                        Resolve = schema => schema.GetQueryType()
+                        Resolve = schema => string.Empty
                     },
                     new GraphQLSchemaFieldType
                     {
@@ -49,7 +49,7 @@ namespace Graphene.Core.Types.Introspection
                         OfType = typeof (GraphQLString),
                         Description =
                             "A GraphQL-formatted string representing the default value for this input value.",
-                        Resolve = schema => schema.GetQueryType()
+                        Resolve = schema => string.Empty
                     }
                 };
             }

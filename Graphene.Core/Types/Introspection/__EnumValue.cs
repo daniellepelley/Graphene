@@ -29,25 +29,25 @@ namespace Graphene.Core.Types.Introspection
                     {
                         Name = "name",
                         OfType = typeof (GraphQLNonNull<GraphQLString>),
-                        Resolve = schema => schema.GetQueryType()
+                        Resolve = schema => string.Empty
                     },
                     new GraphQLSchemaFieldType
                     {
                         Name = "description",
                         OfType = typeof (GraphQLString),
-                        Resolve = schema => schema.GetQueryType()
+                        Resolve = schema => string.Empty
                     },
                     new GraphQLSchemaFieldType
                     {
                         Name = "isDeprecated",
                         OfType = typeof (GraphQLNonNull<GraphQLString>),
-                        Resolve = schema => schema.GetQueryType()
+                        Resolve = schema => string.Empty
                     },
                     new GraphQLSchemaFieldType
                     {
                         Name = "deprecationReason",
                         OfType = typeof (GraphQLString),
-                        Resolve = schema => schema.GetQueryType()
+                        Resolve = schema => string.Empty
                     }
                 };
             }

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Graphene.Execution
+namespace Graphene.Core
 {
     public class GraphQLException : Exception
     {

@@ -14,7 +14,7 @@ namespace Graphene.Core
 
         //public GraphType ReturnType { get; set; }
 
-        public ObjectGraphType ParentType { get; set; }
+        public GraphQLObjectType Parent { get; set; }
 
         public Dictionary<string, object> Arguments { get; set; }
 

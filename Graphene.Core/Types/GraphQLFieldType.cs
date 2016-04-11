@@ -11,7 +11,7 @@ namespace Graphene.Core.Types
         public string Description { get; set; }
         public IGraphQLType OfType { get; set; }
 
-        public abstract object ResolveToObject(ResolveFieldContext context);
+        public abstract object ResolveToObject(IResolveObjectContext context);
     }
 
     public interface IGraphQLFieldType
@@ -19,13 +19,13 @@ namespace Graphene.Core.Types
         string Name { get; set; }
         string Description { get; set; }
         IGraphQLType OfType { get; set; }
-        object ResolveToObject(ResolveFieldContext context);
+        object ResolveToObject(IResolveObjectContext context);
     }
 
     public class GraphQLFieldType<TOutput> : GraphQLFieldType
     {
-        public virtual Func<ResolveFieldContext, TOutput> Resolve { get; set; }
-        public override object ResolveToObject(ResolveFieldContext context)
+        public virtual Func<IResolveObjectContext, TOutput> Resolve { get; set; }
+        public override object ResolveToObject(IResolveObjectContext context)
         {
             return Resolve(context);
         }

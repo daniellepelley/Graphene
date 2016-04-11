@@ -68,8 +68,7 @@ namespace Graphene.Test.Execution
             var query = "{foo(Id :1) {Name}}";
             var document = new DocumentParser().Parse(query); ;
 
-            var expected =
-    @"{""errors"":[{""message"":""Object foo does not exist""}]}";
+            var expected = @"{""errors"":[{""message"":""Object foo does not exist""}]}";
             var result = Execute(sut, schema, document);
             Assert.AreEqual(expected, result);
         }
@@ -84,8 +83,7 @@ namespace Graphene.Test.Execution
             var query = "{user(Id :1) {foo}}";
             var document = new DocumentParser().Parse(query); ;
 
-            var expected =
-    @"{""errors"":[{""message"":""Field foo does not exist""}]}";
+            var expected = @"{""errors"":[{""message"":""Field foo does not exist""}]}";
             var result = Execute(sut, schema, document);
             Assert.AreEqual(expected, result);
         }

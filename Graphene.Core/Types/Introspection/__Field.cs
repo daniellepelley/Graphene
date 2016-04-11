@@ -28,37 +28,37 @@ namespace Graphene.Core.Types.Introspection
                     {
                         Name = "name",
                         OfType = typeof (GraphQLNonNull<GraphQLString>),
-                        Resolve = schema => schema.GetQueryType()
+                        Resolve = schema => string.Empty
                     },
                     new GraphQLSchemaFieldType
                     {
                         Name = "description",
                         OfType = typeof (GraphQLString),
-                        Resolve = schema => schema.GetQueryType()
+                        Resolve = schema => string.Empty
                     },
                     new GraphQLSchemaFieldType
                     {
                         Name = "args",
                         OfType = typeof (GraphQLNonNull<GraphQLList<GraphQLNonNull<__InputValue>>>),
-                        Resolve = schema => schema.GetQueryType()
+                        Resolve = schema => string.Empty
                     },
                     new GraphQLSchemaFieldType
                     {
                         Name = "type",
                         OfType = typeof (GraphQLNonNull<__Type>),
-                        Resolve = schema => schema.GetQueryType()
+                        Resolve = schema => string.Empty
                     },
                     new GraphQLSchemaFieldType
                     {
                         Name = "isDeprecated",
                         OfType = typeof (GraphQLNonNull<GraphQLBoolean>),
-                        Resolve = schema => schema.GetQueryType()
+                        Resolve = schema => string.Empty
                     },
                     new GraphQLSchemaFieldType
                     {
                         Name = "deprecationReason",
                         OfType = typeof (GraphQLString),
-                        Resolve = schema => schema.GetQueryType()
+                        Resolve = schema => string.Empty
                     }
                 };
             }

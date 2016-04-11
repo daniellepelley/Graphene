@@ -4,7 +4,7 @@ using Graphene.Core.Parsers;
 
 namespace Graphene.Core.Lexer
 {
-    public class GraphQLLexer
+    public class GraphQLLexer : IGraphQLLexerFeed
     {
         private readonly GraphQLLexerCursor _cursor = new GraphQLLexerCursor();
 

@@ -8,21 +8,21 @@ namespace Graphene.Core.Parsers
 {
     public class ArgumentsParser
     {
-        public Argument[] GetArguments(GraphQLLexer graphQLLexer)
+        public Argument[] GetArguments(IGraphQLLexerFeed feed)
         {
             var output = new List<Argument>();
 
-            while (!graphQLLexer.IsComplete())
+            while (!feed.IsComplete())
             {
-                var current = graphQLLexer.Next();
+                var current = feed.Next();
 
                 if (current.Type == GraphQLTokenType.Name)
                 {
                     var argument = new Argument();
 
                     argument.Name = current.Value;
-                    graphQLLexer.Next();
-                    argument.Value = GetValue(graphQLLexer.Next().Value);
+                    feed.Next();
+                    argument.Value = GetValue(feed.Next().Value);
 
                     output.Add(argument);
                 }

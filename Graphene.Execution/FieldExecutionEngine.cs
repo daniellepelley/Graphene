@@ -1,4 +1,5 @@
 using System;
+using System.CodeDom;
 using System.Collections.Generic;
 using System.Linq;
 using Graphene.Core;
@@ -16,34 +17,81 @@ namespace Graphene.Execution
             _objectExecutionEngine = objectExecutionEngine;
         }
 
-        public KeyValuePair<string, object> ProcessField(GraphQLObjectType graphQLObject, Selection selection, object item)
+        public KeyValuePair<string, object> ProcessField(ResolveObjectContext resolveObjectContext)
         {
-            var schemaField = graphQLObject.Fields.FirstOrDefault(x => x.Name == selection.Field.Name);
+            var executionObject = GetExecutionObject(resolveObjectContext);
+            return new KeyValuePair<string, object>(executionObject.Name, executionObject.Execute());
+        }
+
+        private ExecuteCommand GetExecutionObject(ResolveObjectContext resolveObjectContext1)
+        {
+            var schemaField = resolveObjectContext1.Current.Fields.FirstOrDefault(x => x.Name == resolveObjectContext1.Selection.Field.Name);
 
             if (schemaField == null)
             {
-                throw new GraphQLException(string.Format("Field {0} does not exist", selection.Field.Name));
+                throw new GraphQLException(string.Format("Field {0} does not exist", resolveObjectContext1.Selection.Field.Name));
             }
-
-            var context = new ResolveFieldContext
-            {
-                //Schema = graphQLObject,
-                FieldName = selection.Field.Name,
-                //Operation = operation,
-                Source = item
-            };
 
             if (schemaField is GraphQLObjectType)
             {
-                var objectContext = new ResolveFieldContext
+                var resolveObjectContext = new ResolveObjectContext
                 {
-                    Source = item
+                    FieldName = resolveObjectContext1.Selection.Field.Name,
+                    Source = resolveObjectContext1.Source,
+                    Selections = resolveObjectContext1.Selection.Field.Selections,
+                    Current = (GraphQLObjectType) schemaField,
+                    Schema = resolveObjectContext1.Schema
                 };
 
-                return new KeyValuePair<string, object>(schemaField.Name, _objectExecutionEngine.Execute(selection.Field.Selections, schemaField as GraphQLObjectType, objectContext));
+                return new ExecuteObjectCommand
+                {
+                    Name = schemaField.Name,
+                    ResolveObjectContext = resolveObjectContext,
+                    Func = context => _objectExecutionEngine.Execute(context)
+                };
             }
 
-            return new KeyValuePair<string, object>(schemaField.Name, schemaField.ResolveToObject(context));
-        }        
+            var resolveFieldContext = new ResolveFieldContext
+            {
+                FieldName = resolveObjectContext1.Selection.Field.Name,
+                Source = resolveObjectContext1.Source,
+                Schema = resolveObjectContext1.Schema
+            };
+
+            return new ExecuteFieldCommand
+            {
+                Name = schemaField.Name,
+                ResolveFieldContext = resolveFieldContext,
+                Func = schemaField.ResolveToObject
+            };
+        }
+    }
+
+    public abstract class ExecuteCommand
+    {
+        public string Name { get; set; }
+        public abstract object Execute();
+    }
+
+    public class ExecuteFieldCommand : ExecuteCommand
+    {
+        public ResolveFieldContext ResolveFieldContext { get; set; }
+        public Func<ResolveFieldContext, object> Func { get; set; }
+
+        public override object Execute()
+        {
+            return Func(ResolveFieldContext);
+        }
+    }
+
+    public class ExecuteObjectCommand : ExecuteCommand
+    {
+        public ResolveObjectContext ResolveObjectContext { get; set; }
+        public Func<ResolveObjectContext, object> Func { get; set; }
+
+        public override object Execute()
+        {
+            return Func(ResolveObjectContext);
+        }
     }
 }

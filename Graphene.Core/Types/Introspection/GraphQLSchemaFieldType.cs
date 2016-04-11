@@ -7,7 +7,7 @@ namespace Graphene.Core.Types.Introspection
         public string Name { get; set; }
         public string Description { get; set; }
         IGraphQLType IGraphQLFieldType.OfType { get; set; }
-        public object ResolveToObject(ResolveFieldContext context)
+        public object ResolveToObject(IResolveObjectContext context)
         {
             return Resolve(context.Schema);
         }

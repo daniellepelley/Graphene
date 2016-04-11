@@ -10,8 +10,12 @@ namespace Graphene.Core.Parsers
         {
             var graphQLLexer = new GraphQLLexer(query);
 
-            var operation = new OperationParser().Parse(graphQLLexer);
-            var fragments = new FragmentParser().Parse(graphQLLexer);
+            var feed = new GraphQLLexerFeed(graphQLLexer.All());
+
+            Validate(feed);
+
+            var operation = new OperationParser().Parse(feed);
+            var fragments = new FragmentParser().Parse(feed);
 
             var document = new Document
             {
@@ -22,6 +26,21 @@ namespace Graphene.Core.Parsers
                 Fragments = fragments
             };
             return document;
+        }
+
+        private void Validate(GraphQLLexerFeed feed)
+        {
+            if (feed.All().Count(x => x.Type == GraphQLTokenType.ParenL) !=
+                feed.All().Count(x => x.Type == GraphQLTokenType.ParenR))
+            {
+                throw new GraphQLException("Missing Paren");
+            }
+
+            if (feed.All().Count(x => x.Type == GraphQLTokenType.BraceL) !=
+                feed.All().Count(x => x.Type == GraphQLTokenType.BraceR))
+            {
+                throw new GraphQLException("Missing Brace");
+            }
         }
     }
 }
