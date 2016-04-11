@@ -92,6 +92,7 @@
     <Compile Include="Types\Introspection\GraphQLList.cs" />
     <Compile Include="Types\Introspection\GraphQLNonNull.cs" />
     <Compile Include="Types\Introspection\GraphQLSchemaFieldType.cs" />
+    <Compile Include="Types\Introspection\IntrospectionTypeWrapper.cs" />
     <Compile Include="Types\Introspection\__EnumValue.cs" />
     <Compile Include="Types\Introspection\__Field.cs" />
     <Compile Include="Types\Introspection\__InputValue.cs" />

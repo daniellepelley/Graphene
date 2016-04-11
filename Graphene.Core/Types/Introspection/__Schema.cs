@@ -1,9 +1,15 @@
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Graphene.Core.Types.Introspection
 {
     public class __Schema : GraphQLObjectType
     {
+        private GraphQLObjectType ResolveQuery(IResolveObjectContext context)
+        {
+            return new IntrospectionTypeWrapper(context.Schema.Query);
+        }
+
         public __Schema()
         {
             Name = "__schema";
@@ -18,7 +24,23 @@ namespace Graphene.Core.Types.Introspection
                     Name = "queryType",
                     Description = "The type that query operations will be rooted at.",
                     //OfType = typeof (GraphQLNonNull<__Type>),
-                    Resolve = context => context.Schema.Query
+                    Fields = new IGraphQLFieldType[]
+                    {
+                        new GraphQLFieldType<string>
+                        {
+                            Name = "kind",
+                            Description = "The type that query operations will be rooted at.",
+                            //OfType = new GraphQLNonNull<__TypeKind>>(),
+                            Resolve = context => ResolveQuery(context).Kind
+                        },
+                        new GraphQLFieldType<string>
+                        {
+                            Name = "name",
+                            //OfType = typeof (GraphQLString),
+                            Resolve = context => ResolveQuery(context).Name
+                        }
+                    }.ToList(),
+                    Resolve = ResolveQuery
                 },
                 new GraphQLFieldType<GraphQLObjectType>
                 {

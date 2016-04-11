@@ -52,8 +52,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Execution\ArgumentsExecutionEngineTests.cs" />
-    <Compile Include="Execution\IntrospectionExecutionEngineTests.cs" />
+    <Compile Include="Execution\TypeIntrospectionExecutionEngineTests.cs" />
     <Compile Include="Execution\NestedExecutionEngineTests.cs" />
+    <Compile Include="Execution\SchemaIntrospectionExecutionEngineTests.cs" />
     <Compile Include="Execution\SimpleExecutionEngineTests.cs" />
     <Compile Include="Parser\ArgumentsParserTests.cs" />
     <Compile Include="Parser\DirectiveParserTests.cs" />
