@@ -95,28 +95,7 @@ namespace Graphene.Test.Execution
 
         private static GraphQLSchema CreateGraphQLSchema()
         {
-            var schema = new GraphQLSchema
-            {
-                Query = new GraphQLObjectType
-                {
-                    Name = "user",
-                    Resolve = context => Data.GetData().Where(x => !context.Arguments.ContainsKey("Id") || x.Id == Convert.ToInt32(context.Arguments["Id"])),
-                    Fields = new IGraphQLFieldType[]
-                    {
-                        new GraphQLFieldType<int>
-                        {
-                            Name = "Id",
-                            Resolve = context => ((TestUser) context.Source).Id
-                        },
-                        new GraphQLFieldType<string>
-                        {
-                            Name = "Name",
-                            Resolve = context => ((TestUser) context.Source).Name
-                        }
-                    }.ToList()
-                }
-            };
-            return schema;
+            return TestSchemas.UserSchema();
         }
     }
 }

@@ -1,4 +1,3 @@
-using System;
 using System.CodeDom;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,7 +16,7 @@ namespace Graphene.Execution
             _objectExecutionEngine = objectExecutionEngine;
         }
 
-        public KeyValuePair<string, object> ProcessField(ResolveObjectContext resolveObjectContext)
+        public KeyValuePair<string, object> Execute(ResolveObjectContext resolveObjectContext)
         {
             var executionObject = GetExecutionObject(resolveObjectContext);
             return new KeyValuePair<string, object>(executionObject.Name, executionObject.Execute());
@@ -25,7 +24,19 @@ namespace Graphene.Execution
 
         private ExecuteCommand GetExecutionObject(ResolveObjectContext resolveObjectContext1)
         {
-            var schemaField = resolveObjectContext1.Current.Fields.FirstOrDefault(x => x.Name == resolveObjectContext1.Selection.Field.Name);
+            if (resolveObjectContext1.Current == null)
+            {
+                throw new GraphQLException("Current object is null");
+            }
+
+            if (resolveObjectContext1.Current.Fields == null)
+            {
+                throw new GraphQLException("Current object fields is null");
+            }
+
+            var fieldName = resolveObjectContext1.Selection.Field.Name;
+
+            var schemaField = resolveObjectContext1.Current.Fields.FirstOrDefault(x => x.Name == fieldName);
 
             if (schemaField == null)
             {
@@ -61,37 +72,9 @@ namespace Graphene.Execution
             return new ExecuteFieldCommand
             {
                 Name = schemaField.Name,
-                ResolveFieldContext = resolveFieldContext,
-                Func = schemaField.ResolveToObject
+                //ResolveFieldContext = resolveFieldContext,
+                Func = x => ((GraphQLFieldScalarType)schemaField).Resolve(resolveFieldContext)
             };
-        }
-    }
-
-    public abstract class ExecuteCommand
-    {
-        public string Name { get; set; }
-        public abstract object Execute();
-    }
-
-    public class ExecuteFieldCommand : ExecuteCommand
-    {
-        public ResolveFieldContext ResolveFieldContext { get; set; }
-        public Func<ResolveFieldContext, object> Func { get; set; }
-
-        public override object Execute()
-        {
-            return Func(ResolveFieldContext);
-        }
-    }
-
-    public class ExecuteObjectCommand : ExecuteCommand
-    {
-        public ResolveObjectContext ResolveObjectContext { get; set; }
-        public Func<ResolveObjectContext, object> Func { get; set; }
-
-        public override object Execute()
-        {
-            return Func(ResolveObjectContext);
         }
     }
 }

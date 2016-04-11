@@ -42,7 +42,7 @@ namespace Graphene.Execution
                 fieldContext.Selection = selection;
                 fieldContext.FieldName = selection.Field.Name;
     
-                var keyPairValue = new FieldExecutionEngine(this).ProcessField(fieldContext);
+                var keyPairValue = new FieldExecutionEngine(this).Execute(fieldContext);
                 fieldValues.Add(keyPairValue.Key, keyPairValue.Value);
             }
             return fieldValues;

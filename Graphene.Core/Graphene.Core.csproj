@@ -78,7 +78,7 @@
     <Compile Include="ResolveContextBuilder.cs" />
     <Compile Include="ResolveFieldContext.cs" />
     <Compile Include="Types\GraphQLBoolean.cs" />
-    <Compile Include="Types\GraphQLFieldType.cs" />
+    <Compile Include="Types\GraphQLFieldObjectType.cs" />
     <Compile Include="Types\GraphQLFloat.cs" />
     <Compile Include="Types\GraphQLId.cs" />
     <Compile Include="Types\GraphQLInt.cs" />

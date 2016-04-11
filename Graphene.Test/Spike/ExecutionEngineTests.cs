@@ -9,7 +9,6 @@ using Graphene.Spike;
 using Newtonsoft.Json;
 using NUnit.Framework;
 using NUnit.Framework.Compatibility;
-using GraphQLFieldType = Graphene.Core.Types.GraphQLFieldType;
 using GraphQLSchema = Graphene.Core.Types.GraphQLSchema;
 
 namespace Graphene.Test.Spike

@@ -18,11 +18,11 @@ namespace Graphene.Test
                 Name = "User",
                 Fields = new IGraphQLFieldType[]
                 {
-                    new GraphQLFieldType<string>
+                    new GraphQLFieldScalarType
                     {
                         Name = "id"
                     },
-                    new GraphQLFieldType<string>
+                    new GraphQLFieldScalarType
                     {
                         Name = "name"
                     }
@@ -36,7 +36,7 @@ namespace Graphene.Test
                     Name = "Query",
                     Fields = new IGraphQLFieldType[]
                     {
-                        new GraphQLFieldType<string>
+                        new GraphQLFieldScalarType
                         {
                             Name = "user",
                         }

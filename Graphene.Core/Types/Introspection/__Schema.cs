@@ -5,7 +5,7 @@ namespace Graphene.Core.Types.Introspection
 {
     public class __Schema : GraphQLObjectType
     {
-        private GraphQLObjectType ResolveQuery(IResolveObjectContext context)
+        private GraphQLObjectType ResolveQuery(ResolveFieldContext context)
         {
             return new IntrospectionTypeWrapper(context.Schema.Query);
         }
@@ -26,23 +26,22 @@ namespace Graphene.Core.Types.Introspection
                     //OfType = typeof (GraphQLNonNull<__Type>),
                     Fields = new IGraphQLFieldType[]
                     {
-                        new GraphQLFieldType<string>
+                        new GraphQLFieldScalarType
                         {
                             Name = "kind",
                             Description = "The type that query operations will be rooted at.",
                             //OfType = new GraphQLNonNull<__TypeKind>>(),
                             Resolve = context => ResolveQuery(context).Kind
                         },
-                        new GraphQLFieldType<string>
+                        new GraphQLFieldScalarType
                         {
                             Name = "name",
                             //OfType = typeof (GraphQLString),
                             Resolve = context => ResolveQuery(context).Name
                         }
-                    }.ToList(),
-                    Resolve = ResolveQuery
+                    }.ToList()
                 },
-                new GraphQLFieldType<GraphQLObjectType>
+                new GraphQLFieldObjectType
                 {
                     Name = "mutationType",
                     Description =

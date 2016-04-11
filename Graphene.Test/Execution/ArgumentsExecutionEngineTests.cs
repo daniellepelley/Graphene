@@ -51,7 +51,7 @@ namespace Graphene.Test.Execution
             var sut = new ExecutionEngine();
 
             var schema = CreateGraphQLSchema(new IGraphQLFieldType[] {
-                    new GraphQLFieldType<string>
+                    new GraphQLFieldScalarType
                     {
                         Name = "id",
                         OfType = graphQLType
@@ -82,12 +82,12 @@ namespace Graphene.Test.Execution
                     Resolve = context => Data.GetData().Where(x => !context.Arguments.ContainsKey("id") || x.Id == Convert.ToInt32(context.Arguments["id"])),
                     Fields = new IGraphQLFieldType[]
                     {
-                        new GraphQLFieldType<int>
+                        new GraphQLFieldScalarType
                         {
                             Name = "id",
                             Resolve = context => ((TestUser) context.Source).Id
                         },
-                        new GraphQLFieldType<string>
+                        new GraphQLFieldScalarType
                         {
                             Name = "name",
                             Resolve = context => ((TestUser) context.Source).Name

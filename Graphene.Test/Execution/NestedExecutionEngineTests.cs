@@ -59,12 +59,12 @@ namespace Graphene.Test.Execution
                     Resolve = context => Data.GetData().Where(x => !context.Arguments.ContainsKey("Id") || x.Id == Convert.ToInt32(context.Arguments["Id"])),
                     Fields = new IGraphQLFieldType[]
                     {
-                        new GraphQLFieldType<int>
+                        new GraphQLFieldScalarType
                         {
                             Name = "Id",
                             Resolve = context => ((TestUser) context.Source).Id
                         },
-                        new GraphQLFieldType<string>
+                        new GraphQLFieldScalarType
                         {
                             Name = "Name",
                             Resolve = context => ((TestUser) context.Source).Name
@@ -75,12 +75,12 @@ namespace Graphene.Test.Execution
                             Resolve = context => ((TestUser) context.Source).Boss,
                             Fields = new IGraphQLFieldType[]
                             {
-                                new GraphQLFieldType<int>
+                                new GraphQLFieldScalarType
                                 {
                                     Name = "Id",
                                     Resolve = context => ((TestUser) context.Source).Id
                                 },
-                                new GraphQLFieldType<string>
+                                new GraphQLFieldScalarType
                                 {
                                     Name = "Name",
                                     Resolve = context => ((TestUser) context.Source).Name

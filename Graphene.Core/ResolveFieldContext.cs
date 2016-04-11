@@ -1,39 +1,33 @@
 using System.Collections.Generic;
+using System.Linq;
 using Graphene.Core.Model;
 using Graphene.Core.Types;
 
 namespace Graphene.Core
 {
-    public class ResolveFieldContext : IResolveObjectContext
+    public class ResolveFieldContext
     {
         public string FieldName { get; set; }
+        public GraphQLObjectType GraphQLObjectType { get; set; }
+        public object Source { get; set; }
 
-        public Field FieldAst { get; set; }
-        public GraphQLObjectType Parent { get; set; }
-        public GraphQLObjectType Current { get; set; }
-        public Selection[] Selections { get; set; }
+        public object GetValue()
+        {
+            return GetValue(Source);
+        }
 
-        //public FieldType FieldDefinition { get; set; }
-
-        //public GraphType ReturnType { get; set; }
-
-        public GraphQLObjectType ParentType { get; set; }
+        public object GetValue(object source)
+        {
+            var field = GraphQLObjectType.Fields.FirstOrDefault(x => x.Name == FieldName) as GraphQLFieldScalarType;
+            return field.Resolve(this);
+        }
 
         public Dictionary<string, object> Arguments { get; set; }
 
         public object RootValue { get; set; }
 
-        public object Source { get; set; }
-
         public GraphQLSchema Schema { get; set; }
-
         public Operation Operation { get; set; }
-
-        //public Fragments Fragments { get; set; }
-
-        //public Variables Variables { get; set; }
-
-        //public CancellationToken CancellationToken { get; set; }
 
         public TType Argument<TType>(string name)
         {
@@ -43,11 +37,6 @@ namespace Graphene.Core
             }
 
             return default(TType);
-        }
-
-        public ResolveFieldContext Clone()
-        {
-            return (ResolveFieldContext)this.MemberwiseClone();
         }
     }
 

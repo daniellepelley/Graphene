@@ -22,19 +22,4 @@ namespace Graphene.Core.Types
         public virtual Func<IResolveObjectContext, object> Resolve { get; set; }
         public IGraphQLFieldType[] Arguments { get; set; }
     }
-
-
-    public static class Extensions
-    {
-        public static void AddField<T>(this GraphQLObjectType source, string name, Func<object, T> resolveFunc)
-        {
-            source.Fields.Add(new GraphQLFieldType<T>
-            {
-                Name = name,
-                Resolve = resolveFunc
-            });
-        }
-
-
-    }
 }
