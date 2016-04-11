@@ -21,8 +21,17 @@ namespace Graphene.Test.Parser
 
             var fragments = sut.Parse(new GraphQLLexer( query));
 
-            Assert.AreEqual("InputValue", fragments.First().Name);
-            Assert.AreEqual("__InputValue", fragments.First().Type);
+            var fragment = fragments.First();
+
+            Assert.AreEqual("InputValue", fragment.Name);
+            Assert.AreEqual("__InputValue", fragment.Type);
+
+            Assert.AreEqual("name", fragment.Selections.ElementAt(0).Field.Name);
+            Assert.AreEqual("description", fragment.Selections.ElementAt(1).Field.Name);
+            Assert.AreEqual("type", fragment.Selections.ElementAt(2).Field.Name);
+            Assert.AreEqual("TypeRef", fragment.Selections.ElementAt(2).Field.Selections.First().Field.Name);
+            Assert.AreEqual("defaultValue", fragment.Selections.ElementAt(3).Field.Name);
+            Assert.AreEqual(4, fragment.Selections.Length);
         }
     }
 }

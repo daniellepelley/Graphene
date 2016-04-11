@@ -9,10 +9,17 @@ namespace Graphene.Execution
     public class ExecutionEngine : IExecutionEngine
     {
         private readonly IOperationExecutionEngine _operationExecutionEngine;
+        private readonly bool _throwErrors;
 
         public ExecutionEngine()
         {
             _operationExecutionEngine = new OperationExecutionEngine();
+        }
+
+        public ExecutionEngine(bool throwErrors)
+            :this()
+        {
+            _throwErrors = throwErrors;
         }
 
         public object Execute(IGraphQLSchema iGraphQLSchema, Document document)
@@ -38,8 +45,13 @@ namespace Graphene.Execution
                     {"data", _operationExecutionEngine.ProcessOperation(operation, schema)}
                 };
             }
-            catch (Exception ex)
+            catch (GraphQLException ex)
             {
+                if (_throwErrors)
+                {
+                    throw ex;
+                }
+
                 return new Dictionary<string, object>
                 {
                     {

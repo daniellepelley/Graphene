@@ -10,13 +10,16 @@ namespace Graphene.Core.Parsers
         {
             var graphQLLexer = new GraphQLLexer(query);
 
+            var operation = new OperationParser().Parse(graphQLLexer);
+            var fragments = new FragmentParser().Parse(graphQLLexer);
+
             var document = new Document
             {
                 Operations = new[]
                 {
-                    new OperationParser().Parse(graphQLLexer)
+                    operation
                 },
-                Fragments = new FragmentParser().Parse(graphQLLexer)
+                Fragments = fragments
             };
             return document;
         }

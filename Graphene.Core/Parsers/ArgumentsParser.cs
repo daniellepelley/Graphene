@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Graphene.Core.Lexer;
 using Graphene.Core.Model;
 
@@ -40,11 +41,28 @@ namespace Graphene.Core.Parsers
             {
                 return value.Substring(1, value.Length - 2);
             }
-            else if (value.Contains("."))
+            
+            if (value.Contains("."))
             {
                 return Convert.ToDecimal(value);
             }
-            return Convert.ToInt32(value);
+
+            if (value.ToCharArray().All(char.IsNumber))
+            {
+                return Convert.ToInt32(value);
+            }
+
+            if (value.ToLower() == "false")
+            {
+                return false;
+            }
+
+            if (value.ToLower() == "true")
+            {
+                return true;
+            }
+
+            return value;
         }
     }
 }

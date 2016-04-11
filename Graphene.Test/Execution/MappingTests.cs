@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Graphene.Core.Types;
+﻿using Graphene.Core.Types;
 using Newtonsoft.Json;
 using NUnit.Framework;
 

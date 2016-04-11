@@ -10,7 +10,6 @@ namespace Graphene.Core.Parsers
         {
             var output = new List<Fragment>();
 
-
             while (!graphQLLexer.IsComplete())
             {
                 var current = graphQLLexer.Next();
@@ -26,10 +25,6 @@ namespace Graphene.Core.Parsers
                         graphQLLexer.Next().Value == "on")
                     {
                         currentFragment.Type = graphQLLexer.Next().Value;
-                        currentFragment.Directives = new[]
-                        {
-                            new DirectiveParser().Parse(graphQLLexer)
-                        };
                         currentFragment.Selections = new SelectionsParser().Parse(graphQLLexer);
                     }
                 }

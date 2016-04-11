@@ -42,7 +42,7 @@ namespace Graphene.Execution
 
             if (schema.Query.Name != operation.Directives.First().Name)
             {
-                throw new Exception(string.Format("Object {0} does not exist", operation.Directives.First().Name));
+                throw new GraphQLException(string.Format("Object {0} does not exist", operation.Directives.First().Name));
             }
 
             if (schema.Query.Arguments != null)
@@ -58,14 +58,14 @@ namespace Graphene.Execution
                             var str = value as string;
                             if (string.IsNullOrEmpty(str))
                             {
-                                throw new Exception(string.Format(@"Argument 'id' has invalid value {0}. Expected type 'String'", value));
+                                throw new GraphQLException(string.Format(@"Argument 'id' has invalid value {0}. Expected type 'String'", value));
                             }
                         }
                         else if (argument.OfType is GraphQLInt)
                         {
                             if (!(value is int))
                             {
-                                throw new Exception(string.Format(@"Argument 'id' has invalid value {0}. Expected type 'Int'", value));                                                                
+                                throw new GraphQLException(string.Format(@"Argument 'id' has invalid value {0}. Expected type 'Int'", value));                                                                
                             }                          
                         }
                     }

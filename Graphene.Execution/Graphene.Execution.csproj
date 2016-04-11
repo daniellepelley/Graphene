@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="ExecutionEngine.cs" />
     <Compile Include="FieldExecutionEngine.cs" />
+    <Compile Include="GraphQLException.cs" />
     <Compile Include="IExecutionEngine.cs" />
     <Compile Include="IObjectExecutionEngine.cs" />
     <Compile Include="IOperationExecutionEngine.cs" />

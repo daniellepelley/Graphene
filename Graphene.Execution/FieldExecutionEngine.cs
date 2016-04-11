@@ -22,7 +22,7 @@ namespace Graphene.Execution
 
             if (schemaField == null)
             {
-                throw new Exception(string.Format("Field {0} does not exist", selection.Field.Name));
+                throw new GraphQLException(string.Format("Field {0} does not exist", selection.Field.Name));
             }
 
             var context = new ResolveFieldContext

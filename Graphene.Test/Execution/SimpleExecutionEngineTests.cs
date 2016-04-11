@@ -6,7 +6,6 @@ using Graphene.Core.Types;
 using Graphene.Execution;
 using Graphene.Test.Spike;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
 using NUnit.Framework;
 
 namespace Graphene.Test.Execution
