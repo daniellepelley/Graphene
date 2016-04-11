@@ -1,11 +1,10 @@
 using System.Linq;
 using Graphene.Core.Lexer;
-using Graphene.Core.Parsers;
 using NUnit.Framework;
 
-namespace Graphene.Test.Parser
+namespace Graphene.Test.Lexer
 {
-    public class GraphQLLexerTest
+    public class GraphQLLexerTests
     {
         [TestCase(0, "name")]
         [TestCase(1, "{")]
@@ -62,6 +61,15 @@ namespace Graphene.Test.Parser
             var output = parserFeed.All().ToArray();
             Assert.AreEqual(expectedValue, ((LexerToken)output[index]).Value);
             Assert.AreEqual(expectedType, ((LexerToken)output[index]).Type);
+        }
+    }
+
+    public class LexicalTreeTests
+    {
+
+        public void TreeBuilderTest()
+        {
+            
         }
     }
 }

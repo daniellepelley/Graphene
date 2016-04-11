@@ -58,7 +58,8 @@
     <Compile Include="Parser\ArgumentsParserTests.cs" />
     <Compile Include="Parser\DirectiveParserTests.cs" />
     <Compile Include="Parser\DocumentParserTests.cs" />
-    <Compile Include="Parser\GraphQLLexerTest.cs" />
+    <Compile Include="Lexer\GraphQLLexerTest.cs" />
+    <Compile Include="Parser\FragmentParserTests.cs" />
     <Compile Include="Parser\OperationParserTests.cs" />
     <Compile Include="QueryTest.cs" />
     <Compile Include="Schema\TypeSerializationTests.cs" />

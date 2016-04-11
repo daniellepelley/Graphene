@@ -46,11 +46,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Model\Argument.cs" />
+    <Compile Include="Model\Fragment.cs" />
     <Compile Include="Model\IDocument.cs" />
     <Compile Include="Parsers\ArgumentsParser.cs" />
     <Compile Include="Lexer\GraphQLLexer.cs" />
     <Compile Include="Lexer\GraphQLLexerCursor.cs" />
     <Compile Include="Lexer\GraphQLTokenizerBuilder.cs" />
+    <Compile Include="Parsers\FragmentParser.cs" />
     <Compile Include="Parsers\IDocumentParser.cs" />
     <Compile Include="Lexer\IgnoreGraphQLTokenizer.cs" />
     <Compile Include="Lexer\IgnoreLeverToken.cs" />

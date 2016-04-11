@@ -9,7 +9,10 @@ namespace Graphene.Core.Parsers
         {
             var operation = new Operation
             {
-                Directives = new[] {new DirectiveParser().Parse(graphQLLexer)},
+                Directives = new[]
+                {
+                    new DirectiveParser().Parse(graphQLLexer)
+                },
                 Selections = new SelectionsParser().Parse(graphQLLexer)
             };
             return operation;

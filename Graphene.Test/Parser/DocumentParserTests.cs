@@ -39,5 +39,97 @@ namespace Graphene.Test.Parser
             Assert.AreEqual("name", operation.Selections.ElementAt(0).Field.Name);
             Assert.AreEqual("age", operation.Selections.ElementAt(1).Field.Name);
         }
+
+        [Test]
+        public void WithFragments()
+        {
+            var sut = new DocumentParser();
+
+            var query = @"query IntrospectionQuery {
+                            __schema {
+                              queryType { name }
+                              mutationType { name }
+                              subscriptionType { name }
+                              types {
+                                ...FullType
+                              }
+                              directives {
+                                name
+                                description
+                                args {
+                                  ...InputValue
+                                }
+                                onOperation
+                                onFragment
+                                onField
+                              }
+                            }
+                          }
+
+                          fragment FullType on __Type {
+                            kind
+                            name
+                            description
+                            fields(includeDeprecated: true) {
+                              name
+                              description
+                              args {
+                                ...InputValue
+                              }
+                              type {
+                                ...TypeRef
+                              }
+                              isDeprecated
+                              deprecationReason
+                            }
+                            inputFields {
+                              ...InputValue
+                            }
+                            interfaces {
+                              ...TypeRef
+                            }
+                            enumValues(includeDeprecated: true) {
+                              name
+                              description
+                              isDeprecated
+                              deprecationReason
+                            }
+                            possibleTypes {
+                              ...TypeRef
+                            }
+                          }
+
+                          fragment InputValue on __InputValue {
+                            name
+                            description
+                            type { ...TypeRef }
+                            defaultValue
+                          }
+
+                          fragment TypeRef on __Type {
+                            kind
+                            name
+                            ofType {
+                              kind
+                              name
+                              ofType {
+                                kind
+                                name
+                                ofType {
+                                  kind
+                                  name
+                                }
+                              }
+                            }
+                          }";
+
+            var result = sut.Parse(query);
+            var operation = result.Operations.First();
+
+            Assert.AreEqual("IntrospectionQuery", operation.Directives.First().Name);
+            Assert.AreEqual("__schema", operation.Selections.First().Field.Name);
+            Assert.AreEqual(3, result.Fragments.Length);
+        }
     }
 }
+

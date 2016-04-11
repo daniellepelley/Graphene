@@ -5,35 +5,31 @@ namespace Graphene.Core.Parsers
 {
     public class DirectiveParser
     {
-        private Directive _directive;
-        //private StringBuilder _stringBuilder;
-        private ILexerToken _current;
-
         public Directive Parse(GraphQLLexer parserFeed)
         {
-            _directive = new Directive();
+            var directive = new Directive();
 
             while (!parserFeed.IsComplete())
             {
-                _current = parserFeed.Next();
+                var current = parserFeed.Next();
 
-                if (_current.Type == GraphQLTokenType.Name)
+                if (current.Type == GraphQLTokenType.Name)
                 {
-                    _directive.Name = _current.Value;
+                    directive.Name = current.Value;
                 }
-                else if (_current.Type == GraphQLTokenType.ParenL)
+                else if (current.Type == GraphQLTokenType.ParenL)
                 {
-                    _directive.Arguments = new ArgumentsParser().GetArguments(parserFeed);
+                    directive.Arguments = new ArgumentsParser().GetArguments(parserFeed);
                 }
-                else if (_current.Type == GraphQLTokenType.BraceL)
+                else if (current.Type == GraphQLTokenType.BraceL)
                 {
-                    if (!string.IsNullOrEmpty(_directive.Name))
+                    if (!string.IsNullOrEmpty(directive.Name))
                     {
-                        return _directive;
+                        return directive;
                     }
                 }
             }
-            return _directive;
+            return directive;
         }
     }
 }
