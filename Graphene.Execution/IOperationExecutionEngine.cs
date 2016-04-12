@@ -5,6 +5,6 @@ namespace Graphene.Execution
 {
     public interface IOperationExecutionEngine
     {
-        object ProcessOperation(Operation operation, GraphQLSchema schema);
+        object Execute(Operation operation, GraphQLSchema schema);
     }
 }

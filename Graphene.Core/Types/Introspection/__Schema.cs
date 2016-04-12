@@ -7,6 +7,16 @@ namespace Graphene.Core.Types.Introspection
     {
         private GraphQLObjectType ResolveQuery(ResolveFieldContext context)
         {
+            if (context == null)
+            {
+                
+            }
+
+            if (context.Schema == null)
+            {
+
+            }
+
             return new IntrospectionTypeWrapper(context.Schema.Query);
         }
 
@@ -39,7 +49,8 @@ namespace Graphene.Core.Types.Introspection
                             //OfType = typeof (GraphQLString),
                             Resolve = context => ResolveQuery(context).Name
                         }
-                    }.ToList()
+                    }.ToList(),
+                    Resolve = context => context.Schema.Query
                 },
                 new GraphQLFieldObjectType
                 {

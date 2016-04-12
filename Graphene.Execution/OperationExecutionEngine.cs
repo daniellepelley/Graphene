@@ -16,7 +16,7 @@ namespace Graphene.Execution
             _objectExecutionEngine = new ObjectExecutionEngine();
         }
 
-        public object ProcessOperation(Operation operation, GraphQLSchema schema)
+        public object Execute(Operation operation, GraphQLSchema schema)
         {
             var argumentsDictionary = GetArguments(operation);
 

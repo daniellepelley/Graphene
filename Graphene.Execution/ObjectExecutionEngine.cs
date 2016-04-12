@@ -74,10 +74,10 @@ namespace Graphene.Execution
                 FieldName = selection.Field.Name,
                 Parent = objectContext.GraphQLObjectType,
                 GraphQLObjectType = (GraphQLFieldScalarType) graphQLType,
-                Source = objectContext.Source
+                Source = objectContext.Source,
+                Schema = objectContext.Schema
             };
             return context;
         }
-
     }
 }

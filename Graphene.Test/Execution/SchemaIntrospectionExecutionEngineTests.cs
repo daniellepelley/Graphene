@@ -13,7 +13,7 @@ namespace Graphene.Test.Execution
     public class SchemaIntrospectionExecutionEngineTests
     {
         [Test]
-        [Ignore("Introspection to be done")]
+        //[Ignore("Introspection to be done")]
         public void StringDescription()
         {
             var sut = new ExecutionEngine(true, new IntrospectionSchemaFactory(CreateIntrospectionSchema()));

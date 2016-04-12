@@ -38,6 +38,16 @@ namespace Graphene.Execution
 
             var introspectionSchema = _introspectionSchemaFactory.Create();
 
+            if (_throwErrors)
+            {
+                var result = InternalExecute(introspectionSchema, document);
+
+                if (result != null)
+                {
+                    return result;
+                }
+            }
+
             try
             {
                 var result = InternalExecute(introspectionSchema, document);
@@ -76,7 +86,7 @@ namespace Graphene.Execution
             {
                 return new Dictionary<string, object>
                 {
-                    {"data", _operationExecutionEngine.ProcessOperation(operation, schema)}
+                    {"data", _operationExecutionEngine.Execute(operation, schema)}
                 };
             }
             catch (GraphQLException ex)

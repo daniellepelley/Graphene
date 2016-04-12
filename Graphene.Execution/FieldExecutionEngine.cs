@@ -22,31 +22,30 @@ namespace Graphene.Execution
             return new KeyValuePair<string, object>(executionObject.Name, executionObject.Execute());
         }
 
-        private ExecuteCommand GetExecutionObject(ResolveObjectContext resolveObjectContext1)
+        private ExecuteCommand GetExecutionObject(ResolveObjectContext resolveObjectContext)
         {
-            if (resolveObjectContext1.Parent == null)
+            if (resolveObjectContext.Parent == null)
             {
                 throw new GraphQLException("GraphQLObjectType object is null");
             }
 
-            if (resolveObjectContext1.Parent.Fields == null)
+            if (resolveObjectContext.Parent.Fields == null)
             {
                 throw new GraphQLException("GraphQLObjectType object fields is null");
             }
 
-            if (resolveObjectContext1.GraphQLObjectType == null)
+            if (resolveObjectContext.GraphQLObjectType == null)
             {
                 throw new GraphQLException(string.Format("Field {0} does not exist",
-                    resolveObjectContext1.Selection.Field.Name));
+                    resolveObjectContext.Selection.Field.Name));
             }
 
             return new ExecuteObjectCommand
             {
-                Name = resolveObjectContext1.FieldName,
-                ResolveObjectContext = resolveObjectContext1,
+                Name = resolveObjectContext.FieldName,
+                ResolveObjectContext = resolveObjectContext,
                 Func = context => _objectExecutionEngine.Execute(context)
             };
-
         }
     }
 }
