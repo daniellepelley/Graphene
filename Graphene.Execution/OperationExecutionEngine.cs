@@ -33,7 +33,7 @@ namespace Graphene.Execution
                 Operation = operation,
                 Arguments = argumentsDictionary,
                 Selections = operation.Selections,
-                Current = schema.Query
+                GraphQLObjectType = schema.Query
             };
 
             return _objectExecutionEngine.Execute(objectContext);

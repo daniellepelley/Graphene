@@ -8,7 +8,8 @@ namespace Graphene.Core
     public class ResolveFieldContext
     {
         public string FieldName { get; set; }
-        public GraphQLObjectType GraphQLObjectType { get; set; }
+        public GraphQLFieldScalarType GraphQLObjectType { get; set; }
+        public GraphQLObjectType Parent { get; set; }
         public object Source { get; set; }
 
         public object GetValue()
@@ -18,7 +19,7 @@ namespace Graphene.Core
 
         public object GetValue(object source)
         {
-            var field = GraphQLObjectType.Fields.FirstOrDefault(x => x.Name == FieldName) as GraphQLFieldScalarType;
+            var field = Parent.Fields.FirstOrDefault(x => x.Name == FieldName) as GraphQLFieldScalarType;
             return field.Resolve(this);
         }
 
@@ -52,7 +53,7 @@ namespace Graphene.Core
 
         public GraphQLObjectType Parent { get; set; }
 
-        public GraphQLObjectType Current { get; set; }
+        public GraphQLObjectType GraphQLObjectType { get; set; }
 
         public Selection[] Selections { get; set; }
 
@@ -97,7 +98,7 @@ namespace Graphene.Core
 
         GraphQLObjectType Parent { get; set; }
 
-        GraphQLObjectType Current { get; set; }
+        GraphQLObjectType GraphQLObjectType { get; set; }
 
         Selection[] Selections { get; set; }
 

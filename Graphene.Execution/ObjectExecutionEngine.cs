@@ -11,7 +11,7 @@ namespace Graphene.Execution
     {
         public object Execute(ResolveObjectContext objectContext)
         {
-            var returnValue = objectContext.Current.Resolve(objectContext);
+            var returnValue = objectContext.GraphQLObjectType.Resolve(objectContext);
 
             var enumerable = returnValue as IEnumerable;
             if (enumerable != null)
@@ -38,16 +38,46 @@ namespace Graphene.Execution
 
             foreach (var selection in objectContext.Selections)
             {
-                var fieldContext = objectContext.Clone();
-                fieldContext.Selection = selection;
-                fieldContext.FieldName = selection.Field.Name;
-    
-                var keyPairValue = new FieldExecutionEngine(this).Execute(fieldContext);
-                fieldValues.Add(keyPairValue.Key, keyPairValue.Value);
+                var graphQLFieldType = objectContext.GraphQLObjectType.Fields.FirstOrDefault(x => x.Name == selection.Field.Name);
+
+                if (graphQLFieldType is GraphQLFieldScalarType)
+                {
+                    var context = BuildResolveFieldContext(objectContext, selection, graphQLFieldType);
+                    var keyPairValue = new ScalarFieldExecutionEngine().Execute(context);
+                    fieldValues.Add(keyPairValue.Key, keyPairValue.Value);
+                }
+                else
+                {
+                    var context = BuildResolveObjectContext(objectContext, selection, graphQLFieldType);
+                    var keyPairValue = new FieldExecutionEngine(this).Execute(context);
+                    fieldValues.Add(keyPairValue.Key, keyPairValue.Value);
+                }
             }
             return fieldValues;
         }
 
+        private ResolveObjectContext BuildResolveObjectContext(ResolveObjectContext objectContext, Selection selection, IGraphQLFieldType graphQLType)
+        {
+            objectContext = objectContext.Clone();
+            objectContext.Selection = selection;
+            objectContext.FieldName = selection.Field.Name;
+            objectContext.Selections = selection.Field.Selections;
+            objectContext.Parent = objectContext.GraphQLObjectType;
+            objectContext.GraphQLObjectType = (GraphQLObjectType) graphQLType;
+            return objectContext;
+        }
+
+        private ResolveFieldContext BuildResolveFieldContext(ResolveObjectContext objectContext, Selection selection, IGraphQLFieldType graphQLType)
+        {
+            var context = new ResolveFieldContext
+            {
+                FieldName = selection.Field.Name,
+                Parent = objectContext.GraphQLObjectType,
+                GraphQLObjectType = (GraphQLFieldScalarType) graphQLType,
+                Source = objectContext.Source
+            };
+            return context;
+        }
 
     }
 }

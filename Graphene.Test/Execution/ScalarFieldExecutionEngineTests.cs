@@ -26,8 +26,9 @@ namespace Graphene.Test.Execution
                 {
                     Name = "Dan"
                 },
-                GraphQLObjectType = schema.Query,
-                FieldName = "name"
+                Parent = schema.Query,
+                FieldName = "name",
+                GraphQLObjectType = (GraphQLFieldScalarType)schema.Query.Fields[1]
             };
 
             var result = sut.Execute(resolveFieldContext);

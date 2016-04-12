@@ -24,57 +24,29 @@ namespace Graphene.Execution
 
         private ExecuteCommand GetExecutionObject(ResolveObjectContext resolveObjectContext1)
         {
-            if (resolveObjectContext1.Current == null)
+            if (resolveObjectContext1.Parent == null)
             {
-                throw new GraphQLException("Current object is null");
+                throw new GraphQLException("GraphQLObjectType object is null");
             }
 
-            if (resolveObjectContext1.Current.Fields == null)
+            if (resolveObjectContext1.Parent.Fields == null)
             {
-                throw new GraphQLException("Current object fields is null");
+                throw new GraphQLException("GraphQLObjectType object fields is null");
             }
 
-            var fieldName = resolveObjectContext1.Selection.Field.Name;
-
-            var schemaField = resolveObjectContext1.Current.Fields.FirstOrDefault(x => x.Name == fieldName);
-
-            if (schemaField == null)
+            if (resolveObjectContext1.GraphQLObjectType == null)
             {
-                throw new GraphQLException(string.Format("Field {0} does not exist", resolveObjectContext1.Selection.Field.Name));
+                throw new GraphQLException(string.Format("Field {0} does not exist",
+                    resolveObjectContext1.Selection.Field.Name));
             }
 
-            if (schemaField is GraphQLObjectType)
+            return new ExecuteObjectCommand
             {
-                var resolveObjectContext = new ResolveObjectContext
-                {
-                    FieldName = resolveObjectContext1.Selection.Field.Name,
-                    Source = resolveObjectContext1.Source,
-                    Selections = resolveObjectContext1.Selection.Field.Selections,
-                    Current = (GraphQLObjectType) schemaField,
-                    Schema = resolveObjectContext1.Schema
-                };
-
-                return new ExecuteObjectCommand
-                {
-                    Name = schemaField.Name,
-                    ResolveObjectContext = resolveObjectContext,
-                    Func = context => _objectExecutionEngine.Execute(context)
-                };
-            }
-
-            var resolveFieldContext = new ResolveFieldContext
-            {
-                FieldName = resolveObjectContext1.Selection.Field.Name,
-                Source = resolveObjectContext1.Source,
-                Schema = resolveObjectContext1.Schema
+                Name = resolveObjectContext1.FieldName,
+                ResolveObjectContext = resolveObjectContext1,
+                Func = context => _objectExecutionEngine.Execute(context)
             };
 
-            return new ExecuteFieldCommand
-            {
-                Name = schemaField.Name,
-                //ResolveFieldContext = resolveFieldContext,
-                Func = x => ((GraphQLFieldScalarType)schemaField).Resolve(resolveFieldContext)
-            };
         }
     }
 }
