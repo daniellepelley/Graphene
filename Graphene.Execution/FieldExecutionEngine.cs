@@ -26,15 +26,15 @@ namespace Graphene.Execution
         {
             if (resolveObjectContext.Parent == null)
             {
-                throw new GraphQLException("GraphQLObjectType object is null");
+                throw new GraphQLException("ScalarType object is null");
             }
 
-            if (resolveObjectContext.Parent.Fields == null)
+            if (resolveObjectContext.Parent.ObjectType.Fields == null)
             {
-                throw new GraphQLException("GraphQLObjectType object fields is null");
+                throw new GraphQLException("ScalarType object fields is null");
             }
 
-            if (resolveObjectContext.GraphQLObjectType == null)
+            if (resolveObjectContext.ObjectType == null)
             {
                 throw new GraphQLException(string.Format("Field {0} does not exist",
                     resolveObjectContext.Selection.Field.Name));

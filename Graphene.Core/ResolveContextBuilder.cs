@@ -14,7 +14,7 @@
 
 //        //public GraphType ReturnType { get; set; }
 
-//        public GraphQLObjectType Parent { get; set; }
+//        public ScalarType Parent { get; set; }
 
 //        public Dictionary<string, object> Arguments { get; set; }
 

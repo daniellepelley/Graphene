@@ -13,7 +13,7 @@ namespace Graphene.Test.Execution
     public class SchemaIntrospectionExecutionEngineTests
     {
         [Test]
-        //[Ignore("Introspection to be done")]
+        [Ignore("Introspection to be done")]
         public void StringDescription()
         {
             var sut = new ExecutionEngine(true, new IntrospectionSchemaFactory(CreateIntrospectionSchema()));
@@ -23,7 +23,7 @@ namespace Graphene.Test.Execution
             var query = @"{__schema{queryType{name}}}";
             var document = new DocumentParser().Parse(query); ;
 
-            var expected = @"{""data"":{""queryType"":{""name"":null}}}";
+            var expected = @"{""data"":{""queryType"":{""name"":""user""}}}";
 
             var result = JsonConvert.SerializeObject(sut.Execute(schema, document));
             Assert.AreEqual(expected, result);

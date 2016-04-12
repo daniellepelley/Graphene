@@ -5,11 +5,12 @@ using Graphene.Core.Types;
 
 namespace Graphene.Core
 {
-    public class ResolveFieldContext
+    public class ResolveFieldContext : IResolveContext
     {
         public string FieldName { get; set; }
-        public GraphQLFieldScalarType GraphQLObjectType { get; set; }
-        public GraphQLObjectType Parent { get; set; }
+        public GraphQLFieldScalarType ScalarType { get; set; }
+        public ResolveObjectContext Parent { get; set; }
+        
         public object Source { get; set; }
 
         public object GetValue()
@@ -19,7 +20,7 @@ namespace Graphene.Core
 
         public object GetValue(object source)
         {
-            var field = Parent.Fields.FirstOrDefault(x => x.Name == FieldName) as GraphQLFieldScalarType;
+            var field = Parent.ObjectType[FieldName] as GraphQLFieldScalarType;
             return field.Resolve(this);
         }
 
@@ -41,19 +42,15 @@ namespace Graphene.Core
         }
     }
 
-    public class ResolveObjectContext : IResolveObjectContext
+    public class ResolveObjectContext : IResolveContext
     {
         public string FieldName { get; set; }
 
         public Field FieldAst { get; set; }
 
-        //public FieldType FieldDefinition { get; set; }
+        public ResolveObjectContext Parent { get; set; }
 
-        //public GraphType ReturnType { get; set; }
-
-        public GraphQLObjectType Parent { get; set; }
-
-        public GraphQLObjectType GraphQLObjectType { get; set; }
+        public GraphQLObjectType ObjectType { get; set; }
 
         public Selection[] Selections { get; set; }
 
@@ -68,12 +65,6 @@ namespace Graphene.Core
         public Operation Operation { get; set; }
         public Selection Selection { get; set; }
 
-        //public Fragments Fragments { get; set; }
-
-        //public Variables Variables { get; set; }
-
-        //public CancellationToken CancellationToken { get; set; }
-
         public TType Argument<TType>(string name)
         {
             if (Arguments.ContainsKey(name))
@@ -86,21 +77,19 @@ namespace Graphene.Core
 
         public ResolveObjectContext Clone()
         {
-            return (ResolveObjectContext)this.MemberwiseClone();
+            var context = (ResolveObjectContext)this.MemberwiseClone();
+            context.Parent = this;
+            return context;
         }
     }
 
-    public interface IResolveObjectContext
+    public interface IResolveContext
     {
         string FieldName { get; set; }
 
-        Field FieldAst { get; set; }
+        ResolveObjectContext Parent { get; set; }
 
-        GraphQLObjectType Parent { get; set; }
-
-        GraphQLObjectType GraphQLObjectType { get; set; }
-
-        Selection[] Selections { get; set; }
+        //Selection[] Selections { get; set; }
 
         Dictionary<string, object> Arguments { get; set; }
 

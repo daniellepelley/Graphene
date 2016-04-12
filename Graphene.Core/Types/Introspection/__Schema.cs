@@ -5,21 +5,6 @@ namespace Graphene.Core.Types.Introspection
 {
     public class __Schema : GraphQLObjectType
     {
-        private GraphQLObjectType ResolveQuery(ResolveFieldContext context)
-        {
-            if (context == null)
-            {
-                
-            }
-
-            if (context.Schema == null)
-            {
-
-            }
-
-            return new IntrospectionTypeWrapper(context.Schema.Query);
-        }
-
         public __Schema()
         {
             Name = "__schema";
@@ -41,13 +26,13 @@ namespace Graphene.Core.Types.Introspection
                             Name = "kind",
                             Description = "The type that query operations will be rooted at.",
                             //OfType = new GraphQLNonNull<__TypeKind>>(),
-                            Resolve = context => ResolveQuery(context).Kind
+                            Resolve = context => context.Schema.Query.AsIntrospective()["kind"].Name
                         },
                         new GraphQLFieldScalarType
                         {
                             Name = "name",
                             //OfType = typeof (GraphQLString),
-                            Resolve = context => ResolveQuery(context).Name
+                            Resolve = context => context.Schema.Query.Name
                         }
                     }.ToList(),
                     Resolve = context => context.Schema.Query
@@ -58,7 +43,7 @@ namespace Graphene.Core.Types.Introspection
                     Description =
                         "If this server supports mutation, the type that mutation operations will be rooted at.",
                     //OfType = typeof (GraphQLNonNull<__Type>),
-                    Resolve = context => context.Schema.Query
+                    Resolve = context => context.Schema.Query.AsIntrospective()
                 },
                 new GraphQLSchemaFieldType
                 {

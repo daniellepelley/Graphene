@@ -11,7 +11,7 @@ namespace Graphene.Core.Types
         public string Description { get; set; }
         public IGraphQLType OfType { get; set; }
 
-        public virtual Func<IResolveObjectContext, object> Resolve { get; set; }
+        public virtual Func<ResolveObjectContext, object> Resolve { get; set; }
     }
 
     public class GraphQLFieldScalarType : IGraphQLFieldType

@@ -31,19 +31,16 @@ namespace Graphene.Core.Types.Introspection
                 {
                     Name = "kind",
                     Description = "The type that query operations will be rooted at.",
-                    //OfType = new GraphQLNonNull<__TypeKind>>(),
                     Resolve = context => ((IGraphQLType)context.Source).Kind
                 },
                 new GraphQLFieldScalarType
                 {
                     Name = "name",
-                    //OfType = typeof (GraphQLString),
                     Resolve = context => ((IGraphQLType)context.Source).Name
                 },
                 new GraphQLFieldScalarType
                 {
                     Name = "description",
-                    //OfType = typeof (GraphQLString),
                     Resolve = context => ((IGraphQLType)context.Source).Description
                 },
                 new GraphQLSchemaFieldType

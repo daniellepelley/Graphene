@@ -20,12 +20,14 @@ namespace Graphene.Execution
         {
             var argumentsDictionary = GetArguments(operation);
 
-            if (schema.Query.Name != operation.Directives.First().Name)
-            {
-                throw new GraphQLException(string.Format("Object {0} does not exist", operation.Directives.First().Name));
-            }
-
             ValidateArguments(schema, argumentsDictionary);
+
+            var directive = operation.Directives.First().Name;
+
+            if (schema.Query.Name != directive)
+            {
+                throw new GraphQLException(string.Format("Object {0} does not exist", directive));
+            }
 
             var objectContext = new ResolveObjectContext
             {
@@ -33,8 +35,9 @@ namespace Graphene.Execution
                 Operation = operation,
                 Arguments = argumentsDictionary,
                 Selections = operation.Selections,
-                GraphQLObjectType = schema.Query
+                ObjectType = schema.Query
             };
+
 
             return _objectExecutionEngine.Execute(objectContext);
         }

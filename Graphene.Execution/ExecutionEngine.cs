@@ -35,36 +35,6 @@ namespace Graphene.Execution
         public object Execute(IGraphQLSchema iGraphQLSchema, Document document)
         {
             var schema = (GraphQLSchema)iGraphQLSchema;
-
-            var introspectionSchema = _introspectionSchemaFactory.Create();
-
-            if (_throwErrors)
-            {
-                var result = InternalExecute(introspectionSchema, document);
-
-                if (result != null)
-                {
-                    return result;
-                }
-            }
-
-            try
-            {
-                var result = InternalExecute(introspectionSchema, document);
-
-                if (result != null)
-                {
-                    return result;
-                }
-            }
-            catch (Exception ex)
-            {
-                if (_throwErrors)
-                {
-                    throw ex;
-                }
-            }
-
             return InternalExecute(schema, document);
         }
 
@@ -81,6 +51,14 @@ namespace Graphene.Execution
             }
 
             var operation = document.Operations.First();
+
+            if (_throwErrors)
+            {
+                return new Dictionary<string, object>
+                {
+                    {"data", _operationExecutionEngine.Execute(operation, schema)}
+                };
+            }
 
             try
             {

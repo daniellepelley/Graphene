@@ -53,6 +53,7 @@
   <ItemGroup>
     <Compile Include="Execution\ArgumentsExecutionEngineTests.cs" />
     <Compile Include="Execution\ScalarFieldExecutionEngineTests.cs" />
+    <Compile Include="Execution\TestSchemas.cs" />
     <Compile Include="Execution\TypeIntrospectionExecutionEngineTests.cs" />
     <Compile Include="Execution\NestedExecutionEngineTests.cs" />
     <Compile Include="Execution\SchemaIntrospectionExecutionEngineTests.cs" />
