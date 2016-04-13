@@ -1,6 +1,5 @@
 ﻿using System.Diagnostics;
 using System.Linq;
-using Graphene.Core.FieldTypes;
 using Graphene.Core.Model;
 using Graphene.Core.Parsers;
 using Graphene.Core.Types;
@@ -14,16 +13,16 @@ namespace Graphene.Test
         [Test]
         public void CanBuildAQuery()
         {
-            var userType = new GraphQLObjectType
+            var userType = new GraphQLObject
             {
                 Name = "User",
                 Fields = new IGraphQLFieldType[]
                 {
-                    new GraphQLFieldScalarType
+                    new GraphQLScalar
                     {
                         Name = "id"
                     },
-                    new GraphQLFieldScalarType
+                    new GraphQLScalar
                     {
                         Name = "name"
                     }
@@ -32,12 +31,12 @@ namespace Graphene.Test
 
             var schema = new GraphQLSchema
             {
-                Query = new GraphQLObjectType
+                Query = new GraphQLObject
                 {
                     Name = "Query",
                     Fields = new IGraphQLFieldType[]
                     {
-                        new GraphQLFieldScalarType
+                        new GraphQLScalar
                         {
                             Name = "user",
                         }

@@ -45,8 +45,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FieldTypes\GraphQLFieldScalarType.cs" />
-    <Compile Include="FieldTypes\IGraphQLFieldType.cs" />
+    <Compile Include="Types\GraphQLScalar.cs" />
+    <Compile Include="Types\IGraphQLFieldType.cs" />
     <Compile Include="GraphQLException.cs" />
     <Compile Include="Lexer\GraphQLLexerFeed.cs" />
     <Compile Include="Lexer\IGraphQLLexerFeed.cs" />
@@ -81,18 +81,17 @@
     <Compile Include="ResolveFieldContext.cs" />
     <Compile Include="Types\Extensions.cs" />
     <Compile Include="Types\GraphQLBoolean.cs" />
-    <Compile Include="FieldTypes\GraphQLFieldObjectType.cs" />
     <Compile Include="Types\GraphQLFloat.cs" />
     <Compile Include="Types\GraphQLId.cs" />
     <Compile Include="Types\GraphQLInt.cs" />
     <Compile Include="Types\GraphQLKinds.cs" />
-    <Compile Include="Types\GraphQLObjectType.cs" />
-    <Compile Include="Types\GraphQLScalar.cs" />
+    <Compile Include="Types\GraphQLObject.cs" />
+    <Compile Include="Types\GraphQLScalarBase.cs" />
     <Compile Include="Types\GraphQLSchema.cs" />
     <Compile Include="Types\GraphQLString.cs" />
     <Compile Include="Types\GraphQlTypeSelector.cs" />
     <Compile Include="Types\IGraphQLType.cs" />
-    <Compile Include="Types\Introspection\GraphQLList.cs" />
+    <Compile Include="Types\Introspection\GraphQLSchemaList.cs" />
     <Compile Include="Types\Introspection\GraphQLNonNull.cs" />
     <Compile Include="Types\Introspection\GraphQLSchemaFieldType.cs" />
     <Compile Include="Types\Introspection\IntrospectionTypeWrapper.cs" />
@@ -107,7 +106,9 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="FieldTypes\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

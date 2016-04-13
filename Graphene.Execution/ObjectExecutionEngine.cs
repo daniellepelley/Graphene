@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Graphene.Core;
-using Graphene.Core.FieldTypes;
 using Graphene.Core.Model;
 using Graphene.Core.Types;
 
@@ -12,6 +11,7 @@ namespace Graphene.Execution
     {
         public object Execute(ResolveObjectContext objectContext)
         {
+
             var returnValue = objectContext.ObjectType.Resolve(objectContext);
 
             var enumerable = returnValue as IEnumerable;
@@ -44,9 +44,9 @@ namespace Graphene.Execution
 
             foreach (var selection in objectContext.Selections)
             {
-                var graphQLFieldType = objectContext.ObjectType.Fields.FirstOrDefault(x => x.Name == selection.Field.Name);
+                var graphQLFieldType = objectContext.ObjectType[selection.Field.Name];
 
-                if (graphQLFieldType is GraphQLFieldScalarType)
+                if (graphQLFieldType is GraphQLScalar)
                 {
                     var context = BuildResolveFieldContext(objectContext, selection, graphQLFieldType);
                     var keyPairValue = new ScalarFieldExecutionEngine().Execute(context);
@@ -68,7 +68,7 @@ namespace Graphene.Execution
             objectContext.Selection = selection;
             objectContext.FieldName = selection.Field.Name;
             objectContext.Selections = selection.Field.Selections;
-            objectContext.ObjectType = (GraphQLObjectType) graphQLType;
+            objectContext.ObjectType = (GraphQLObject) graphQLType;
             return objectContext;
         }
 
@@ -78,7 +78,7 @@ namespace Graphene.Execution
             {
                 FieldName = selection.Field.Name,
                 Parent = objectContext,
-                ScalarType = (GraphQLFieldScalarType) graphQLType,
+                ScalarType = (GraphQLScalar) graphQLType,
                 Source = objectContext.Source,
                 Schema = objectContext.Schema
             };

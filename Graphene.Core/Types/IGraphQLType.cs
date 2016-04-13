@@ -7,7 +7,7 @@ namespace Graphene.Core.Types
         string Description { get; }
     }
 
-    public interface IGraphObjectType : IGraphQLType
+    public interface IGraphQLObject : IGraphQLType
     {
 
     }

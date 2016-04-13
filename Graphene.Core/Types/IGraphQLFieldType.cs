@@ -1,6 +1,4 @@
-using Graphene.Core.Types;
-
-namespace Graphene.Core.FieldTypes
+namespace Graphene.Core.Types
 {
     public interface IGraphQLFieldType
     {

@@ -1,7 +1,6 @@
 using System;
 using System.ComponentModel;
 using System.Linq;
-using Graphene.Core.FieldTypes;
 using Graphene.Core.Types;
 using Graphene.Test.Spike;
 using Graphene.TypeProvider;
@@ -28,18 +27,18 @@ namespace Graphene.Test.Execution
 
             var schema = new GraphQLSchema
             {
-                Query = new GraphQLObjectType
+                Query = new GraphQLObject
                 {
                     Name = "user",
                     Resolve = context => Data.GetData().Where(x => !context.Arguments.ContainsKey("Id") || x.Id == Convert.ToInt32(context.Arguments["Id"])),
                     Fields = new IGraphQLFieldType[]
                     {
-                        new GraphQLFieldScalarType
+                        new GraphQLScalar
                         {
                             Name = "Id",
                             Resolve = context => ((TestUser) context.Source).Id
                         },
-                        new GraphQLFieldScalarType
+                        new GraphQLScalar
                         {
                             Name = "Name",
                             Resolve = context => ((TestUser) context.Source).Name

@@ -39,7 +39,7 @@ namespace Graphene.Core.Types.Introspection
                     new GraphQLSchemaFieldType
                     {
                         Name = "args",
-                        OfType = typeof (GraphQLNonNull<GraphQLList<GraphQLNonNull<__InputValue>>>),
+                        OfType = typeof (GraphQLNonNull<GraphQLSchemaList<GraphQLNonNull<__InputValue>>>),
                         Resolve = schema => string.Empty
                     },
                     new GraphQLSchemaFieldType

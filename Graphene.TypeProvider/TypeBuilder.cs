@@ -4,16 +4,15 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
-using Graphene.Core.FieldTypes;
 using Graphene.Core.Types;
 
 namespace Graphene.TypeProvider
 {
     public class TypeBuilder
     {
-        public GraphQLObjectType Build(Type type)
+        public GraphQLObject Build(Type type)
         {
-            var graphQLObjectType = new GraphQLObjectType
+            var graphQLObjectType = new GraphQLObject
             {
                 Name = type.Name,
                 Fields = new List<IGraphQLFieldType>()
@@ -29,9 +28,9 @@ namespace Graphene.TypeProvider
             return graphQLObjectType;
         }
 
-        private void MapField(PropertyInfo propertyInfo, GraphQLObjectType graphQLObjectType)
+        private void MapField(PropertyInfo propertyInfo, GraphQLObject graphQLObject)
         {
-            graphQLObjectType.Fields.Add(CreateField(propertyInfo));
+            graphQLObject.Fields.Add(CreateField(propertyInfo));
         }
 
         private IGraphQLFieldType CreateField(PropertyInfo propertyInfo)
@@ -42,13 +41,13 @@ namespace Graphene.TypeProvider
                 typeof (int)
             }.Contains(propertyInfo.PropertyType))
             {
-                return new GraphQLFieldScalarType
+                return new GraphQLScalar
                 {
                     Name = propertyInfo.Name,
                     Resolve = context => propertyInfo.GetValue(context.Source)
                 };
             }
-            return new GraphQLObjectType
+            return new GraphQLObject
             {
                 Name = propertyInfo.Name,
                 Resolve = context => propertyInfo.GetValue(context.Source),

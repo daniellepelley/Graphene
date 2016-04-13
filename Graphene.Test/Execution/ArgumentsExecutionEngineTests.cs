@@ -1,6 +1,5 @@
 using System;
 using System.Linq;
-using Graphene.Core.FieldTypes;
 using Graphene.Core.Model;
 using Graphene.Core.Parsers;
 using Graphene.Core.Types;
@@ -52,7 +51,7 @@ namespace Graphene.Test.Execution
             var sut = new ExecutionEngine();
 
             var schema = CreateGraphQLSchema(new IGraphQLFieldType[] {
-                    new GraphQLFieldScalarType
+                    new GraphQLScalar
                     {
                         Name = "id",
                         OfType = new[] { graphQLType }
@@ -76,19 +75,19 @@ namespace Graphene.Test.Execution
         {
             var schema = new GraphQLSchema
             {
-                Query = new GraphQLObjectType
+                Query = new GraphQLObject
                 {
                     Name = "user",
                     Arguments = arguments,
                     Resolve = context => Data.GetData().Where(x => !context.Arguments.ContainsKey("id") || x.Id == Convert.ToInt32(context.Arguments["id"])),
                     Fields = new IGraphQLFieldType[]
                     {
-                        new GraphQLFieldScalarType
+                        new GraphQLScalar
                         {
                             Name = "id",
                             Resolve = context => ((TestUser) context.Source).Id
                         },
-                        new GraphQLFieldScalarType
+                        new GraphQLScalar
                         {
                             Name = "name",
                             Resolve = context => ((TestUser) context.Source).Name
