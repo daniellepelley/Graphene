@@ -51,6 +51,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Execution Tree\ExecutionNode.cs" />
     <Compile Include="Execution\ArgumentsExecutionEngineTests.cs" />
     <Compile Include="Execution\ScalarFieldExecutionEngineTests.cs" />
     <Compile Include="Execution\TestSchemas.cs" />
