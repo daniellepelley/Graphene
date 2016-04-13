@@ -87,8 +87,6 @@ namespace Graphene.Core.Types.Introspection
             Resolve = context => context.Schema;
         }
 
-        public string Kind { get; private set; }
-
         private static object ResolveName(ResolveFieldContext context)
         {
             if (context.Source is GraphQLObject)

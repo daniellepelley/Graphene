@@ -2,10 +2,20 @@ using System;
 
 namespace Graphene.Core.Types
 {
-    public class GraphQLScalar : IGraphQLFieldType
+    public class GraphQLScalar : GraphQLScalar<ResolveFieldContext, object>
     {
-        public string Kind { get; set; }
+
+    }
+
+    public class GraphQLScalar<TInput, TOutput> : IGraphQLFieldType
+    {
         public string Name { get; set; }
+
+        public string Kind
+        {
+            get { return "SCALAR"; }
+        }
+
         public string Description { get; set; }
         public string[] OfType { get; set; }
 
@@ -14,6 +24,6 @@ namespace Graphene.Core.Types
             get { throw new GraphQLException("Can't access field on scalar value"); }
         }
 
-        public virtual Func<ResolveFieldContext, object> Resolve { get; set; }
+        public Func<TInput, TOutput> Resolve;
     }
 }

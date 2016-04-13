@@ -44,7 +44,10 @@
     <Compile Include="ExecuteCommand.cs" />
     <Compile Include="ExecuteFieldCommand.cs" />
     <Compile Include="ExecuteObjectCommand.cs" />
+    <Compile Include="ExecutionBranch.cs" />
     <Compile Include="ExecutionEngine.cs" />
+    <Compile Include="ExecutionNode.cs" />
+    <Compile Include="Extensions.cs" />
     <Compile Include="FieldExecutionEngine.cs" />
     <Compile Include="IExecutionEngine.cs" />
     <Compile Include="IObjectExecutionEngine.cs" />

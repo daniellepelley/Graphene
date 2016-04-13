@@ -7,33 +7,27 @@ namespace Graphene.Execution
     {
         public KeyValuePair<string, object> Execute(ResolveFieldContext resolveFieldContext)
         {
-            var executionObject = GetExecutionObject(resolveFieldContext);
-            return new KeyValuePair<string, object>(executionObject.Name, executionObject.Execute());
+            Validate(resolveFieldContext);
+            var executionNode = resolveFieldContext.ScalarType.ToExecutionNode(() => resolveFieldContext);
+            return executionNode.Execute();
         }
 
-        private ExecuteScalarCommand GetExecutionObject(ResolveFieldContext resolveObjectContext)
+        private void Validate(ResolveFieldContext resolveFieldContext)
         {
-            if (resolveObjectContext.Parent == null)
+            if (resolveFieldContext.Parent == null)
             {
                 throw new GraphQLException("ScalarType object is null");
             }
 
-            if (resolveObjectContext.Parent.ObjectType.Fields == null)
+            if (resolveFieldContext.Parent.ObjectType.Fields == null)
             {
                 throw new GraphQLException("ScalarType object fields is null");
             }
 
-            if (resolveObjectContext.ScalarType == null)
+            if (resolveFieldContext.ScalarType == null)
             {
-                throw new GraphQLException(string.Format("Field {0} does not exist", resolveObjectContext.FieldName));
+                throw new GraphQLException(string.Format("Field {0} does not exist", resolveFieldContext.FieldName));
             }
-
-            return new ExecuteScalarCommand
-            {
-                Name = resolveObjectContext.FieldName,
-                ResolveFieldContext = resolveObjectContext,
-                Func = context => context.GetValue()
-            };
         }
     }
 }

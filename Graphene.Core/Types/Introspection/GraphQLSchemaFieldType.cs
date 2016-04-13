@@ -6,6 +6,7 @@ namespace Graphene.Core.Types.Introspection
     public class GraphQLSchemaFieldType : IGraphQLFieldType
     {
         public string Name { get; set; }
+        public string Kind { get { return "TO DELETE"; } }
         public string Description { get; set; }
         string[] IGraphQLFieldType.OfType { get; set; }
 
