@@ -54,6 +54,7 @@
     <Compile Include="Execution\ArgumentsExecutionEngineTests.cs" />
     <Compile Include="Execution\ScalarFieldExecutionEngineTests.cs" />
     <Compile Include="Execution\TestSchemas.cs" />
+    <Compile Include="Introspection\IntrospectionSchemaTests.cs" />
     <Compile Include="Introspection\TypeIntrospectionExecutionEngineTests.cs" />
     <Compile Include="Execution\NestedExecutionEngineTests.cs" />
     <Compile Include="Introspection\SchemaIntrospectionExecutionEngineTests.cs" />

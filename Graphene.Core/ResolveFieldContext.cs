@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Linq;
-using Graphene.Core.FieldTypes;
 using Graphene.Core.Model;
 using Graphene.Core.Types;
 
@@ -9,7 +8,7 @@ namespace Graphene.Core
     public class ResolveFieldContext : IResolveContext
     {
         public string FieldName { get; set; }
-        public GraphQLFieldScalarType ScalarType { get; set; }
+        public GraphQLScalar ScalarType { get; set; }
         public ResolveObjectContext Parent { get; set; }
         
         public object Source { get; set; }
@@ -21,7 +20,7 @@ namespace Graphene.Core
 
         public object GetValue(object source)
         {
-            var field = Parent.ObjectType[FieldName] as GraphQLFieldScalarType;
+            var field = Parent.ObjectType[FieldName] as GraphQLScalar;
             return field.Resolve(this);
         }
 
@@ -51,7 +50,7 @@ namespace Graphene.Core
 
         public ResolveObjectContext Parent { get; set; }
 
-        public GraphQLObjectType ObjectType { get; set; }
+        public GraphQLObject ObjectType { get; set; }
 
         public Selection[] Selections { get; set; }
 

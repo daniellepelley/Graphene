@@ -38,7 +38,6 @@ namespace Graphene.Execution
                 ObjectType = schema.Query
             };
 
-
             return _objectExecutionEngine.Execute(objectContext);
         }
 

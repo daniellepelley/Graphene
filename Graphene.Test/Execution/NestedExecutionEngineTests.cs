@@ -1,6 +1,5 @@
 using System;
 using System.Linq;
-using Graphene.Core.FieldTypes;
 using Graphene.Core.Model;
 using Graphene.Core.Parsers;
 using Graphene.Core.Types;
@@ -56,34 +55,34 @@ namespace Graphene.Test.Execution
 
             var schema = new GraphQLSchema
             {
-                Query = new GraphQLObjectType
+                Query = new GraphQLObject
                 {
                     Name = "user",
                     Resolve = context => Data.GetData().Where(x => !context.Arguments.ContainsKey("Id") || x.Id == Convert.ToInt32(context.Arguments["Id"])),
                     Fields = new IGraphQLFieldType[]
                     {
-                        new GraphQLFieldScalarType
+                        new GraphQLScalar
                         {
                             Name = "Id",
                             Resolve = context => ((TestUser) context.Source).Id
                         },
-                        new GraphQLFieldScalarType
+                        new GraphQLScalar
                         {
                             Name = "Name",
                             Resolve = context => ((TestUser) context.Source).Name
                         },
-                        new GraphQLObjectType
+                        new GraphQLObject
                         {
                             Name = "Boss",
                             Resolve = context => ((TestUser) context.Source).Boss,
                             Fields = new IGraphQLFieldType[]
                             {
-                                new GraphQLFieldScalarType
+                                new GraphQLScalar
                                 {
                                     Name = "Id",
                                     Resolve = context => ((Boss) context.Source).Id
                                 },
-                                new GraphQLFieldScalarType
+                                new GraphQLScalar
                                 {
                                     Name = "Name",
                                     Resolve = context => ((Boss) context.Source).Name

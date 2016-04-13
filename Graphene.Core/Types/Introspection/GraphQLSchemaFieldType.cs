@@ -1,8 +1,8 @@
 using System;
-using Graphene.Core.FieldTypes;
 
 namespace Graphene.Core.Types.Introspection
 {
+    [Obsolete("Should be phased out")]
     public class GraphQLSchemaFieldType : IGraphQLFieldType
     {
         public string Name { get; set; }

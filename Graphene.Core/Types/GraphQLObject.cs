@@ -1,11 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Graphene.Core.FieldTypes;
 
 namespace Graphene.Core.Types
 {
-    public class GraphQLObjectType : IGraphObjectType, IGraphQLFieldType
+    public class GraphQLObject : IGraphQLObject, IGraphQLFieldType
     {
         public IGraphQLFieldType this[string name]
         {

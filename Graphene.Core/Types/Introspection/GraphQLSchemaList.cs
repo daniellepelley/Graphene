@@ -1,6 +1,6 @@
 namespace Graphene.Core.Types.Introspection
 {
-    public class GraphQLList<T>
+    public class GraphQLSchemaList<T>
     {
     }
 }

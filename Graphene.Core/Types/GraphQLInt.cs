@@ -1,6 +1,6 @@
 namespace Graphene.Core.Types
 {
-    public class GraphQLInt : GraphQLScalar, IGraphQLType
+    public class GraphQLInt : GraphQLScalarBase, IGraphQLType
     {
         public string Name
         {

@@ -1,10 +1,9 @@
 using System.Linq;
 using System.Runtime.Remoting.Messaging;
-using Graphene.Core.FieldTypes;
 
 namespace Graphene.Core.Types.Introspection
 {
-    public class __Type : GraphQLObjectType
+    public class __Type : GraphQLObject
     {
         private readonly IGraphQLType[] _types;
 
@@ -28,18 +27,18 @@ namespace Graphene.Core.Types.Introspection
 
             Fields = new IGraphQLFieldType[]
             {
-                new GraphQLFieldScalarType
+                new GraphQLScalar
                 {
                     Name = "kind",
                     Description = "The type that query operations will be rooted at.",
                     Resolve = context => ((IGraphQLType)context.Source).Kind
                 },
-                new GraphQLFieldScalarType
+                new GraphQLScalar
                 {
                     Name = "name",
                     Resolve = context => ((IGraphQLType)context.Source).Name
                 },
-                new GraphQLFieldScalarType
+                new GraphQLScalar
                 {
                     Name = "description",
                     Resolve = context => ((IGraphQLType)context.Source).Description
@@ -47,34 +46,34 @@ namespace Graphene.Core.Types.Introspection
                 new GraphQLSchemaFieldType
                 {
                     Name = "fields",
-                    OfType = typeof (GraphQLList<GraphQLNonNull<__Field>>),
+                    OfType = typeof (GraphQLSchemaList<GraphQLNonNull<__Field>>),
                     Args = "includeDeprecated: { type: GraphQLBoolean, defaultValue: false }",
                     Resolve = schema => string.Empty
                 },
                 new GraphQLSchemaFieldType
                 {
                     Name = "interfaces",
-                    OfType = typeof (GraphQLList<GraphQLNonNull<__Type>>),
+                    OfType = typeof (GraphQLSchemaList<GraphQLNonNull<__Type>>),
                     Resolve = schema => string.Empty
                 },
                 new GraphQLSchemaFieldType
                 {
                     Name = "possibleTypes",
-                    OfType = typeof (GraphQLList<GraphQLNonNull<__Type>>),
+                    OfType = typeof (GraphQLSchemaList<GraphQLNonNull<__Type>>),
                     Resolve = schema => string.Empty
                 },
                 new GraphQLSchemaFieldType
                 {
                     Name = "possibleTypes",
                     Args = "includeDeprecated: { type: GraphQLBoolean, defaultValue: false }",
-                    OfType = typeof (GraphQLList<GraphQLNonNull<__EnumValue>>),
+                    OfType = typeof (GraphQLSchemaList<GraphQLNonNull<__EnumValue>>),
                     Resolve = schema => string.Empty
                 },
                 new GraphQLSchemaFieldType
                 {
                     Name = "inputFields",
                     Args = "includeDeprecated: { type: GraphQLBoolean, defaultValue: false }",
-                    OfType = typeof (GraphQLList<GraphQLNonNull<__InputValue>>),
+                    OfType = typeof (GraphQLSchemaList<GraphQLNonNull<__InputValue>>),
                     Resolve = schema => string.Empty
                 }
             }.ToList();

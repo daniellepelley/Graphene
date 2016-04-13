@@ -8,33 +8,33 @@ namespace Graphene.Core.Types.Introspection
 {
     //public class IntrospectionTypeWrapper : ScalarType
     //{
-    //    public IntrospectionTypeWrapper(ScalarType graphQLObjectType)
+    //    public IntrospectionTypeWrapper(ScalarType GraphQLObject)
     //    {
     //        Fields = new IGraphQLFieldType[]
     //        {
-    //            new GraphQLFieldScalarType
+    //            new GraphQLScalar
     //            {
     //                Name = "kind",
     //                Description = "The type that query operations will be rooted at.",
     //                //OfType = new GraphQLNonNull<__TypeKind>>(),
-    //                Resolve = context => graphQLObjectType.Kind
+    //                Resolve = context => GraphQLObject.Kind
     //            },
-    //            new GraphQLFieldScalarType
+    //            new GraphQLScalar
     //            {
     //                Name = "name",
     //                //OfType = typeof (GraphQLString),
-    //                Resolve = context => graphQLObjectType.Name
+    //                Resolve = context => GraphQLObject.Name
     //            },
-    //            new GraphQLFieldScalarType
+    //            new GraphQLScalar
     //            {
     //                Name = "description",
     //                //OfType = typeof (GraphQLString),
-    //                Resolve = context => graphQLObjectType.Description
+    //                Resolve = context => GraphQLObject.Description
     //            },
     //            new GraphQLSchemaFieldType
     //            {
     //                Name = "fields",
-    //                OfType = typeof (GraphQLList<GraphQLNonNull<__Field>>),
+    //                OfType = typeof (GraphQLSchemaList<GraphQLNonNull<__Field>>),
     //                Args = "includeDeprecated: { type: GraphQLBoolean, defaultValue: false }",
     //                Resolve = schema => string.Empty
     //            }

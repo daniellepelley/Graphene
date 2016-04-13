@@ -1,8 +1,6 @@
-using Graphene.Core.FieldTypes;
-
 namespace Graphene.Core.Types.Introspection
 {
-    public class __EnumValue : IGraphObjectType
+    public class __EnumValue : IGraphQLObject
     {
         public string Kind { get; private set; }
 
