@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using Graphene.Core.FieldTypes;
 using Graphene.Core.Model;
 using Graphene.Core.Parsers;
 using Graphene.Core.Types;
@@ -51,6 +52,8 @@ namespace Graphene.Test.Execution
 
         private static GraphQLSchema CreateGraphQLSchema()
         {
+            return TestSchemas.UserSchema();
+
             var schema = new GraphQLSchema
             {
                 Query = new GraphQLObjectType
@@ -78,12 +81,12 @@ namespace Graphene.Test.Execution
                                 new GraphQLFieldScalarType
                                 {
                                     Name = "Id",
-                                    Resolve = context => ((TestUser) context.Source).Id
+                                    Resolve = context => ((Boss) context.Source).Id
                                 },
                                 new GraphQLFieldScalarType
                                 {
                                     Name = "Name",
-                                    Resolve = context => ((TestUser) context.Source).Name
+                                    Resolve = context => ((Boss) context.Source).Name
                                 }
                             }.ToList()
                         }

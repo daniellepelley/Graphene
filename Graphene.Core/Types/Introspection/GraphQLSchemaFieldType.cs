@@ -1,4 +1,5 @@
 using System;
+using Graphene.Core.FieldTypes;
 
 namespace Graphene.Core.Types.Introspection
 {
@@ -6,7 +7,13 @@ namespace Graphene.Core.Types.Introspection
     {
         public string Name { get; set; }
         public string Description { get; set; }
-        IGraphQLType IGraphQLFieldType.OfType { get; set; }
+        string[] IGraphQLFieldType.OfType { get; set; }
+
+        public IGraphQLFieldType this[string name]
+        {
+            get { throw new NotImplementedException(); }
+        }
+
         public object ResolveToObject(ResolveObjectContext context)
         {
             return Resolve(context.Schema);

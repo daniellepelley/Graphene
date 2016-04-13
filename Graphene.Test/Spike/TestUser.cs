@@ -6,7 +6,13 @@ namespace Graphene.Test.Spike
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public TestUser Boss { get; set; }
+        public Boss Boss { get; set; }
+    }
+
+    public class Boss
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
     }
 
     public static class Data
@@ -27,7 +33,21 @@ namespace Graphene.Test.Spike
             {
                 Id = testUserDatabase.Id,
                 Name = testUserDatabase.Firstname + "_" + testUserDatabase.Lastname,
-                Boss = Map(testUserDatabase.Boss)
+                Boss = MapBoss(testUserDatabase.Boss)
+            };
+        }
+
+        private static Boss MapBoss(TestUserDatabase testUserDatabase)
+        {
+            if (testUserDatabase == null)
+            {
+                return null;
+            }
+
+            return new Boss
+            {
+                Id = testUserDatabase.Id,
+                Name = testUserDatabase.Firstname + "_" + testUserDatabase.Lastname,
             };
         }
 

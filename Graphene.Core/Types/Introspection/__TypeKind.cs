@@ -1,3 +1,5 @@
+using Graphene.Core.FieldTypes;
+
 namespace Graphene.Core.Types.Introspection
 {
     public class __TypeKind : IGraphObjectType
@@ -57,5 +59,9 @@ namespace Graphene.Core.Types.Introspection
         //    description: 'Indicates this type is a non-null. ' +
         //                 '`ofType` is a valid field.'
         //  },
+        public IGraphQLFieldType this[string name]
+        {
+            get { throw new System.NotImplementedException(); }
+        }
     }
 }

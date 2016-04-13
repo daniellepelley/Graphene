@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using Graphene.Core.FieldTypes;
 using Graphene.Core.Model;
 using Graphene.Core.Parsers;
 using Graphene.Core.Types;
@@ -31,22 +32,22 @@ namespace Graphene.Test.Execution
         [Test]
         public void WhenArgumentIsNotFound()
         {
-            AssertArgumentTypeHandling(new GraphQLString(), "1", "Argument 'id' has invalid value 1. Expected type 'String'");
+            AssertArgumentTypeHandling("GraphQLString", "1", "Argument 'id' has invalid value 1. Expected type 'String'");
         }
 
         [Test]
         public void WhenArgumentIsNotFound2()
         {
-            AssertArgumentTypeHandling(new GraphQLString(), "2", "Argument 'id' has invalid value 2. Expected type 'String'");
+            AssertArgumentTypeHandling("GraphQLString", "2", "Argument 'id' has invalid value 2. Expected type 'String'");
         }
 
         [Test]
         public void WhenArgumentIsNotFound3()
         {
-            AssertArgumentTypeHandling(new GraphQLInt(), @"""42""", "Argument 'id' has invalid value 42. Expected type 'Int'");
+            AssertArgumentTypeHandling("GraphQLInt", @"""42""", "Argument 'id' has invalid value 42. Expected type 'Int'");
         }
 
-        private void AssertArgumentTypeHandling(IGraphQLType graphQLType, string queryValue, string expectedErrorMessage)
+        private void AssertArgumentTypeHandling(string graphQLType, string queryValue, string expectedErrorMessage)
         {
             var sut = new ExecutionEngine();
 
@@ -54,7 +55,7 @@ namespace Graphene.Test.Execution
                     new GraphQLFieldScalarType
                     {
                         Name = "id",
-                        OfType = graphQLType
+                        OfType = new[] { graphQLType }
                     }});
 
             var query = "{user(id:" + queryValue + ") {id, name}}";

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Graphene.Core.FieldTypes;
 
 namespace Graphene.Core.Types
 {
@@ -18,7 +19,7 @@ namespace Graphene.Core.Types
 
         public string Name { get; set; }
         public string Description { get; set; }
-        public IGraphQLType OfType { get; set; }
+        public string[] OfType { get; set; }
         public virtual object ResolveToObject(ResolveObjectContext context)
         {
             return Resolve(context);

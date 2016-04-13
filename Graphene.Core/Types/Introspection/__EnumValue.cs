@@ -1,3 +1,5 @@
+using Graphene.Core.FieldTypes;
+
 namespace Graphene.Core.Types.Introspection
 {
     public class __EnumValue : IGraphObjectType
@@ -51,6 +53,11 @@ namespace Graphene.Core.Types.Introspection
                     }
                 };
             }
+        }
+
+        public IGraphQLFieldType this[string name]
+        {
+            get { throw new System.NotImplementedException(); }
         }
     }
 }

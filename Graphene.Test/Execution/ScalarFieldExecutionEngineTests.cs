@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using Graphene.Core;
+using Graphene.Core.FieldTypes;
 using Graphene.Core.Model;
 using Graphene.Core.Parsers;
 using Graphene.Core.Types;

@@ -45,6 +45,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FieldTypes\GraphQLFieldScalarType.cs" />
+    <Compile Include="FieldTypes\IGraphQLFieldType.cs" />
     <Compile Include="GraphQLException.cs" />
     <Compile Include="Lexer\GraphQLLexerFeed.cs" />
     <Compile Include="Lexer\IGraphQLLexerFeed.cs" />
@@ -79,7 +81,7 @@
     <Compile Include="ResolveFieldContext.cs" />
     <Compile Include="Types\Extensions.cs" />
     <Compile Include="Types\GraphQLBoolean.cs" />
-    <Compile Include="Types\GraphQLFieldObjectType.cs" />
+    <Compile Include="FieldTypes\GraphQLFieldObjectType.cs" />
     <Compile Include="Types\GraphQLFloat.cs" />
     <Compile Include="Types\GraphQLId.cs" />
     <Compile Include="Types\GraphQLInt.cs" />

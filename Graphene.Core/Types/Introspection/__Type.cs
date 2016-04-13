@@ -1,5 +1,6 @@
 using System.Linq;
 using System.Runtime.Remoting.Messaging;
+using Graphene.Core.FieldTypes;
 
 namespace Graphene.Core.Types.Introspection
 {

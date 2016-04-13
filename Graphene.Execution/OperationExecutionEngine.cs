@@ -71,7 +71,7 @@ namespace Graphene.Execution
                     {
                         var value = argumentsDictionary[argument.Name];
 
-                        if (argument.OfType is GraphQLString)
+                        if (argument.OfType.Contains("GraphQLString"))
                         {
                             var str = value as string;
                             if (string.IsNullOrEmpty(str))
@@ -80,7 +80,7 @@ namespace Graphene.Execution
                                     string.Format(@"Argument 'id' has invalid value {0}. Expected type 'String'", value));
                             }
                         }
-                        else if (argument.OfType is GraphQLInt)
+                        else if (argument.OfType.Contains("GraphQLInt"))
                         {
                             if (!(value is int))
                             {

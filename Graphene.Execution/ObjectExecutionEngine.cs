@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Graphene.Core;
+using Graphene.Core.FieldTypes;
 using Graphene.Core.Model;
 using Graphene.Core.Types;
 
@@ -16,20 +17,25 @@ namespace Graphene.Execution
             var enumerable = returnValue as IEnumerable;
             if (enumerable != null)
             {
-                var output = new List<Dictionary<string, object>>();
-                foreach (var item in enumerable)
-                {
-                    var newObjectContext  = objectContext.Clone();
-                    newObjectContext.Source = item;
-                    output.Add(GetFieldValues(newObjectContext));
-                }
-
-                return output;
+                return ProcessEnumerable(objectContext, enumerable);
             }
 
             var singleObjectContext = objectContext.Clone();
             singleObjectContext.Source = returnValue;
             return GetFieldValues(singleObjectContext);
+        }
+
+        private object ProcessEnumerable(ResolveObjectContext objectContext, IEnumerable enumerable)
+        {
+            var output = new List<Dictionary<string, object>>();
+            foreach (var item in enumerable)
+            {
+                var newObjectContext = objectContext.Clone();
+                newObjectContext.Source = item;
+                output.Add(GetFieldValues(newObjectContext));
+            }
+
+            return output;
         }
 
         private Dictionary<string, object> GetFieldValues(ResolveObjectContext objectContext)
