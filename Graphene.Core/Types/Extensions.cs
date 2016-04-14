@@ -9,17 +9,17 @@ namespace Graphene.Core.Types
 {
     public static class Extensions
     {
-        public static GraphQLObject AsIntrospective(this IGraphQLFieldType source)
+        public static GraphQLObject AsIntrospective(this IGraphQLObject source)
         {
             var fields = new IGraphQLFieldType[]
             {
-                new GraphQLScalar
+                new GraphQLScalar<object, object>
                 {
                     Name = "name",
                     OfType = new[] {"GraphQLString"},
                     Resolve = context => source.Name
                 },
-                new GraphQLScalar
+                new GraphQLScalar<object, object>
                 {
                     Name = "description",
                     OfType = new[] {"GraphQLString"},
@@ -27,32 +27,32 @@ namespace Graphene.Core.Types
                 }
             }.ToList();
 
-            //if (source is GraphQLObject)
-            //{
-            //    fields.Add(new GraphQLObject
-            //    {
-            //        Name = "fields",
-            //        OfType = new[] {"GraphQLSchemaList", "__Field"},
-            //        Fields = new List<IGraphQLFieldType>
-            //        {
-            //            new GraphQLScalar
-            //            {
-            //                Name = "name",
-            //                OfType = new[] {"GraphQLString"},
-            //                Resolve = Resolve
-            //            },                    
-            //        },
-            //        Resolve = context => ((GraphQLObject)context.Source).Fields
-            //    });
+            if (source is GraphQLObject)
+            {
+                fields.Add(new GraphQLObject
+                {
+                    Name = "fields",
+                    OfType = new[] { "GraphQLSchemaList", "__Field" },
+                    Fields = new List<IGraphQLFieldType>
+                    {
+                        new GraphQLScalar<object, object>
+                        {
+                            Name = "name",
+                            OfType = new[] {"GraphQLString"},
+                            Resolve = Resolve
+                        },                    
+                    },
+                    Resolve = context => ((GraphQLObject)context.Source).Fields
+                });
 
-            //    fields.Add(new GraphQLScalar
-            //    {
-            //        Name = "kind",
-            //        Description = "The type that query operations will be rooted at.",
-            //        OfType = new[] {"GraphQLNonNull", "__TypeKind"},
-            //        Resolve = context => ((GraphQLObject)source).Kind
-            //    });
-            //}
+                fields.Add(new GraphQLScalar<object, object>
+                {
+                    Name = "kind",
+                    Description = "The type that query operations will be rooted at.",
+                    OfType = new[] { "GraphQLNonNull", "__TypeKind" },
+                    Resolve = context => ((GraphQLObject)source).Kind
+                });
+            }
 
             return new GraphQLObject
             {
@@ -66,7 +66,7 @@ namespace Graphene.Core.Types
             {
                 return ((GraphQLObject) context.Source)[context.FieldName];
             }
-            return ((GraphQLScalar) context.Source).Name;
+            return ((GraphQLScalar<object, object>)context.Source).Name;
         }
     }
 }

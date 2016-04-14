@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace Graphene.Core.Types.Introspection
 {
-    public class __Schema : GraphQLObject
+    public class __Schema : GraphQLObject<GraphQLSchema>
     {
         private GraphQLSchema _schema;
 
@@ -20,42 +20,54 @@ namespace Graphene.Core.Types.Introspection
                           "exposes all available types and directives on the server, as well as " +
                           "the entry points for query, mutation, and subscription operations.";
 
-            Fields = new List<IGraphQLFieldType>(new IGraphQLFieldType[]
+            Fields = new IGraphQLFieldType[]
             {
-                new GraphQLObject
+                new GraphQLObject<GraphQLSchema, GraphQLObjectBase>
                 {
                     Name = "queryType",
                     Description = "The type that query operations will be rooted at.",
                     OfType = new[] { "GraphQLNonNull", "__Type" },
                     Fields = new IGraphQLFieldType[]
                     {
-                        new GraphQLScalar
+                        new GraphQLScalar<GraphQLObjectBase, string>
                         {
                             Name = "kind",
                             Description = "The type that query operations will be rooted at.",
                             OfType = new[] { "GraphQLNonNull", "__TypeKind" },
-                            Resolve = context => _schema.Query.Kind
+                            Resolve = context => context.Source.Kind
                         },
-                        new GraphQLScalar
+                        new GraphQLScalar<GraphQLObjectBase, string>
                         {
                             Name = "name",
                             OfType = new[] {"GraphQLString" },
-                            Resolve = context => _schema.Query.Name
+                            Resolve = context => context.Source.Name
                         },
-                        new GraphQLObject
+                        new GraphQLList<GraphQLObjectBase, IGraphQLFieldType>
                         {
                             Name = "fields",
                             OfType = new[] {"GraphQLSchemaList", "__Field"},
                             Fields = new List<IGraphQLFieldType>
                             {
-                                new GraphQLScalar
+                                new GraphQLScalar<IGraphQLFieldType, string>
                                 {
                                     Name = "name",
                                     OfType = new[] {"GraphQLString"},
-                                    Resolve = ResolveName
-                                }                  
+                                    Resolve = context => context.Source.Name
+                                },
+                                new GraphQLScalar<IGraphQLFieldType, string>
+                                {
+                                    Name = "description",
+                                    OfType = new[] {"GraphQLString"},
+                                    Resolve = context => context.Source.Description
+                                },
+                                new GraphQLScalar<IGraphQLFieldType, string>
+                                {
+                                    Name = "kind",
+                                    OfType = new[] {"GraphQLString"},
+                                    Resolve = context => context.Source.Kind
+                                }   
                             },
-                            Resolve = context => ((GraphQLObject)context.Source).Fields
+                            Resolve = context => context.Source.Fields
                         }
                     }.ToList(),
                     Resolve = context => schema.Query
@@ -83,17 +95,8 @@ namespace Graphene.Core.Types.Introspection
                     OfType = new [] { "GraphQLNonNull", "__Type"},
                     Resolve = context => schema.GetDirectives()
                 }
-            });
+            }.ToList();
             Resolve = context => _schema;
-        }
-
-        private static object ResolveName(ResolveFieldContext<object> context)
-        {
-            if (context.Source is GraphQLObject)
-            {
-                return ((GraphQLObject)context.Source)[context.FieldName];
-            }
-            return ((GraphQLScalar)context.Source).Name;
         }
     }
 }

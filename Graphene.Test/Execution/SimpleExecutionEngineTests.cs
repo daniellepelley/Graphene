@@ -91,12 +91,12 @@ namespace Graphene.Test.Execution
             Assert.AreEqual(expected, result);
         }
 
-        private static object Execute(ExecutionEngine sut, GraphQLSchema schema, Document document)
+        private static object Execute(ExecutionEngine sut, IGraphQLSchema schema, Document document)
         {
             return JsonConvert.SerializeObject(sut.Execute(schema, document));
         }
 
-        private static GraphQLSchema CreateGraphQLSchema()
+        private static IGraphQLSchema CreateGraphQLSchema()
         {
             return TestSchemas.UserSchema();
         }

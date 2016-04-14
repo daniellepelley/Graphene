@@ -25,8 +25,10 @@ namespace Graphene.Core.Execution
         public override KeyValuePair<string, object> Execute()
         {
             var input = _getInput();
-            var context = new ResolveFieldContext<TInput>();
-            context.Source = input;
+            var context = new ResolveFieldContext<TInput>
+            {
+                Source = input
+            };
             return new KeyValuePair<string, object>(_fieldName, _func(context));
         }
     }

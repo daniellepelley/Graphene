@@ -3,10 +3,10 @@ using Graphene.Core.Execution;
 
 namespace Graphene.Core.Types
 {
-    public class GraphQLScalar : GraphQLScalar<object, object>
-    {
+    //public class GraphQLScalar : GraphQLScalar<object, object>
+    //{
 
-    }
+    //}
 
     public abstract class GraphQLScalar<TInput>
     {

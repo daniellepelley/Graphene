@@ -21,7 +21,7 @@ namespace Graphene.Test.Execution_Tree
                     Name = "Dan"
                 });
 
-            var sut = new ExecutionRoot<TestUser>("user", new Dictionary<string, object>(), getter);
+            var sut = new ExecutionBranch<TestUser>("user", new Dictionary<string, object>(), getter);
             
             var scalar1 = new GraphQLScalar<TestUser, string>
             {
@@ -62,7 +62,7 @@ namespace Graphene.Test.Execution_Tree
                     }
                 });
 
-            var generator = new ExecutionRoot<TestUser>("user", new Dictionary<string, object>(), getter);
+            var generator = new ExecutionBranch<TestUser>("user", new Dictionary<string, object>(), getter);
 
             var scalar1 = new GraphQLScalar<TestUser, string>
             {

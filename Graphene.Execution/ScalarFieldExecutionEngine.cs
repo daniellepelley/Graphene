@@ -15,9 +15,9 @@ namespace Graphene.Execution
             return graphQLType.ToExecutionNode(getInput);
         }
 
-        public ExecutionRoot Build(GraphQLObjectBase graphQLType, Selection[] selections, IDictionary<string, object> arguments)
+        public ExecutionBranch Build(IToExecutionBranch graphQLType, Selection[] selections, IDictionary<string, object> arguments)
         {
-            var generator = graphQLType.ToExecutionRoot(selections.ToArray(), arguments);
+            var generator = graphQLType.ToExecutionBranch(selections.ToArray(), arguments);
             return generator;
         }
     }

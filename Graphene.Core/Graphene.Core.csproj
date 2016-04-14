@@ -45,11 +45,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Execution\ExecutionRoot.cs" />
+    <Compile Include="Execution\ExecutionBranch.cs" />
+    <Compile Include="Execution\ExecutionTree.cs" />
     <Compile Include="Execution\ExecutionNode.cs" />
     <Compile Include="Execution\IExecutionItem.cs" />
     <Compile Include="IResolveContext.cs" />
     <Compile Include="ResolveObjectContext.cs" />
+    <Compile Include="Types\GraphQLObjectBase.cs" />
     <Compile Include="Types\GraphQLScalar.cs" />
     <Compile Include="Types\IGraphQLFieldType.cs" />
     <Compile Include="GraphQLException.cs" />

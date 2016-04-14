@@ -1,10 +1,7 @@
-using System;
-using System.Linq;
 using Graphene.Core.Model;
 using Graphene.Core.Parsers;
 using Graphene.Core.Types;
 using Graphene.Execution;
-using Graphene.Test.Spike;
 using Newtonsoft.Json;
 using NUnit.Framework;
 
@@ -44,55 +41,14 @@ namespace Graphene.Test.Execution
             Assert.AreEqual(expected, result);
         }
 
-        private static object Execute(ExecutionEngine sut, GraphQLSchema schema, Document document)
+        private static object Execute(ExecutionEngine sut, IGraphQLSchema schema, Document document)
         {
             return JsonConvert.SerializeObject(sut.Execute(schema, document));
         }
 
-        private static GraphQLSchema CreateGraphQLSchema()
+        private static IGraphQLSchema CreateGraphQLSchema()
         {
             return TestSchemas.UserSchema();
-
-            var schema = new GraphQLSchema
-            {
-                Query = new GraphQLObject<object>
-                {
-                    Name = "user",
-                    Resolve = context => Data.GetData().Where(x => !context.Arguments.ContainsKey("Id") || x.Id == Convert.ToInt32(context.Arguments["Id"])),
-                    Fields = new IGraphQLFieldType[]
-                    {
-                        new GraphQLScalar
-                        {
-                            Name = "Id",
-                            Resolve = context => ((TestUser) context.Source).Id
-                        },
-                        new GraphQLScalar
-                        {
-                            Name = "Name",
-                            Resolve = context => ((TestUser) context.Source).Name
-                        },
-                        new GraphQLObject
-                        {
-                            Name = "Boss",
-                            Resolve = context => ((TestUser) context.Source).Boss,
-                            Fields = new IGraphQLFieldType[]
-                            {
-                                new GraphQLScalar
-                                {
-                                    Name = "Id",
-                                    Resolve = context => ((Boss) context.Source).Id
-                                },
-                                new GraphQLScalar
-                                {
-                                    Name = "Name",
-                                    Resolve = context => ((Boss) context.Source).Name
-                                }
-                            }.ToList()
-                        }
-                    }.ToList()
-                }
-            };
-            return schema;
         }
     }
 }

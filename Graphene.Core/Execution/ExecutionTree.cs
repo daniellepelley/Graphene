@@ -4,39 +4,48 @@ using System.Linq;
 
 namespace Graphene.Core.Execution
 {
-    public class ExecutionBranch<TInput, TOutput> : ExecutionRoot
+    public class ExecutionBranchList<TInput, TOutput> : ExecutionBranch
     {
-        private Func<ResolveObjectContext<TInput>, TOutput> _func;
-        private Func<TInput> _getInput;
+        private IEnumerable<TOutput> _values;
         private TOutput _value;
+        private readonly Func<TInput> _getInput;
+        private readonly Func<ResolveObjectContext<TInput>, IEnumerable<TOutput>> _func;
 
         public TOutput GetOutput()
         {
             return _value;
         }
 
-        public ExecutionBranch(string fieldName, Func<ResolveObjectContext<TInput>, TOutput> func, Func<TInput> getInput)
+        public ExecutionBranchList(string fieldName, Func<ResolveObjectContext<TInput>, IEnumerable<TOutput>> func, Func<TInput> getInput)
         {
-            _getInput = getInput;
+            FieldName = fieldName;
             _func = func;
-            _fieldName = fieldName;
+            _getInput = getInput;
         }
 
         public override KeyValuePair<string, object> Execute()
         {
-            var input = _getInput();
-            var context = new ResolveObjectContext<TInput>();
-            context.Source = input;
-            context.Arguments = new Dictionary<string, object>
+            var parent = _getInput();
+            var context = new ResolveObjectContext<TInput>
             {
-                { "Id", 1 }
+                Source = parent
             };
-            _value = _func(context);
-            return base.Execute();
+
+            _values = _func(context);
+            
+            var list = new List<object>();
+
+            foreach (var value in _values)
+            {
+                _value = value;
+                list.Add(base.Execute().Value);
+            }
+
+            return new KeyValuePair<string, object>(FieldName, list);
         }
     }
 
-    public class ExecutionRoot<TOutput> : ExecutionRoot
+    public class ExecutionBranch<TOutput> : ExecutionBranch
     {
         private readonly Func<ResolveObjectContext, TOutput> _getter;
         private TOutput _value;
@@ -47,10 +56,10 @@ namespace Graphene.Core.Execution
             return _value;
         }
 
-        public ExecutionRoot(string fieldName, IDictionary<string, object> arguments, Func<ResolveObjectContext, TOutput> getter)
+        public ExecutionBranch(string fieldName, IDictionary<string, object> arguments, Func<ResolveObjectContext, TOutput> getter)
         {
             _arguments = arguments;
-            _fieldName = fieldName;
+            FieldName = fieldName;
             _getter = getter;
         }
 
@@ -65,9 +74,9 @@ namespace Graphene.Core.Execution
         }
     }
 
-    public abstract class ExecutionRoot : IExecutionItem
+    public abstract class ExecutionBranch : IExecutionItem
     {
-        protected string _fieldName;
+        protected string FieldName;
 
         private readonly List<IExecutionItem> _nodes = new List<IExecutionItem>();
         
@@ -81,7 +90,7 @@ namespace Graphene.Core.Execution
             var value = _nodes.Select(x => x.Execute())
                 .ToDictionary(x => x.Key, x => x.Value); 
            
-            return new KeyValuePair<string, object>(_fieldName, value);
+            return new KeyValuePair<string, object>(FieldName, value);
         }
     }
 }

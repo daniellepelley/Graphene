@@ -32,11 +32,11 @@ namespace Graphene.Execution
 
             Validate(operation.Selections, schema.Query);
 
-            var executionBranch = new ExecutionNodeBuilder().Build(schema.Query, operation.Selections, argumentsDictionary);
+            var executionBranch = new ExecutionNodeBuilder().Build(schema.Query as IToExecutionBranch, operation.Selections, argumentsDictionary);
             return executionBranch.Execute().Value;
         }
 
-        private void Validate(Selection[] selections, IGraphQLObject fieldType)
+        private void Validate(Selection[] selections, GraphQLObjectBase fieldType)
         {
             foreach (var selection in selections)
             {
@@ -49,7 +49,7 @@ namespace Graphene.Execution
 
                 if (field is IGraphQLObject)
                 {
-                    Validate(selection.Field.Selections, (IGraphQLObject)field);
+                    Validate(selection.Field.Selections, (GraphQLObjectBase)field);
                 }
             }
         }

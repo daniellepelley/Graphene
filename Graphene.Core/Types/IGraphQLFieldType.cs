@@ -15,16 +15,6 @@ namespace Graphene.Core.Types
 
     public interface IInputField<TInput> : IGraphQLFieldType
     {
-        ExecutionRoot ToExecutionBranch(Selection[] selections, Func<TInput> getInput);
+        ExecutionBranch ToExecutionBranch(Selection[] selections, Func<TInput> getInput);
     }
-
-    //public interface IOutputField<TOutput> : IGraphQLFieldType
-    //{
-    //    ExecutionRoot ToExecutionBranch(Selection[] selections, Func<TOutput> getInput);
-    //}
-
-    //public interface IGraphQLFieldType<TInput, TOutput> : IGraphQLFieldType<TInput>
-    //{
-
-    //}
 }

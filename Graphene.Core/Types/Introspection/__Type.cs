@@ -3,7 +3,7 @@ using System.Runtime.Remoting.Messaging;
 
 namespace Graphene.Core.Types.Introspection
 {
-    public class __Type : GraphQLObject
+    public class __Type : GraphQLObject<IGraphQLType>
     {
         private readonly IGraphQLType[] _types;
 
@@ -27,21 +27,21 @@ namespace Graphene.Core.Types.Introspection
 
             Fields = new IGraphQLFieldType[]
             {
-                new GraphQLScalar
+                new GraphQLScalar<IGraphQLType, object>
                 {
                     Name = "kind",
                     Description = "The type that query operations will be rooted at.",
-                    Resolve = context => ((IGraphQLType)context.Source).Kind
+                    Resolve = context => context.Source.Kind
                 },
-                new GraphQLScalar
+                new GraphQLScalar<IGraphQLType, object>
                 {
                     Name = "name",
-                    Resolve = context => ((IGraphQLType)context.Source).Name
+                    Resolve = context => context.Source.Name
                 },
-                new GraphQLScalar
+                new GraphQLScalar<IGraphQLType, object>
                 {
                     Name = "description",
-                    Resolve = context => ((IGraphQLType)context.Source).Description
+                    Resolve = context => context.Source.Description
                 },
                 new GraphQLSchemaFieldType
                 {
