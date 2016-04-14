@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Graphene.Core.Types;
 
-namespace Graphene.Execution
+namespace Graphene.Core.Execution
 {
     public abstract class ExecutionNode : IExecutionItem
     {
@@ -12,7 +12,7 @@ namespace Graphene.Execution
     public class ExecutionNode<TInput, TOutput> : ExecutionNode
     {
         private readonly string _fieldName;
-        private readonly Func<TInput, TOutput> _func;
+        private readonly Func<ResolveFieldContext<TInput>, TOutput> _func;
         private readonly Func<TInput> _getInput;
 
         public ExecutionNode(GraphQLScalar<TInput, TOutput> scalar, Func<TInput> getInput)
@@ -25,7 +25,9 @@ namespace Graphene.Execution
         public override KeyValuePair<string, object> Execute()
         {
             var input = _getInput();
-            return new KeyValuePair<string, object>(_fieldName, _func(input));
+            var context = new ResolveFieldContext<TInput>();
+            context.Source = input;
+            return new KeyValuePair<string, object>(_fieldName, _func(context));
         }
     }
 }

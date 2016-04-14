@@ -12,8 +12,8 @@ namespace Graphene.Execution
     public class ExecuteScalarCommand
     {
         public string Name { get; set; }
-        public ResolveFieldContext ResolveFieldContext { get; set; }
-        public Func<ResolveFieldContext, object> Func { get; set; }
+        public ResolveFieldContext<object> ResolveFieldContext { get; set; }
+        public Func<ResolveFieldContext<object>, object> Func { get; set; }
 
         public object Execute()
         {

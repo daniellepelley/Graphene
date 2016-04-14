@@ -23,7 +23,7 @@ namespace Graphene.Test.Execution
             var document = new DocumentParser().Parse(query);
 
             var expected =
-                @"{""data"":[{""Id"":1,""Name"":""Dan_Smith"",""Boss"":{""Id"":4,""Name"":""Boss_Smith""}}]}";
+                @"{""data"":{""Id"":1,""Name"":""Dan_Smith"",""Boss"":{""Id"":4,""Name"":""Boss_Smith""}}}";
             var result = Execute(sut, schema, document);
             Assert.AreEqual(expected, result);
         }
@@ -39,7 +39,7 @@ namespace Graphene.Test.Execution
             var document = new DocumentParser().Parse(query);
 
             var expected =
-                @"{""data"":[{""Name"":""Dan_Smith"",""Boss"":{""Name"":""Boss_Smith""}}]}";
+                @"{""data"":{""Name"":""Dan_Smith"",""Boss"":{""Name"":""Boss_Smith""}}}";
             var result = Execute(sut, schema, document);
             Assert.AreEqual(expected, result);
         }
@@ -55,7 +55,7 @@ namespace Graphene.Test.Execution
 
             var schema = new GraphQLSchema
             {
-                Query = new GraphQLObject
+                Query = new GraphQLObject<object>
                 {
                     Name = "user",
                     Resolve = context => Data.GetData().Where(x => !context.Arguments.ContainsKey("Id") || x.Id == Convert.ToInt32(context.Arguments["Id"])),

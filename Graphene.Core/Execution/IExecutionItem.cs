@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Graphene.Execution
+namespace Graphene.Core.Execution
 {
     public interface IExecutionItem
     {

@@ -1,10 +1,7 @@
-using System.Collections.Generic;
 using System.Linq;
 using Graphene.Core.Model;
 using Graphene.Core.Parsers;
-using Graphene.Core.Types;
 using Graphene.Execution;
-using Graphene.Schema;
 using Graphene.Spike;
 using Newtonsoft.Json;
 using NUnit.Framework;

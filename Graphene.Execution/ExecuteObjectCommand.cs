@@ -5,8 +5,8 @@ namespace Graphene.Execution
 {
     public class ExecuteObjectCommand : ExecuteCommand
     {
-        public ResolveObjectContext ResolveObjectContext { get; set; }
-        public Func<ResolveObjectContext, object> Func { get; set; }
+        public ResolveObjectContext<object> ResolveObjectContext { get; set; }
+        public Func<ResolveObjectContext<object>, object> Func { get; set; }
 
         public override object Execute()
         {

@@ -1,5 +1,4 @@
 using System;
-using System.ComponentModel;
 using System.Linq;
 using Graphene.Core.Types;
 using Graphene.Test.Spike;
@@ -11,14 +10,14 @@ namespace Graphene.Test.Execution
     {
         public static GraphQLSchema UserSchema()
         {
-            var type = new SimpleTypeBuilder().Build(typeof (TestUser));
+            var type = new SimpleTypeBuilder().Build(typeof(TestUser));
             type.Name = "user";
             type.Resolve =
-                context =>
-                    Data.GetData()
-                        .Where(
-                            x =>
-                                !context.Arguments.ContainsKey("Id") || x.Id == Convert.ToInt32(context.Arguments["Id"]));
+                context => Data.GetData().First();
+                    //Data.GetData()
+                    //    .Where(
+                    //        x =>
+                    //            !context.Arguments.ContainsKey("Id") || x.Id == Convert.ToInt32(context.Arguments["Id"]));
 
             return new GraphQLSchema
             {
@@ -27,7 +26,7 @@ namespace Graphene.Test.Execution
 
             var schema = new GraphQLSchema
             {
-                Query = new GraphQLObject
+                Query = new GraphQLObject<object>
                 {
                     Name = "user",
                     Resolve = context => Data.GetData().Where(x => !context.Arguments.ContainsKey("Id") || x.Id == Convert.ToInt32(context.Arguments["Id"])),

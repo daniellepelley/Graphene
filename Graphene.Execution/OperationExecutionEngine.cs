@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Graphene.Core;
+using Graphene.Core.Execution;
 using Graphene.Core.Model;
 using Graphene.Core.Types;
 
@@ -9,12 +10,12 @@ namespace Graphene.Execution
 {
     public class OperationExecutionEngine : IOperationExecutionEngine
     {
-        private readonly ObjectExecutionEngine _objectExecutionEngine;
+        //private readonly ObjectExecutionEngine _objectExecutionEngine;
 
-        public OperationExecutionEngine()
-        {
-            _objectExecutionEngine = new ObjectExecutionEngine();
-        }
+        //public OperationExecutionEngine()
+        //{
+            //_objectExecutionEngine = new ObjectExecutionEngine();
+        //}
 
         public object Execute(Operation operation, GraphQLSchema schema)
         {
@@ -29,17 +30,30 @@ namespace Graphene.Execution
                 throw new GraphQLException(string.Format("Object {0} does not exist", directive));
             }
 
-            var objectContext = new ResolveObjectContext
-            {
-                Schema = schema,
-                Operation = operation,
-                Arguments = argumentsDictionary,
-                Selections = operation.Selections,
-                ObjectType = schema.Query
-            };
+            Validate(operation.Selections, schema.Query);
 
-            return _objectExecutionEngine.Execute(objectContext);
+            var executionBranch = new ExecutionNodeBuilder().Build(schema.Query, operation.Selections, argumentsDictionary);
+            return executionBranch.Execute().Value;
         }
+
+        private void Validate(Selection[] selections, IGraphQLObject fieldType)
+        {
+            foreach (var selection in selections)
+            {
+                var field = fieldType[selection.Field.Name];
+
+                if (field == null)
+                {
+                    throw new GraphQLException(string.Format("Field {0} does not exist", selection.Field.Name));
+                }
+
+                if (field is IGraphQLObject)
+                {
+                    Validate(selection.Field.Selections, (IGraphQLObject)field);
+                }
+            }
+        }
+
 
         private static Dictionary<string, object> GetArguments(Operation operation)
         {

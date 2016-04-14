@@ -1,13 +1,19 @@
 using System;
+using Graphene.Core.Execution;
 
 namespace Graphene.Core.Types
 {
-    public class GraphQLScalar : GraphQLScalar<ResolveFieldContext, object>
+    public class GraphQLScalar : GraphQLScalar<object, object>
     {
 
     }
 
-    public class GraphQLScalar<TInput, TOutput> : IGraphQLFieldType
+    public abstract class GraphQLScalar<TInput>
+    {
+        public abstract ExecutionNode ToExecutionNode(Func<TInput> getInput);
+    }
+
+    public class GraphQLScalar<TInput, TOutput> : GraphQLScalar<TInput>, IGraphQLFieldType
     {
         public string Name { get; set; }
 
@@ -24,6 +30,11 @@ namespace Graphene.Core.Types
             get { throw new GraphQLException("Can't access field on scalar value"); }
         }
 
-        public Func<TInput, TOutput> Resolve;
+        public Func<ResolveFieldContext<TInput>, TOutput> Resolve;
+
+        public override ExecutionNode ToExecutionNode(Func<TInput> getInput)
+        {
+            return new ExecutionNode<TInput, TOutput>(this, getInput);
+        }
     }
 }

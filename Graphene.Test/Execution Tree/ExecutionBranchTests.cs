@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using Graphene.Core;
+using Graphene.Core.Execution;
 using Graphene.Core.Types;
-using Graphene.Execution;
 using Graphene.Test.Spike;
 using Newtonsoft.Json;
 using NUnit.Framework;
@@ -13,25 +14,25 @@ namespace Graphene.Test.Execution_Tree
         [Test]
         public void ExecutionNodeTest()
         {
-            var getter = new Func<TestUser>(() =>
+            var getter = new Func<ResolveObjectContext, TestUser>(context =>
                 new TestUser
                 {
                     Id = 42,
                     Name = "Dan"
                 });
 
-            var sut = new ExecutionBranch<TestUser>("user", getter);
+            var sut = new ExecutionRoot<TestUser>("user", new Dictionary<string, object>(), getter);
             
             var scalar1 = new GraphQLScalar<TestUser, string>
             {
                 Name = "field1",
-                Resolve = x => x.Name
+                Resolve = x => x.Source.Name
             };
 
             var scalar2 = new GraphQLScalar<TestUser, int>
             {
                 Name = "field2",
-                Resolve = x => x.Id
+                Resolve = x => x.Source.Id
             };
 
             var executionNode1 = scalar1.ToExecutionNode(sut.GetOutput);
@@ -49,7 +50,7 @@ namespace Graphene.Test.Execution_Tree
         [Test]
         public void ExecutionNodeTestNested()
         {
-            var getter = new Func<TestUser>(() =>
+            var getter = new Func<ResolveObjectContext, TestUser>(context =>
                 new TestUser
                 {
                     Id = 42,
@@ -61,27 +62,27 @@ namespace Graphene.Test.Execution_Tree
                     }
                 });
 
-            var generator = new ExecutionBranch<TestUser>("user", getter);
+            var generator = new ExecutionRoot<TestUser>("user", new Dictionary<string, object>(), getter);
 
             var scalar1 = new GraphQLScalar<TestUser, string>
             {
                 Name = "field1",
-                Resolve = x => x.Name
+                Resolve = x => x.Source.Name
             };
 
             var scalar2 = new GraphQLScalar<TestUser, int>
             {
                 Name = "field2",
-                Resolve = x => x.Id
+                Resolve = x => x.Source.Id
             };
 
             var scalar3 = new GraphQLScalar<Boss, string>
             {
                 Name = "field3",
-                Resolve = x => x.Name
+                Resolve = x => x.Source.Name
             };
 
-            var branch = new ExecutionBranch<TestUser, Boss>("boss", testUser => testUser.Boss, generator.GetOutput);
+            var branch = new ExecutionBranch<TestUser, Boss>("boss", context => context.Source.Boss, generator.GetOutput);
 
             var executionNode1 = scalar1.ToExecutionNode(generator.GetOutput);
             var executionNode2 = scalar2.ToExecutionNode(generator.GetOutput);
@@ -101,6 +102,5 @@ namespace Graphene.Test.Execution_Tree
 
             Assert.AreEqual(@"{""user"":{""field1"":""Dan"",""field2"":42,""boss"":{""field3"":""Boss Man""}}}", json);
         }
-
     }
 }

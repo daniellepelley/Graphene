@@ -10,9 +10,9 @@ namespace Graphene.TypeProvider
 {
     public class SimpleTypeBuilder
     {
-        public GraphQLObject Build(Type type)
+        public GraphQLObject<object> Build(Type type)
         {
-            var graphQLObjectType = new GraphQLObject
+            var graphQLObjectType = new GraphQLObject<object>
             {
                 Name = type.Name,
                 Fields = new List<IGraphQLFieldType>()
@@ -28,7 +28,7 @@ namespace Graphene.TypeProvider
             return graphQLObjectType;
         }
 
-        private void MapField(PropertyInfo propertyInfo, GraphQLObject graphQLObject)
+        private void MapField(PropertyInfo propertyInfo, GraphQLObject<object> graphQLObject)
         {
             graphQLObject.Fields.Add(CreateField(propertyInfo));
         }

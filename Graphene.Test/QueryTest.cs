@@ -1,9 +1,6 @@
-﻿using System.Diagnostics;
-using System.Linq;
-using Graphene.Core.Model;
+﻿using System.Linq;
 using Graphene.Core.Parsers;
 using Graphene.Core.Types;
-using Graphene.Execution;
 using NUnit.Framework;
 
 namespace Graphene.Test
@@ -31,7 +28,7 @@ namespace Graphene.Test
 
             var schema = new GraphQLSchema
             {
-                Query = new GraphQLObject
+                Query = new GraphQLObject<object>
                 {
                     Name = "Query",
                     Fields = new IGraphQLFieldType[]

@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using Graphene.Core;
 using Graphene.Core.Model;
 using Graphene.Core.Parsers;
 using Graphene.Core.Types;
@@ -23,7 +24,7 @@ namespace Graphene.Test.Execution
             var document = new DocumentParser().Parse(query); ;
 
             var expected =
-                @"{""data"":[{""id"":1,""name"":""Dan_Smith""}]}";
+                @"{""data"":{""id"":1,""name"":""Dan_Smith""}}";
             var result = Execute(sut, schema, document);
             Assert.AreEqual(expected, result);
         }
@@ -75,11 +76,11 @@ namespace Graphene.Test.Execution
         {
             var schema = new GraphQLSchema
             {
-                Query = new GraphQLObject
+                Query = new GraphQLObject<object>
                 {
                     Name = "user",
                     Arguments = arguments,
-                    Resolve = context => Data.GetData().Where(x => !context.Arguments.ContainsKey("id") || x.Id == Convert.ToInt32(context.Arguments["id"])),
+                    Resolve = Resolve,
                     Fields = new IGraphQLFieldType[]
                     {
                         new GraphQLScalar
@@ -97,5 +98,11 @@ namespace Graphene.Test.Execution
             };
             return schema;
         }
+
+        private static object Resolve(ResolveObjectContext context)
+        {
+            return Data.GetData().FirstOrDefault(x => !context.Arguments.ContainsKey("id") || x.Id == Convert.ToInt32(context.Arguments["id"]));
+        }
+
     }
 }

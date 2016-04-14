@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Graphene.Execution
+namespace Graphene.Core.Execution
 {
-    public class ExecutionBranch<TInput, TOutput> : ExecutionBranch
+    public class ExecutionBranch<TInput, TOutput> : ExecutionRoot
     {
-        private Func<TInput, TOutput> _func;
+        private Func<ResolveObjectContext<TInput>, TOutput> _func;
         private Func<TInput> _getInput;
         private TOutput _value;
 
@@ -15,7 +15,7 @@ namespace Graphene.Execution
             return _value;
         }
 
-        public ExecutionBranch(string fieldName, Func<TInput, TOutput> func, Func<TInput> getInput)
+        public ExecutionBranch(string fieldName, Func<ResolveObjectContext<TInput>, TOutput> func, Func<TInput> getInput)
         {
             _getInput = getInput;
             _func = func;
@@ -25,35 +25,47 @@ namespace Graphene.Execution
         public override KeyValuePair<string, object> Execute()
         {
             var input = _getInput();
-            _value = _func(input);
+            var context = new ResolveObjectContext<TInput>();
+            context.Source = input;
+            context.Arguments = new Dictionary<string, object>
+            {
+                { "Id", 1 }
+            };
+            _value = _func(context);
             return base.Execute();
         }
     }
 
-    public class ExecutionBranch<TOutput> : ExecutionBranch
+    public class ExecutionRoot<TOutput> : ExecutionRoot
     {
-        private readonly Func<TOutput> _getter;
+        private readonly Func<ResolveObjectContext, TOutput> _getter;
         private TOutput _value;
+        private readonly IDictionary<string, object> _arguments;
 
         public TOutput GetOutput()
         {
             return _value;
         }
 
-        public ExecutionBranch(string fieldName, Func<TOutput> getter)
+        public ExecutionRoot(string fieldName, IDictionary<string, object> arguments, Func<ResolveObjectContext, TOutput> getter)
         {
+            _arguments = arguments;
             _fieldName = fieldName;
             _getter = getter;
         }
 
         public override KeyValuePair<string, object> Execute()
         {
-            _value = _getter();
+            var context = new ResolveObjectContext<TOutput>
+            {
+                Arguments = _arguments
+            };
+            _value = _getter(context);
             return base.Execute();
         }
     }
 
-    public abstract class ExecutionBranch : IExecutionItem
+    public abstract class ExecutionRoot : IExecutionItem
     {
         protected string _fieldName;
 

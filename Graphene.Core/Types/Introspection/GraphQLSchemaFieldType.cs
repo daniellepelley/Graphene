@@ -17,7 +17,7 @@ namespace Graphene.Core.Types.Introspection
 
         public object ResolveToObject(ResolveObjectContext context)
         {
-            return Resolve(context.Schema);
+            return null;
         }
 
         public Type OfType { get; set; }

@@ -66,7 +66,7 @@ namespace Graphene.Core.Types.Introspection
                     Description =
                         "If this server supports mutation, the type that mutation operations will be rooted at.",
                     OfType = new [] { "GraphQLNonNull", "__Type" },
-                    Resolve = context => context.Schema.Query.AsIntrospective()
+                    Resolve = context => _schema.Query
                 },
                 new GraphQLObject
                 {
@@ -84,10 +84,10 @@ namespace Graphene.Core.Types.Introspection
                     Resolve = context => schema.GetDirectives()
                 }
             });
-            Resolve = context => context.Schema;
+            Resolve = context => _schema;
         }
 
-        private static object ResolveName(ResolveFieldContext context)
+        private static object ResolveName(ResolveFieldContext<object> context)
         {
             if (context.Source is GraphQLObject)
             {

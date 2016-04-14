@@ -5,22 +5,22 @@ using NUnit.Framework;
 
 namespace Graphene.Test.Introspection
 {
-    public class IntrospectionSchemaTests
-    {
-        [Test]
-        //[Ignore("Introspection to be done")]
-        public void StringDescription()
-        {
+    //public class IntrospectionSchemaTests
+    //{
+    //    [Test]
+    //    //[Ignore("Introspection to be done")]
+    //    public void StringDescription()
+    //    {
 
-        }
+    //    }
 
-        private static GraphQLSchema CreateIntrospectionSchema()
-        {
-            var newSchema = new GraphQLSchema
-            {
-                Query = new __Schema(TestSchemas.UserSchema())
-            };
-            return newSchema;
-        }
-    }
+    //    private static GraphQLSchema CreateIntrospectionSchema()
+    //    {
+    //        var newSchema = new GraphQLSchema
+    //        {
+    //            Query = new __Schema(TestSchemas.UserSchema())
+    //        };
+    //        return newSchema;
+    //    }
+    //}
 }

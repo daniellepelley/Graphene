@@ -5,100 +5,46 @@ using Graphene.Core.Types;
 
 namespace Graphene.Core
 {
+    public class ResolveFieldContext<T> : ResolveFieldContext, IResolveContext<T>
+    {
+        public T Source { get; set; }
+    }
+
     public class ResolveFieldContext : IResolveContext
     {
         public string FieldName { get; set; }
         public GraphQLScalar ScalarType { get; set; }
         public ResolveObjectContext Parent { get; set; }
-        
-        public object Source { get; set; }
 
-        public object GetValue()
-        {
-            return GetValue(Source);
-        }
+        public IDictionary<string, object> Arguments { get; set; }
 
-        public object GetValue(object source)
-        {
-            var field = Parent.ObjectType[FieldName] as GraphQLScalar;
-            return field.Resolve(this);
-        }
+        //public object RootValue { get; set; }
 
-        public Dictionary<string, object> Arguments { get; set; }
+        //public GraphQLSchema Schema { get; set; }
+        //public Operation Operation { get; set; }
 
-        public object RootValue { get; set; }
+        //public TType Argument<TType>(string name)
+        //{
+        //    if (Arguments.ContainsKey(name))
+        //    {
+        //        return (TType)Arguments[name];
+        //    }
 
-        public GraphQLSchema Schema { get; set; }
-        public Operation Operation { get; set; }
-
-        public TType Argument<TType>(string name)
-        {
-            if (Arguments.ContainsKey(name))
-            {
-                return (TType)Arguments[name];
-            }
-
-            return default(TType);
-        }
-    }
-
-    public class ResolveObjectContext : IResolveContext
-    {
-        public string FieldName { get; set; }
-
-        public Field FieldAst { get; set; }
-
-        public ResolveObjectContext Parent { get; set; }
-
-        public GraphQLObject ObjectType { get; set; }
-
-        public Selection[] Selections { get; set; }
-
-        public Dictionary<string, object> Arguments { get; set; }
-
-        public object RootValue { get; set; }
-
-        public object Source { get; set; }
-
-        public GraphQLSchema Schema { get; set; }
-
-        public Operation Operation { get; set; }
-        public Selection Selection { get; set; }
-
-        public TType Argument<TType>(string name)
-        {
-            if (Arguments.ContainsKey(name))
-            {
-                return (TType)Arguments[name];
-            }
-
-            return default(TType);
-        }
-
-        public ResolveObjectContext Clone()
-        {
-            var context = (ResolveObjectContext)this.MemberwiseClone();
-            context.Parent = this;
-            return context;
-        }
+        //    return default(TType);
+        //}
     }
 
     public interface IResolveContext
     {
         string FieldName { get; set; }
 
-        ResolveObjectContext Parent { get; set; }
+        //ResolveObjectContext Parent { get; set; }
 
-        //Selection[] Selections { get; set; }
+        IDictionary<string, object> Arguments { get; set; }
 
-        Dictionary<string, object> Arguments { get; set; }
+        //GraphQLSchema Schema { get; set; }
 
-        object RootValue { get; set; }
-
-        object Source { get; set; }
-
-        GraphQLSchema Schema { get; set; }
-
-        Operation Operation { get; set; }
+        //Operation Operation { get; set; }
     }
+
 }

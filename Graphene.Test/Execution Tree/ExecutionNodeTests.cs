@@ -1,12 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Graphene.Core.Model;
 using Graphene.Core.Types;
 using Graphene.Test.Spike;
-using Graphene.Execution;
 using NUnit.Framework;
 
 namespace Graphene.Test.Execution_Tree
@@ -19,13 +13,13 @@ namespace Graphene.Test.Execution_Tree
             var scalar1 = new GraphQLScalar<TestUser, string>
             {
                 Name = "field1",
-                Resolve= x => x.Name
+                Resolve = x => x.Source.Name
             };
 
             var scalar2 = new GraphQLScalar<TestUser, int>
             {
                 Name = "field2",
-                Resolve = x => x.Id
+                Resolve = x => x.Source.Id
             };
             var getter = new Func<TestUser>(() =>
                 new TestUser {

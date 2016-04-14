@@ -1,10 +1,7 @@
-using System;
-using System.Linq;
 using Graphene.Core.Model;
 using Graphene.Core.Parsers;
 using Graphene.Core.Types;
 using Graphene.Execution;
-using Graphene.Test.Spike;
 using Newtonsoft.Json;
 using NUnit.Framework;
 
@@ -21,9 +18,12 @@ namespace Graphene.Test.Execution
 
             var query = "{user {Id, Name}}";
             var document = new DocumentParser().Parse(query); ;
-            
-            var expected =
+
+            var expectedWhenList =
                 @"{""data"":[{""Id"":1,""Name"":""Dan_Smith""},{""Id"":2,""Name"":""Lee_Smith""},{""Id"":3,""Name"":""Nick_Smith""}]}";
+
+            var expected =
+                @"{""data"":{""Id"":1,""Name"":""Dan_Smith""}}";
             var result = Execute(sut, schema, document);
             Assert.AreEqual(expected, result);
         }
@@ -38,7 +38,10 @@ namespace Graphene.Test.Execution
             var query = "{user {Name}}";
             var document = new DocumentParser().Parse(query); ;
 
-            var expected = @"{""data"":[{""Name"":""Dan_Smith""},{""Name"":""Lee_Smith""},{""Name"":""Nick_Smith""}]}";
+            var expectedWhenList = @"{""data"":[{""Name"":""Dan_Smith""},{""Name"":""Lee_Smith""},{""Name"":""Nick_Smith""}]}";
+
+            var expected = @"{""data"":{""Name"":""Dan_Smith""}}";
+
             var result = Execute(sut, schema, document);
             Assert.AreEqual(expected, result);
         }
@@ -53,7 +56,7 @@ namespace Graphene.Test.Execution
             var query = "{user(Id :1) {Name}}";
             var document = new DocumentParser().Parse(query); ;
 
-            var expected = @"{""data"":[{""Name"":""Dan_Smith""}]}";
+            var expected = @"{""data"":{""Name"":""Dan_Smith""}}";
             var result = Execute(sut, schema, document);
             Assert.AreEqual(expected, result);
         }

@@ -27,32 +27,32 @@ namespace Graphene.Core.Types
                 }
             }.ToList();
 
-            if (source is GraphQLObject)
-            {
-                fields.Add(new GraphQLObject
-                {
-                    Name = "fields",
-                    OfType = new[] {"GraphQLSchemaList", "__Field"},
-                    Fields = new List<IGraphQLFieldType>
-                    {
-                        new GraphQLScalar
-                        {
-                            Name = "name",
-                            OfType = new[] {"GraphQLString"},
-                            Resolve = Resolve
-                        },                    
-                    },
-                    Resolve = context => ((GraphQLObject)context.Source).Fields
-                });
+            //if (source is GraphQLObject)
+            //{
+            //    fields.Add(new GraphQLObject
+            //    {
+            //        Name = "fields",
+            //        OfType = new[] {"GraphQLSchemaList", "__Field"},
+            //        Fields = new List<IGraphQLFieldType>
+            //        {
+            //            new GraphQLScalar
+            //            {
+            //                Name = "name",
+            //                OfType = new[] {"GraphQLString"},
+            //                Resolve = Resolve
+            //            },                    
+            //        },
+            //        Resolve = context => ((GraphQLObject)context.Source).Fields
+            //    });
 
-                fields.Add(new GraphQLScalar
-                {
-                    Name = "kind",
-                    Description = "The type that query operations will be rooted at.",
-                    OfType = new[] {"GraphQLNonNull", "__TypeKind"},
-                    Resolve = context => ((GraphQLObject)source).Kind
-                });
-            }
+            //    fields.Add(new GraphQLScalar
+            //    {
+            //        Name = "kind",
+            //        Description = "The type that query operations will be rooted at.",
+            //        OfType = new[] {"GraphQLNonNull", "__TypeKind"},
+            //        Resolve = context => ((GraphQLObject)source).Kind
+            //    });
+            //}
 
             return new GraphQLObject
             {
@@ -60,7 +60,7 @@ namespace Graphene.Core.Types
             };
         }
 
-        private static object Resolve(ResolveFieldContext context)
+        private static object Resolve(ResolveFieldContext<object> context)
         {
             if (context.Source is GraphQLObject)
             {

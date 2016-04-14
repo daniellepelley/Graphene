@@ -2,7 +2,7 @@ namespace Graphene.Core.Types
 {
     public class GraphQLSchema : IGraphQLSchema
     {
-        public GraphQLObject Query { get; set; }
+        public GraphQLObject<object> Query { get; set; }
 
         public string GetMutationType()
         {

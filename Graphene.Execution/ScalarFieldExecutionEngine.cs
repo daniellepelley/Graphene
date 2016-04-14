@@ -1,14 +1,33 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using Graphene.Core;
+using Graphene.Core.Execution;
+using Graphene.Core.Model;
+using Graphene.Core.Types;
 
 namespace Graphene.Execution
 {
+    public class ExecutionNodeBuilder
+    {
+        public ExecutionNode Build<TInput>(Selection selection, GraphQLScalar<TInput> graphQLType, Func<TInput> getInput)
+        {
+            return graphQLType.ToExecutionNode(getInput);
+        }
+
+        public ExecutionRoot Build(GraphQLObjectBase graphQLType, Selection[] selections, IDictionary<string, object> arguments)
+        {
+            var generator = graphQLType.ToExecutionRoot(selections.ToArray(), arguments);
+            return generator;
+        }
+    }
+
     public class ScalarFieldExecutionEngine
     {
-        public KeyValuePair<string, object> Execute(ResolveFieldContext resolveFieldContext)
+        public KeyValuePair<string, object> Execute(ResolveFieldContext<object> resolveFieldContext)
         {
             Validate(resolveFieldContext);
-            var executionNode = resolveFieldContext.ScalarType.ToExecutionNode(() => resolveFieldContext);
+            var executionNode = resolveFieldContext.ScalarType.ToExecutionNode(() => resolveFieldContext.Source);
             return executionNode.Execute();
         }
 

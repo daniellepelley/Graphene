@@ -6,6 +6,6 @@ namespace Graphene.Execution
 {
     public interface IObjectExecutionEngine
     {
-        object Execute(ResolveObjectContext objectContext);
+        object Execute(ResolveObjectContext<object> objectContext);
     }
 }
