@@ -10,20 +10,6 @@ namespace Graphene.Test.Execution
     {
         public static IGraphQLSchema UserSchema()
         {
-            //var type = new SimpleTypeBuilder().Build(typeof(TestUser));
-            //type.Name = "user";
-            //type.Resolve =
-            //    context => Data.GetData().First();
-                    //Data.GetData()
-                    //    .Where(
-                    //        x =>
-                    //            !context.Arguments.ContainsKey("Id") || x.Id == Convert.ToInt32(context.Arguments["Id"]));
-
-            //return new GraphQLSchema
-            //{
-            //    Query = type
-            //};
-
             var schema = new GraphQLSchema
             {
                 Query = new GraphQLObject<TestUser>
@@ -32,12 +18,12 @@ namespace Graphene.Test.Execution
                     Resolve = context => Data.GetData().FirstOrDefault(x => !context.Arguments.ContainsKey("Id") || x.Id == Convert.ToInt32(context.Arguments["Id"])),
                     Fields = new IGraphQLFieldType[]
                     {
-                        new GraphQLScalar<TestUser, object>
+                        new GraphQLScalar<TestUser, int>
                         {
                             Name = "Id",
                             Resolve = context => context.Source.Id
                         },
-                        new GraphQLScalar<TestUser, object>
+                        new GraphQLScalar<TestUser, string>
                         {
                             Name = "Name",
                             Resolve = context => context.Source.Name

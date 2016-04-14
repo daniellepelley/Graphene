@@ -25,7 +25,7 @@ namespace Graphene.Core.Types
         public string Name { get; set; }
         public string Description { get; set; }
         public string[] OfType { get; set; }
-        public List<IGraphQLFieldType> Fields { get; set; }
+        public IEnumerable<IGraphQLFieldType> Fields { get; set; }
         public IGraphQLFieldType[] Arguments { get; set; }
     }
 }

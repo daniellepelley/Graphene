@@ -30,7 +30,9 @@ namespace Graphene.TypeProvider
 
         private void MapField(PropertyInfo propertyInfo, GraphQLObject<object> graphQLObject)
         {
-            graphQLObject.Fields.Add(CreateField(propertyInfo));
+            var list = graphQLObject.Fields.ToList();
+            list.Add(CreateField(propertyInfo));
+            graphQLObject.Fields = list;
         }
 
         private IGraphQLFieldType CreateField(PropertyInfo propertyInfo)
