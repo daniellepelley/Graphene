@@ -4,7 +4,12 @@ using System.Linq;
 
 namespace Graphene.Core.Types
 {
-    public class GraphQLObject : IGraphQLObject, IGraphQLFieldType
+    public class GraphQLObject : GraphQLObject<ResolveObjectContext, object>
+    {
+
+    }
+
+    public class GraphQLObject<TInput, TOutput> : IGraphQLObject, IGraphQLFieldType
     {
         public IGraphQLFieldType this[string name]
         {
@@ -19,13 +24,9 @@ namespace Graphene.Core.Types
         public string Name { get; set; }
         public string Description { get; set; }
         public string[] OfType { get; set; }
-        public virtual object ResolveToObject(ResolveObjectContext context)
-        {
-            return Resolve(context);
-        }
 
         public List<IGraphQLFieldType> Fields { get; set; }
-        public virtual Func<ResolveObjectContext, object> Resolve { get; set; }
+        public virtual Func<TInput, TOutput> Resolve { get; set; }
         public IGraphQLFieldType[] Arguments { get; set; }
     }
 }

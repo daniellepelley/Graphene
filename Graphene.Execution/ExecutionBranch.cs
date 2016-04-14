@@ -4,11 +4,6 @@ using System.Linq;
 
 namespace Graphene.Execution
 {
-    public interface IExecutionItem
-    {
-        KeyValuePair<string, object> Execute();
-    }
-
     public class ExecutionBranch<TInput, TOutput> : ExecutionBranch
     {
         private Func<TInput, TOutput> _func;
@@ -57,8 +52,6 @@ namespace Graphene.Execution
             return base.Execute();
         }
     }
-
-
 
     public abstract class ExecutionBranch : IExecutionItem
     {

@@ -12,7 +12,7 @@ namespace Graphene.TypeProvider.Test
         [Test]
         public void CreatesAType()
         {
-            var typeProvider = new TypeBuilder();
+            var typeProvider = new SimpleTypeBuilder();
 
             var graphQlType = typeProvider.Build(typeof (SimpleType));
 

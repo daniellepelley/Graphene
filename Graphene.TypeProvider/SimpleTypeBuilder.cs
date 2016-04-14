@@ -8,7 +8,7 @@ using Graphene.Core.Types;
 
 namespace Graphene.TypeProvider
 {
-    public class TypeBuilder
+    public class SimpleTypeBuilder
     {
         public GraphQLObject Build(Type type)
         {

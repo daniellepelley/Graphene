@@ -50,6 +50,7 @@
     <Compile Include="Extensions.cs" />
     <Compile Include="FieldExecutionEngine.cs" />
     <Compile Include="IExecutionEngine.cs" />
+    <Compile Include="IExecutionItem.cs" />
     <Compile Include="IObjectExecutionEngine.cs" />
     <Compile Include="IOperationExecutionEngine.cs" />
     <Compile Include="ObjectExecutionEngine.cs" />

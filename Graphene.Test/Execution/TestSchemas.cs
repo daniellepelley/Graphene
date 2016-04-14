@@ -11,7 +11,7 @@ namespace Graphene.Test.Execution
     {
         public static GraphQLSchema UserSchema()
         {
-            var type = new TypeBuilder().Build(typeof (TestUser));
+            var type = new SimpleTypeBuilder().Build(typeof (TestUser));
             type.Name = "user";
             type.Resolve =
                 context =>
