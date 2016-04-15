@@ -45,7 +45,7 @@ namespace Graphene.Execution
 
             foreach (var selection in selections)
             {
-                if (fieldType.GraphQLObjectType.Fields == null)
+                if (fieldType.GraphQLObjectType().Fields == null)
                 {
                     throw new GraphQLException(string.Format("Field {0} does not exist", selection.Field.Name));                    
                 }
@@ -55,7 +55,7 @@ namespace Graphene.Execution
                     
                 }
 
-                if (!fieldType.GraphQLObjectType.HasField(selection.Field.Name))
+                if (!fieldType.GraphQLObjectType().HasField(selection.Field.Name))
                 {
                     
                 }

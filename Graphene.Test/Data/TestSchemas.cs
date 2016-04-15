@@ -17,7 +17,7 @@ namespace Graphene.Test.Data
                     Name = "user",
                     Resolve = context => Test.Data.Data.GetData().FirstOrDefault(x => !context.Arguments.ContainsKey("Id") || x.Id == Convert.ToInt32(context.Arguments["Id"])),
                     OfType = new [] {"user" },
-                    GraphQLObjectType = userType
+                    GraphQLObjectType = () => userType
                 }
             };
             return schema;
@@ -45,7 +45,7 @@ namespace Graphene.Test.Data
                     {
                         Name = "Boss",
                         Resolve = context => context.Source.Boss,
-                        GraphQLObjectType = CreateBossType()
+                        GraphQLObjectType = () => CreateBossType()
                     }
                 }
             };

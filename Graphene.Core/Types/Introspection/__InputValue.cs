@@ -27,7 +27,7 @@ namespace Graphene.Core.Types.Introspection
                 {
                     Name = "type",
                     OfType = new[] {"GraphQLString"},
-                    GraphQLObjectType = new __Type(),
+                    GraphQLObjectType = () => new __Type(),
                     Resolve = context => context.Source.Type
                 },
                 new GraphQLScalarField<IGraphQLArgument, string>

@@ -61,6 +61,7 @@
     <Compile Include="Execution\NestedExecutionEngineTests.cs" />
     <Compile Include="Introspection\SchemaIntrospectionEngineTests.cs" />
     <Compile Include="Execution\SimpleExecutionEngineTests.cs" />
+    <Compile Include="Objects\IntrospectionFieldTests.cs" />
     <Compile Include="Objects\IntrospectionInputTypesTests.cs" />
     <Compile Include="Objects\IntrospectionTypeTests.cs" />
     <Compile Include="Objects\TestHelpers.cs" />

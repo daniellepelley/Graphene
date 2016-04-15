@@ -83,7 +83,7 @@ namespace Graphene.Test.Execution
                     Name = "user",
                     Arguments = arguments,
                     Resolve = Resolve,
-                    GraphQLObjectType = new GraphQLObjectType
+                    GraphQLObjectType = () => new GraphQLObjectType
                     {
                         Fields = new IGraphQLFieldType[]
                         {

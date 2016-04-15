@@ -33,6 +33,11 @@ namespace Graphene.Core.Execution
 
             _values = _func(context);
             
+            if (_values == null)
+            {
+                return new KeyValuePair<string, object>(FieldName, null);
+            }
+
             var list = new List<object>();
 
             foreach (var value in _values)

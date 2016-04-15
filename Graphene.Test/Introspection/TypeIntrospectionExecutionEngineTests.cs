@@ -99,7 +99,7 @@ namespace Graphene.Test.Introspection
                 Query = new GraphQLObjectField<IGraphQLType>
                 {
                     Name = "__type",
-                    GraphQLObjectType = new __Type(),
+                    GraphQLObjectType = () => new __Type(),
                     Resolve = _ => type
                 }
             };

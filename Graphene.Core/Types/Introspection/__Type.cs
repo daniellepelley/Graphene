@@ -8,10 +8,10 @@ namespace Graphene.Core.Types.Introspection
     {
         public __Type()
         {
-            var ofTypeType = GraphQLObjectType();
+            //var ofTypeType = GraphQLObjectType();
 
-            ((GraphQLObjectField<IGraphQLType, IGraphQLType>) ofTypeType.Fields.ElementAt(3)).GraphQLObjectType =
-                ofTypeType;
+            //((GraphQLObjectField<IGraphQLType, IGraphQLType>) ofTypeType.Fields.ElementAt(3)).GraphQLObjectType =
+            //    ofTypeType;
 
             Fields = new IGraphQLFieldType[]
             {
@@ -34,7 +34,7 @@ namespace Graphene.Core.Types.Introspection
                 new GraphQLObjectField<IGraphQLType, IGraphQLType>
                 {
                     Name = "ofType",
-                    GraphQLObjectType = ofTypeType,
+                    //GraphQLObjectType = ofTypeType,
                     Resolve = context =>
                     {
                         if (context.Source == null)
@@ -53,7 +53,7 @@ namespace Graphene.Core.Types.Introspection
                 {
                     Name = "fields",
                     OfType = new[] {"GraphQLSchemaList", "__Field"},
-                    GraphQLObjectType = new __Field(),
+                    GraphQLObjectType = () => new __Field(),
                     Resolve = context =>
                     {
                         if (context.Source is GraphQLObjectType)

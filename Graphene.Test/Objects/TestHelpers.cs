@@ -14,7 +14,7 @@ namespace Graphene.Test.Objects
             var field = new GraphQLObjectField<T>
             {
                 Name = fieldName,
-                GraphQLObjectType = type,
+                GraphQLObjectType = () => type,
                 Resolve = resolve
             };
 

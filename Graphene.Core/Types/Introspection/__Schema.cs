@@ -36,7 +36,7 @@ namespace Graphene.Core.Types.Introspection
                     {
                         Name = "fields",
                         OfType = new[] {"GraphQLSchemaList", "__Field"},
-                        GraphQLObjectType = new GraphQLObjectType
+                        GraphQLObjectType = () => new GraphQLObjectType
                         {
 
                             Fields = new List<IGraphQLFieldType>
@@ -61,7 +61,7 @@ namespace Graphene.Core.Types.Introspection
                                 }
                             }
                         },
-                        Resolve = context => context.Source.GraphQLObjectType.Fields
+                        Resolve = context => context.Source.GraphQLObjectType().Fields
                     }
                 }
             };
@@ -75,7 +75,7 @@ namespace Graphene.Core.Types.Introspection
                         Name = "queryType",
                         Description = "The type that query operations will be rooted at.",
                         OfType = new[] {"GraphQLNonNull", "__Type"},
-                        GraphQLObjectType = queryType,
+                        GraphQLObjectType = () => queryType,
                         Resolve = context => schema.Query
                     },
                     new GraphQLObjectField
@@ -109,7 +109,7 @@ namespace Graphene.Core.Types.Introspection
                           "exposes all available types and directives on the server, as well as " +
                           "the entry points for query, mutation, and subscription operations.";
 
-            GraphQLObjectType = schemaType;
+            GraphQLObjectType = () => schemaType;
             Resolve = context => _schema;
         }
     }

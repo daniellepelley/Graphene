@@ -34,14 +34,25 @@ namespace Graphene.Core.Types.Introspection
                 {
                     Name = "args",
                     OfType  = new[] {"GraphQLString"},
-                    GraphQLObjectType = new __InputValue(),
+                    GraphQLObjectType = () => new __InputValue(),
                     Resolve = context => context.Source.Arguments
                 },
-                new GraphQLObjectField<IGraphQLFieldType, string>
+                new GraphQLObjectField<IGraphQLFieldType, IGraphQLType>
                 {
                     Name = "type",
                     OfType  = new[] {"GraphQLString"},
-                    Resolve = context => context.Source.OfType.FirstOrDefault()
+                    GraphQLObjectType = () => new __Type(),
+                    Resolve = context =>
+                    {
+                        var graphQLObjectField = context.Source as GraphQLObjectField;
+
+                        if (graphQLObjectField == null)
+                        {
+                            return null;
+                        }
+
+                        return graphQLObjectField.GraphQLObjectType();
+                    }
                 },
                 new GraphQLScalarField<IGraphQLFieldType, string>
                 {

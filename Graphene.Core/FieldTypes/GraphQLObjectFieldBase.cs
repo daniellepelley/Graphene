@@ -14,9 +14,11 @@ namespace Graphene.Core.Types
 
     public class GraphQLObjectFieldBase
     {
+        private GraphQLObjectType _type = new GraphQLObjectType();
+
         public IGraphQLFieldType this[string name]
         {
-            get { return GraphQLObjectType.Fields.FirstOrDefault(x => x.Name == name); }
+            get { return GraphQLObjectType().Fields.FirstOrDefault(x => x.Name == name); }
         }
 
         public string Kind
@@ -33,7 +35,7 @@ namespace Graphene.Core.Types
 
         public GraphQLObjectFieldBase()
         {
-            GraphQLObjectType = () => new GraphQLObjectType();
+            GraphQLObjectType = () => _type;
         }
     }
 }

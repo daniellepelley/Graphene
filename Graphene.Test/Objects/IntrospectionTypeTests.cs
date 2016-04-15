@@ -96,17 +96,5 @@ namespace Graphene.Test.Objects
             Assert.AreEqual("SCALAR", field1["kind"]);
             Assert.AreEqual("SCALAR", field2["kind"]);
         }
-
-        [Test]
-        public void GraphQLArguments()
-        {
-            var actual = TestType("args", _ => TestSchemas.CreateBossType(), "{name}");
-            var list = (List<object>)actual;
-            var field1 = (IDictionary<string, object>)list[0];
-            var field2 = (IDictionary<string, object>)list[1];
-
-            Assert.AreEqual("Id", field1["name"]);
-            Assert.AreEqual("Name", field2["name"]);
-        }
     }
 }
