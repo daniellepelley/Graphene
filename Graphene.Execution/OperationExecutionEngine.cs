@@ -36,11 +36,16 @@ namespace Graphene.Execution
             return executionBranch.Execute().Value;
         }
 
-        private void Validate(Selection[] selections, GraphQLObjectBase fieldType)
+        private void Validate(Selection[] selections, GraphQLObjectFieldBase fieldType)
         {
+            if (!(fieldType is IToExecutionBranch))
+            {
+                throw new GraphQLException("Field type must inherite from IToExecutionBranch");
+            }
+
             foreach (var selection in selections)
             {
-                if (fieldType.Fields == null)
+                if (fieldType.GraphQLObjectType().Fields == null)
                 {
                     throw new GraphQLException(string.Format("Field {0} does not exist", selection.Field.Name));                    
                 }
@@ -50,7 +55,7 @@ namespace Graphene.Execution
                     
                 }
 
-                if (!fieldType.HasField(selection.Field.Name))
+                if (!fieldType.GraphQLObjectType().HasField(selection.Field.Name))
                 {
                     
                 }
@@ -65,7 +70,7 @@ namespace Graphene.Execution
 
                 if (field is IGraphQLObject)
                 {
-                    Validate(selection.Field.Selections, (GraphQLObjectBase)field);
+                    Validate(selection.Field.Selections, (GraphQLObjectFieldBase)field);
                 }
             }
         }
@@ -100,7 +105,7 @@ namespace Graphene.Execution
                     {
                         var value = argumentsDictionary[argument.Name];
 
-                        if (argument.OfType.Contains("GraphQLString"))
+                        if (argument.Type is GraphQLString)
                         {
                             var str = value as string;
                             if (string.IsNullOrEmpty(str))
@@ -109,7 +114,7 @@ namespace Graphene.Execution
                                     string.Format(@"Argument 'id' has invalid value {0}. Expected type 'String'", value));
                             }
                         }
-                        else if (argument.OfType.Contains("GraphQLInt"))
+                        else if (argument.Type is GraphQLInt)
                         {
                             if (!(value is int))
                             {

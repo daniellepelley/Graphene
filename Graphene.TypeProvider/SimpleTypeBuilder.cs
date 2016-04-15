@@ -10,12 +10,11 @@ namespace Graphene.TypeProvider
 {
     public class SimpleTypeBuilder
     {
-        public GraphQLObject<object> Build(Type type)
+        public GraphQLObjectField<object> Build(Type type)
         {
-            var graphQLObjectType = new GraphQLObject<object>
+            var graphQLObjectType = new GraphQLObjectField<object>
             {
-                Name = type.Name,
-                Fields = new List<IGraphQLFieldType>()
+                Name = type.Name
             };
 
             var properties = type.GetProperties(BindingFlags.Public | BindingFlags.Instance);
@@ -28,11 +27,11 @@ namespace Graphene.TypeProvider
             return graphQLObjectType;
         }
 
-        private void MapField(PropertyInfo propertyInfo, GraphQLObject<object> graphQLObject)
+        private void MapField(PropertyInfo propertyInfo, GraphQLObjectField<object> graphQLObjectField)
         {
-            var list = graphQLObject.Fields.ToList();
+            var list = graphQLObjectField.GraphQLObjectType().Fields.ToList();
             list.Add(CreateField(propertyInfo));
-            graphQLObject.Fields = list;
+            graphQLObjectField.GraphQLObjectType().Fields = list;
         }
 
         private IGraphQLFieldType CreateField(PropertyInfo propertyInfo)
@@ -43,48 +42,53 @@ namespace Graphene.TypeProvider
                 typeof (int)
             }.Contains(propertyInfo.PropertyType))
             {
-                return new GraphQLScalar<object, object>
+                return new GraphQLScalarField<object, object>
                 {
                     Name = propertyInfo.Name,
                     Resolve = context => propertyInfo.GetValue(context.Source)
                 };
             }
-            return new GraphQLObject
+
+
+            return new GraphQLObjectField
             {
                 Name = propertyInfo.Name,
                 Resolve = context => propertyInfo.GetValue(context.Source),
-                Fields = propertyInfo.PropertyType.GetProperties().Select(CreateField).ToList()
+                GraphQLObjectType = () => new GraphQLObjectType
+                {
+                    Fields = propertyInfo.PropertyType.GetProperties().Select(CreateField).ToList()
+                }
             };
         }
     }
 
     //public class GenericTypeBuilder
     //{
-    //    private GraphQLObjectBase CreateGraphQLObject(Type type)
+    //    private GraphQLObjectFieldBase CreateGraphQLObject(Type type)
     //    {
-    //        var d1 = typeof(GraphQLObject<>);
+    //        var d1 = typeof(GraphQLObjectField<>);
     //        Type[] typeArgs = { type };
     //        var makeme = d1.MakeGenericType(typeArgs);
-    //        return (GraphQLObjectBase)Activator.CreateInstance(makeme);
+    //        return (GraphQLObjectFieldBase)Activator.CreateInstance(makeme);
     //    }
 
-    //    private GraphQLObjectBase CreateGraphQLObject(Type inputType, Type outputType)
+    //    private GraphQLObjectFieldBase CreateGraphQLObject(Type inputType, Type outputType)
     //    {
-    //        var d1 = typeof(GraphQLObject<>);
+    //        var d1 = typeof(GraphQLObjectField<>);
     //        Type[] typeArgs = { inputType, outputType };
     //        var makeme = d1.MakeGenericType(typeArgs);
-    //        return (GraphQLObjectBase)Activator.CreateInstance(makeme);
+    //        return (GraphQLObjectFieldBase)Activator.CreateInstance(makeme);
     //    }
 
     //    private GraphQLScalarBase CreateGraphQLScalar(Type inputType, Type outputType)
     //    {
-    //        var d1 = typeof(GraphQLScalar<>);
+    //        var d1 = typeof(GraphQLScalarField<>);
     //        Type[] typeArgs = { inputType, outputType };
     //        var makeme = d1.MakeGenericType(typeArgs);
     //        return (GraphQLScalarBase)Activator.CreateInstance(makeme);
     //    }
 
-    //    public GraphQLObjectBase Build(Type type)
+    //    public GraphQLObjectFieldBase Build(Type type)
     //    {
     //        var graphQLObjectType = CreateGraphQLObject(type);
 
@@ -101,7 +105,7 @@ namespace Graphene.TypeProvider
     //        return graphQLObjectType;
     //    }
 
-    //    private void MapField(Type parentType, PropertyInfo propertyInfo, GraphQLObjectBase graphQLObject)
+    //    private void MapField(Type parentType, PropertyInfo propertyInfo, GraphQLObjectFieldBase graphQLObject)
     //    {
     //        graphQLObject.Fields.Add(CreateField(parentType, propertyInfo));
     //    }
@@ -117,13 +121,13 @@ namespace Graphene.TypeProvider
     //            var scalar = CreateGraphQLObject(parentType, propertyInfo.PropertyType);
     //            scalar.Name = propertyInfo.Name;
 
-    //            return new GraphQLScalar<object, object>
+    //            return new GraphQLScalarField<object, object>
     //            {
     //                Name = propertyInfo.Name,
     //                Resolve = context => propertyInfo.GetValue(context.Source)
     //            };
     //        }
-    //        return new GraphQLObject
+    //        return new GraphQLObjectField
     //        {
     //            Name = propertyInfo.Name,
     //            Resolve = context => propertyInfo.GetValue(context.Source),

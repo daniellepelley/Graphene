@@ -3,6 +3,7 @@ using Graphene.Core.Model;
 using Graphene.Core.Parsers;
 using Graphene.Execution;
 using Graphene.Spike;
+using Graphene.Test.Data;
 using Newtonsoft.Json;
 using NUnit.Framework;
 using NUnit.Framework.Compatibility;
@@ -92,7 +93,7 @@ namespace Graphene.Test.Spike
 
         private string ExecuteQuery(Document document)
         {
-            var executionEngine = new SpikeExecutionEngine<TestUser>(Data.GetData());
+            var executionEngine = new SpikeExecutionEngine<User>(Data.Data.GetData());
             return JsonConvert.SerializeObject(executionEngine.Execute(null, document));
         }
 

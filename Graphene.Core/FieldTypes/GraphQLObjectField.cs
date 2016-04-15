@@ -3,45 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using Graphene.Core.Execution;
 using Graphene.Core.Model;
+using Graphene.Core.Types.Introspection;
 
 namespace Graphene.Core.Types
 {
-    public class GraphQLObject : GraphQLObject<object, object>
+    public class GraphQLObjectField : GraphQLObjectField<object, object>
     {
 
     }
 
-    public class GraphQLList<TInput, TOutput> : GraphQLObjectBase, IGraphQLObject, IInputField<TInput>
-    {
-        public ExecutionBranch ToExecutionBranch(Selection[] selections, Func<TInput> getter)
-        {
-            var executionRoot = new ExecutionBranchList<TInput, TOutput>(Name, Resolve, getter);
-
-            foreach (var selection in selections)
-            {
-                if (this[selection.Field.Name] is GraphQLScalar<TOutput>)
-                {
-                    var graphQLScalar = (GraphQLScalar<TOutput>)this[selection.Field.Name];
-
-                    var node = graphQLScalar.ToExecutionNode(executionRoot.GetOutput);
-                    executionRoot.AddNode(node);
-                }
-                else if (this[selection.Field.Name] is IInputField<TOutput>)
-                {
-                    var graphQLObject = (IInputField<TOutput>)this[selection.Field.Name];
-
-                    var branch = graphQLObject.ToExecutionBranch(selection.Field.Selections, executionRoot.GetOutput);
-                    executionRoot.AddNode(branch);
-                }
-            }
-
-            return executionRoot;
-        }
-
-        public virtual Func<ResolveObjectContext<TInput>, IEnumerable<TOutput>> Resolve { get; set; }
-    }
-
-    public class GraphQLObject<TInput, TOutput> : GraphQLObjectBase, IGraphQLObject, IInputField<TInput>
+    public class GraphQLObjectField<TInput, TOutput> : GraphQLObjectFieldBase, IInputField<TInput>
     {
         public ExecutionBranch ToExecutionBranch(Selection[] selections, Func<TInput> getter)
         {
@@ -69,9 +40,10 @@ namespace Graphene.Core.Types
         }
 
         public virtual Func<ResolveObjectContext<TInput>, TOutput> Resolve { get; set; }
+        public IEnumerable<IGraphQLArgument> Arguments { get; set; }
     }
 
-    public class GraphQLObject<TOutput> : GraphQLObjectBase, IGraphQLObject, IToExecutionBranch
+    public class GraphQLObjectField<TOutput> : GraphQLObjectFieldBase, IToExecutionBranch
     {
         public virtual Func<ResolveObjectContext, TOutput> Resolve { get; set; }
         public ExecutionBranch ToExecutionBranch(Selection[] selections, IDictionary<string, object> arguments)
@@ -90,6 +62,11 @@ namespace Graphene.Core.Types
                 else if (this[selection.Field.Name] is IInputField<TOutput>)
                 {
                     var graphQLObject = (IInputField<TOutput>)this[selection.Field.Name];
+
+                    if (selection.Field.Selections == null)
+                    {
+                        throw new GraphQLException("Selections cannot be null. This relates to not having field on an object.");
+                    }
 
                     var branch = graphQLObject.ToExecutionBranch(selection.Field.Selections, executionRoot.GetOutput);
                     executionRoot.AddNode(branch);

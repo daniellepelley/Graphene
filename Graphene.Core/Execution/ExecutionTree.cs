@@ -33,6 +33,11 @@ namespace Graphene.Core.Execution
 
             _values = _func(context);
             
+            if (_values == null)
+            {
+                return new KeyValuePair<string, object>(FieldName, null);
+            }
+
             var list = new List<object>();
 
             foreach (var value in _values)
@@ -70,6 +75,12 @@ namespace Graphene.Core.Execution
                 Arguments = _arguments
             };
             _value = _getter(context);
+
+            if (_value == null)
+            {
+                return new KeyValuePair<string, object>(FieldName, null);
+            }
+
             return base.Execute();
         }
     }

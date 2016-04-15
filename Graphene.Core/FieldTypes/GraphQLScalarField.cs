@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using Graphene.Core.Execution;
+using Graphene.Core.Types.Introspection;
 
 namespace Graphene.Core.Types
 {
@@ -8,7 +10,8 @@ namespace Graphene.Core.Types
         public abstract ExecutionNode ToExecutionNode(Func<TInput> getInput);
     }
 
-    public class GraphQLScalar<TInput, TOutput> : GraphQLScalar<TInput>, IGraphQLFieldType
+    public class GraphQLScalarField<TInput, TOutput>
+        : GraphQLScalar<TInput>, IGraphQLFieldType
     {
         public string Name { get; set; }
 
@@ -19,6 +22,7 @@ namespace Graphene.Core.Types
 
         public string Description { get; set; }
         public string[] OfType { get; set; }
+        public IEnumerable<IGraphQLArgument> Arguments { get; set; } 
 
         public IGraphQLFieldType this[string name]
         {

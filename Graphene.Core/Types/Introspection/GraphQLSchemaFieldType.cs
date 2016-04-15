@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace Graphene.Core.Types.Introspection
 {
@@ -14,6 +15,8 @@ namespace Graphene.Core.Types.Introspection
         {
             get { throw new NotImplementedException(); }
         }
+
+        public IEnumerable<IGraphQLArgument> Arguments { get; set; }
 
         public object ResolveToObject(ResolveObjectContext context)
         {

@@ -1,7 +1,9 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Graphene.Core.Execution;
 using Graphene.Core.Model;
+using Graphene.Core.Types.Introspection;
 
 namespace Graphene.Core.Types
 {
@@ -10,11 +12,13 @@ namespace Graphene.Core.Types
         ExecutionBranch ToExecutionBranch(Selection[] selections, IDictionary<string, object> arguments);
     }
 
-    public class GraphQLObjectBase : IGraphQLType
+    public class GraphQLObjectFieldBase
     {
+        private GraphQLObjectType _type = new GraphQLObjectType();
+
         public IGraphQLFieldType this[string name]
         {
-            get { return Fields.FirstOrDefault(x => x.Name == name); }
+            get { return GraphQLObjectType().Fields.FirstOrDefault(x => x.Name == name); }
         }
 
         public string Kind
@@ -22,15 +26,16 @@ namespace Graphene.Core.Types
             get { return GraphQLKinds.Object; }
         }
 
+        public Func<GraphQLObjectType> GraphQLObjectType { get; set; }
+
         public string Name { get; set; }
         public string Description { get; set; }
         public string[] OfType { get; set; }
-        public IEnumerable<IGraphQLFieldType> Fields { get; set; }
-        public IGraphQLFieldType[] Arguments { get; set; }
+        public IEnumerable<IGraphQLArgument> Arguments { get; set; } 
 
-        public bool HasField(string name)
+        public GraphQLObjectFieldBase()
         {
-            return Fields.Count(x => x.Name == name) == 1;
+            GraphQLObjectType = () => _type;
         }
     }
 }

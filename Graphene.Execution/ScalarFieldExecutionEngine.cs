@@ -12,7 +12,7 @@ namespace Graphene.Execution
     {
         public ExecutionBranch Build(IToExecutionBranch graphQLType, Selection[] selections, IDictionary<string, object> arguments)
         {
-            var generator = graphQLType.ToExecutionBranch(selections.ToArray(), arguments);
+            var generator = graphQLType.ToExecutionBranch(selections, arguments);
             return generator;
         }
     }

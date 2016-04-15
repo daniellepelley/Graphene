@@ -9,17 +9,17 @@ namespace Graphene.Core.Execution
         public abstract KeyValuePair<string, object> Execute();
     }
 
-    public class ExecutionNode<TInput, TOutput> : ExecutionNode
+    public class ExecutionNode<TInput, TOutput> : ExecutionNode 
     {
         private readonly string _fieldName;
         private readonly Func<ResolveFieldContext<TInput>, TOutput> _func;
         private readonly Func<TInput> _getInput;
 
-        public ExecutionNode(GraphQLScalar<TInput, TOutput> scalar, Func<TInput> getInput)
+        public ExecutionNode(GraphQLScalarField<TInput, TOutput> scalarField, Func<TInput> getInput)
         {
-            _fieldName = scalar.Name;
+            _fieldName = scalarField.Name;
             _getInput = getInput;
-            _func = scalar.Resolve;
+            _func = scalarField.Resolve;
         }
 
         public override KeyValuePair<string, object> Execute()

@@ -12,23 +12,14 @@ namespace Graphene.Execution
         private readonly IOperationExecutionEngine _operationExecutionEngine;
         private readonly bool _throwErrors;
 
-        private readonly IIntrospectionSchemaFactory _introspectionSchemaFactory =
-            new IntrospectionSchemaFactory(new GraphQLSchema());
-
         public ExecutionEngine()
         {
             _operationExecutionEngine = new OperationExecutionEngine();
         }
 
         public ExecutionEngine(bool throwErrors)
-            : this(throwErrors, new IntrospectionSchemaFactory(new GraphQLSchema()))
-        {
-        }
-
-        public ExecutionEngine(bool throwErrors, IIntrospectionSchemaFactory introspectionSchemaFactory)
             :this()
         {
-            _introspectionSchemaFactory = introspectionSchemaFactory;
             _throwErrors = throwErrors;
         }
 
@@ -87,26 +78,6 @@ namespace Graphene.Execution
                     }
                 };
             }
-        }
-    }
-
-    public interface IIntrospectionSchemaFactory
-    {
-        GraphQLSchema Create();
-    }
-
-    public class IntrospectionSchemaFactory : IIntrospectionSchemaFactory
-    {
-        private readonly GraphQLSchema _schema;
-
-        public IntrospectionSchemaFactory(GraphQLSchema schema)
-        {
-            _schema = schema;
-        }
-
-        public GraphQLSchema Create()
-        {
-            return _schema;
         }
     }
 }

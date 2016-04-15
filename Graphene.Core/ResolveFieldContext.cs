@@ -13,7 +13,7 @@ namespace Graphene.Core
     public class ResolveFieldContext : IResolveContext
     {
         public string FieldName { get; set; }
-        public GraphQLScalar<object,object> ScalarType { get; set; }
+        public GraphQLScalarField<object, GraphQLScalarBase> ScalarFieldType { get; set; }
         public ResolveObjectContext Parent { get; set; }
 
         public IDictionary<string, object> Arguments { get; set; }

@@ -1,5 +1,6 @@
 ﻿using System;
 using Graphene.Core.Types;
+using Graphene.Test.Data;
 using Graphene.Test.Spike;
 using NUnit.Framework;
 
@@ -10,19 +11,19 @@ namespace Graphene.Test.Execution_Tree
         [Test]
         public void ExecutionNodeTest()
         {
-            var scalar1 = new GraphQLScalar<TestUser, string>
+            var scalar1 = new GraphQLScalarField<User, string>
             {
                 Name = "field1",
                 Resolve = x => x.Source.Name
             };
 
-            var scalar2 = new GraphQLScalar<TestUser, int>
+            var scalar2 = new GraphQLScalarField<User, int>
             {
                 Name = "field2",
                 Resolve = x => x.Source.Id
             };
-            var getter = new Func<TestUser>(() =>
-                new TestUser {
+            var getter = new Func<User>(() =>
+                new User {
                     Id = 42,
                     Name = "Dan"
                 });
