@@ -1,12 +1,13 @@
-using Graphene.Core.Model;
+using System.Linq;
 using Graphene.Core.Parsers;
 using Graphene.Core.Types;
 using Graphene.Core.Types.Introspection;
 using Graphene.Execution;
+using Graphene.Test.Data;
 using Newtonsoft.Json;
 using NUnit.Framework;
 
-namespace Graphene.Test.Execution
+namespace Graphene.Test.Introspection
 {
     public class TypeIntrospectionExecutionEngineTests
     {
@@ -14,9 +15,9 @@ namespace Graphene.Test.Execution
         //[Ignore("Introspection to be done")]
         public void StringDescription()
         {
-            var sut = new ExecutionEngine(true, new IntrospectionSchemaFactory(CreateIntrospectionSchema()));
+            var sut = new ExecutionEngine(true);
 
-            var schema = CreateIntrospectionSchema();
+            var schema = CreateIntrospectionSchema(TestSchemas.CreateUserType());
 
             var query = @"__type{
                             kind
@@ -49,9 +50,9 @@ namespace Graphene.Test.Execution
         [Test]
         public void StringNameAndDescription()
         {
-            var sut = new ExecutionEngine(true, new IntrospectionSchemaFactory(CreateIntrospectionSchema()));
+            var sut = new ExecutionEngine(true);
 
-            var schema = CreateIntrospectionSchema();
+            var schema = CreateIntrospectionSchema(new GraphQLString());
 
             var query = @"{__type(name:""String""){name,description}}";
             var document = new DocumentParser().Parse(query); ;
@@ -65,9 +66,9 @@ namespace Graphene.Test.Execution
         [Test]
         public void IntNameAndDescription()
         {
-            var sut = new ExecutionEngine(true, new IntrospectionSchemaFactory(CreateIntrospectionSchema()));
+            var sut = new ExecutionEngine(true);
 
-            var schema = CreateIntrospectionSchema();
+            var schema = CreateIntrospectionSchema(new GraphQLInt());
 
             var query = @"{__type(name:""Int""){name,description,kind}}";
             var document = new DocumentParser().Parse(query); ;
@@ -83,26 +84,24 @@ namespace Graphene.Test.Execution
 
         //private static void DoLots(IGraphQLSchema schema, Document document, ExecutionEngine sut)
         //{
-        //    for (int i = 0; i < 100000; i++)
+        //    for (int i = 0; i < 1000; i++)
         //    {
         //        sut.Execute(schema, document);
         //    }
         //}
 
-        private static GraphQLSchema CreateIntrospectionSchema()
+        private static GraphQLSchema CreateIntrospectionSchema(IGraphQLType type)
         {
             var query = ((GraphQLSchema) TestSchemas.UserSchema()).Query;
 
-            var types = new IGraphQLType[]
-            {
-                query.GraphQLObjectType,
-                new GraphQLString(),
-                new GraphQLInt() 
-            };
-
             var newSchema = new GraphQLSchema
             {
-                Query = new __Type(types)
+                Query = new GraphQLObjectField<IGraphQLType>
+                {
+                    Name = "__type",
+                    GraphQLObjectType = new __Type(),
+                    Resolve = _ => type
+                }
             };
             return newSchema;
         }

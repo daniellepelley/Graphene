@@ -1,58 +1,58 @@
 namespace Graphene.Core.Types.Introspection
 {
-    public class __InputValue
+    public class __InputValue : GraphQLObjectType
     {
-        public string Kind { get; private set; }
-
-        public string Name
+        public __InputValue()
         {
-            get { return "__InputValue"; }
-        }
+            Name = "__InputValue";
+            Description = @"Arguments provided to Fields or Directives and the input fields of an " +
+                          "InputObject are represented as Input Values which describe their type " +
+                          "and optionally a default value.";
 
-        public string Description
-        {
-            get
+            Fields = new IGraphQLFieldType[]
             {
-                return @"Arguments provided to Fields or Directives and the input fields of an " +
-                       "InputObject are represented as Input Values which describe their type " +
-                       "and optionally a default value.";
-            }
-        }
-
-        public GraphQLSchemaFieldType[] Fields
-        {
-            get
-            {
-                return new[]
+                new GraphQLScalarField<IGraphQLArgument, string>
                 {
-                    new GraphQLSchemaFieldType
-                    {
-                        Name = "name",
-                        OfType = typeof (GraphQLNonNull<GraphQLString>),
-                        Resolve = schema => string.Empty
-                    },
-                    new GraphQLSchemaFieldType
-                    {
-                        Name = "description",
-                        OfType = typeof (GraphQLString),
-                        Resolve = schema => string.Empty
-                    },
-                    new GraphQLSchemaFieldType
-                    {
-                        Name = "type",
-                        OfType = typeof (GraphQLNonNull<GraphQLString>),
-                        Resolve = schema => string.Empty
-                    },
-                    new GraphQLSchemaFieldType
-                    {
-                        Name = "defaultValue",
-                        OfType = typeof (GraphQLString),
-                        Description =
-                            "A GraphQL-formatted string representing the default value for this input value.",
-                        Resolve = schema => string.Empty
-                    }
-                };
-            }
+                    Name = "name",
+                    OfType = new[] {"GraphQLString"},
+                    Resolve = context => context.Source.Name
+                },
+                new GraphQLScalarField<IGraphQLArgument, string>
+                {
+                    Name = "description",
+                    OfType = new[] {"GraphQLString"},
+                    Resolve = context => context.Source.Description
+                },
+                new GraphQLObjectField<IGraphQLArgument, IGraphQLType>
+                {
+                    Name = "type",
+                    OfType = new[] {"GraphQLString"},
+                    GraphQLObjectType = new __Type(),
+                    Resolve = context => context.Source.Type
+                },
+                new GraphQLScalarField<IGraphQLArgument, string>
+                {
+                    Name = "defaultValue",
+                    OfType = new[] {"GraphQLString"},
+                    Resolve = context => context.Source.DefaultValue
+                }
+            };
         }
+    }
+
+    public interface IGraphQLArgument
+    {
+        string Name { get; set; }
+        string Description { get; set; }
+        IGraphQLType Type { get; set; }
+        string DefaultValue { get; set; }
+    }
+
+    public class GraphQLArgument : IGraphQLArgument
+    {
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public IGraphQLType Type { get; set; }
+        public string DefaultValue { get; set; }
     }
 }

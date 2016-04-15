@@ -38,6 +38,11 @@ namespace Graphene.Execution
 
         private void Validate(Selection[] selections, GraphQLObjectFieldBase fieldType)
         {
+            if (!(fieldType is IToExecutionBranch))
+            {
+                throw new GraphQLException("Field type must inherite from IToExecutionBranch");
+            }
+
             foreach (var selection in selections)
             {
                 if (fieldType.GraphQLObjectType.Fields == null)

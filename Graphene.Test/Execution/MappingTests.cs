@@ -2,7 +2,7 @@
 using Newtonsoft.Json;
 using NUnit.Framework;
 
-namespace Graphene.Test
+namespace Graphene.Test.Execution
 {
     public class MappingTests
     {

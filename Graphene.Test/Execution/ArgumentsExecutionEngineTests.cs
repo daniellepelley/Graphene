@@ -6,7 +6,6 @@ using Graphene.Core.Parsers;
 using Graphene.Core.Types;
 using Graphene.Execution;
 using Graphene.Test.Data;
-using Graphene.Test.Spike;
 using Newtonsoft.Json;
 using NUnit.Framework;
 
@@ -77,7 +76,7 @@ namespace Graphene.Test.Execution
         {
             var schema = new GraphQLSchema
             {
-                Query = new GraphQLObjectField<object>
+                Query = new GraphQLObjectField<User>
                 {
                     Name = "user",
                     Arguments = arguments,
@@ -86,15 +85,15 @@ namespace Graphene.Test.Execution
                     {
                         Fields = new IGraphQLFieldType[]
                         {
-                            new GraphQLScalarField<object, object>
+                            new GraphQLScalarField<User, int>
                             {
                                 Name = "id",
-                                Resolve = context => ((User) context.Source).Id
+                                Resolve = context => context.Source.Id
                             },
-                            new GraphQLScalarField<object, object>
+                            new GraphQLScalarField<User, string>
                             {
                                 Name = "name",
-                                Resolve = context => ((User) context.Source).Name
+                                Resolve = context => context.Source.Name
                             }
                         }
                     }
@@ -103,10 +102,9 @@ namespace Graphene.Test.Execution
             return schema;
         }
 
-        private static object Resolve(ResolveObjectContext context)
+        private static User Resolve(ResolveObjectContext context)
         {
             return Data.Data.GetData().FirstOrDefault(x => !context.Arguments.ContainsKey("id") || x.Id == Convert.ToInt32(context.Arguments["id"]));
         }
-
     }
 }

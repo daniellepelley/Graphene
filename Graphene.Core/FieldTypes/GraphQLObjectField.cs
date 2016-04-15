@@ -61,6 +61,11 @@ namespace Graphene.Core.Types
                 {
                     var graphQLObject = (IInputField<TOutput>)this[selection.Field.Name];
 
+                    if (selection.Field.Selections == null)
+                    {
+                        throw new GraphQLException("Selections cannot be null. This relates to not having field on an object.");
+                    }
+
                     var branch = graphQLObject.ToExecutionBranch(selection.Field.Selections, executionRoot.GetOutput);
                     executionRoot.AddNode(branch);
                 }

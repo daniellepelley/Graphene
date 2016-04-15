@@ -4,7 +4,6 @@ using Graphene.Core;
 using Graphene.Core.Execution;
 using Graphene.Core.Types;
 using Graphene.Test.Data;
-using Graphene.Test.Spike;
 using Newtonsoft.Json;
 using NUnit.Framework;
 
@@ -43,7 +42,8 @@ namespace Graphene.Test.Execution_Tree
             sut.AddNode(executionNode2);
 
             var actual = sut.Execute().Value as IDictionary<string, object>;
-             
+
+            Assert.IsNotNull( actual);
             Assert.AreEqual("Dan", actual["field1"]);
             Assert.AreEqual(42, actual["field2"]);
         }

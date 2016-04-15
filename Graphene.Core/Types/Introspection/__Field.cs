@@ -1,67 +1,60 @@
+using System.Linq;
+
 namespace Graphene.Core.Types.Introspection
 {
-    public class __Field
+    public class __Field : GraphQLObjectType
     {
-        public string Kind { get; private set; }
-
-        public string Name
+        public __Field()
         {
-            get { return "__Field"; }
-        }
+            Name = "__Field";
+            Description = @"Object and Interface types are described by a list of Fields, each of " +
+                          "which has a name, potentially a list of arguments, and a return type.";
 
-        public string Description
-        {
-            get
+            Fields = new IGraphQLFieldType[]
             {
-                return @"Object and Interface types are described by a list of Fields, each of " +
-                       "which has a name, potentially a list of arguments, and a return type.";
-            }
-        }
-
-        public GraphQLSchemaFieldType[] Fields
-        {
-            get
-            {
-                return new[]
+                new GraphQLScalarField<IGraphQLFieldType, string>
                 {
-                    new GraphQLSchemaFieldType
-                    {
-                        Name = "name",
-                        OfType = typeof (GraphQLNonNull<GraphQLString>),
-                        Resolve = schema => string.Empty
-                    },
-                    new GraphQLSchemaFieldType
-                    {
-                        Name = "description",
-                        OfType = typeof (GraphQLString),
-                        Resolve = schema => string.Empty
-                    },
-                    new GraphQLSchemaFieldType
-                    {
-                        Name = "args",
-                        OfType = typeof (GraphQLNonNull<GraphQLSchemaList<GraphQLNonNull<__InputValue>>>),
-                        Resolve = schema => string.Empty
-                    },
-                    new GraphQLSchemaFieldType
-                    {
-                        Name = "type",
-                        OfType = typeof (GraphQLNonNull<__Type>),
-                        Resolve = schema => string.Empty
-                    },
-                    new GraphQLSchemaFieldType
-                    {
-                        Name = "isDeprecated",
-                        OfType = typeof (GraphQLNonNull<GraphQLBoolean>),
-                        Resolve = schema => string.Empty
-                    },
-                    new GraphQLSchemaFieldType
-                    {
-                        Name = "deprecationReason",
-                        OfType = typeof (GraphQLString),
-                        Resolve = schema => string.Empty
-                    }
-                };
-            }
+                    Name = "name",
+                    OfType = new[] {"GraphQLString"},
+                    Resolve = context => context.Source.Name
+                },
+                new GraphQLScalarField<IGraphQLFieldType, string>
+                {
+                    Name = "description",
+                    OfType = new[] {"GraphQLString"},
+                    Resolve = context => context.Source.Description
+                },
+                new GraphQLScalarField<IGraphQLFieldType, string>
+                {
+                    Name = "kind",
+                    OfType = new[] {"GraphQLString"},
+                    Resolve = context => context.Source.Kind
+                },
+                new GraphQLScalarField<IGraphQLFieldType, string>
+                {
+                    Name = "args",
+                    OfType  = new[] {"GraphQLString"},
+                    Resolve = context => "Args"
+                },
+                new GraphQLObjectField<IGraphQLFieldType, string>
+                {
+                    Name = "type",
+                    OfType  = new[] {"GraphQLString"},
+                    Resolve = context => context.Source.OfType.FirstOrDefault()
+                },
+                new GraphQLScalarField<IGraphQLFieldType, string>
+                {
+                    Name = "isDeprecated",
+                    OfType  = new[] {"GraphQLString"},
+                    Resolve = context => string.Empty
+                },
+                new GraphQLScalarField<IGraphQLFieldType, string>
+                {
+                    Name = "deprecationReason",
+                    OfType  = new[] {"GraphQLString"},
+                    Resolve = context => string.Empty
+                }
+            };
         }
     }
 }

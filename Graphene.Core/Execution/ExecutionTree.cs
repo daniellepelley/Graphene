@@ -70,6 +70,12 @@ namespace Graphene.Core.Execution
                 Arguments = _arguments
             };
             _value = _getter(context);
+
+            if (_value == null)
+            {
+                return new KeyValuePair<string, object>(FieldName, null);
+            }
+
             return base.Execute();
         }
     }

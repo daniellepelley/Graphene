@@ -1,19 +1,133 @@
+using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Remoting.Messaging;
 
 namespace Graphene.Core.Types.Introspection
 {
-    public class __Type : GraphQLObjectField<IGraphQLType>
+    public class __Type : GraphQLObjectType
     {
-        private readonly IGraphQLType[] _types;
-
-        public __Type(IGraphQLType[] types)
-            : this()
+        public __Type()
         {
-            _types = types;
+            var ofTypeType = GraphQLObjectType();
+
+            ((GraphQLObjectField<IGraphQLType, IGraphQLType>) ofTypeType.Fields.ElementAt(3)).GraphQLObjectType =
+                ofTypeType;
+
+            Fields = new IGraphQLFieldType[]
+            {
+                new GraphQLScalarField<IGraphQLType, string>
+                {
+                    Name = "kind",
+                    Description = "The type that query operations will be rooted at.",
+                    Resolve = context => context.Source.Kind
+                },
+                new GraphQLScalarField<IGraphQLType, string>
+                {
+                    Name = "name",
+                    Resolve = context => context.Source.Name
+                },
+                new GraphQLScalarField<IGraphQLType, string>
+                {
+                    Name = "description",
+                    Resolve = context => context.Source.Description
+                },
+                new GraphQLObjectField<IGraphQLType, IGraphQLType>
+                {
+                    Name = "ofType",
+                    GraphQLObjectType = ofTypeType,
+                    Resolve = context =>
+                    {
+                        if (context.Source == null)
+                        {
+                            return null;
+                        }
+
+                        if (context.Source.OfType == null)
+                        {
+                            return null;
+                        }
+                        return new GraphQLBoolean();
+                    }
+                },
+                new GraphQLList<IGraphQLType, IGraphQLFieldType>
+                {
+                    Name = "fields",
+                    OfType = new[] {"GraphQLSchemaList", "__Field"},
+                    GraphQLObjectType = new __Field(),
+                    //GraphQLObjectType = new GraphQLObjectType
+                    //{
+                    //    Fields = new IGraphQLFieldType[]
+                    //    {
+                    //        new GraphQLScalarField<IGraphQLFieldType, string>
+                    //        {
+                    //            Name = "name",
+                    //            OfType = new[] {"GraphQLString"},
+                    //            Resolve = context => context.Source.Name
+                    //        },
+                    //        new GraphQLScalarField<IGraphQLFieldType, string>
+                    //        {
+                    //            Name = "description",
+                    //            OfType = new[] {"GraphQLString"},
+                    //            Resolve = context => context.Source.Description
+                    //        },
+                    //        new GraphQLScalarField<IGraphQLFieldType, string>
+                    //        {
+                    //            Name = "kind",
+                    //            OfType = new[] {"GraphQLString"},
+                    //            Resolve = context => context.Source.Kind
+                    //        }
+                    //    }
+                    //},
+                    Resolve = context =>
+                    {
+                        if (context.Source is GraphQLObjectType)
+                        {
+                            return ((GraphQLObjectType) context.Source).Fields;
+                        }
+                        return null;
+                    }
+                }
+
+                //new GraphQLSchemaFieldType
+                //{
+                //    Name = "interfaces",
+                //    OfType = typeof (GraphQLSchemaList<GraphQLNonNull<__Type>>),
+                //    Resolve = schema => string.Empty
+                //},
+                //new GraphQLSchemaFieldType
+                //{
+                //    Name = "possibleTypes",
+                //    OfType = typeof (GraphQLSchemaList<GraphQLNonNull<__Type>>),
+                //    Resolve = schema => string.Empty
+                //},
+                //new GraphQLSchemaFieldType
+                //{
+                //    Name = "possibleTypes",
+                //    Args = "includeDeprecated: { type: GraphQLBoolean, defaultValue: false }",
+                //    OfType = typeof (GraphQLSchemaList<GraphQLNonNull<__EnumValue>>),
+                //    Resolve = schema => string.Empty
+                //},
+                //new GraphQLSchemaFieldType
+                //{
+                //    Name = "inputFields",
+                //    Args = "includeDeprecated: { type: GraphQLBoolean, defaultValue: false }",
+                //    OfType = typeof (GraphQLSchemaList<GraphQLNonNull<__InputValue>>),
+                //    Resolve = schema => string.Empty
+                //}
+            };
+
+            Name = "__type";
+            Description = @"The fundamental unit of any GraphQL Schema is the type. There are " +
+                          "many kinds of types in GraphQL as represented by the `__TypeKind` enum." +
+                          "\n\nDepending on the kind of a type, certain fields describe " +
+                          "information about that type. Scalar types provide no information " +
+                          "beyond a name and description, while Enum types provide their values. " +
+                          "Object and Interface types provide the fields they describe. Abstract " +
+                          "types, Union and Interface, provide the Object types possible " +
+                          "at runtime. List and NonNull types compose other types.'";
         }
 
-        public __Type()
+        private static GraphQLObjectType GraphQLObjectType()
         {
             var ofTypeType = new GraphQLObjectType
             {
@@ -45,100 +159,12 @@ namespace Graphene.Core.Types.Introspection
                             {
                                 return null;
                             }
-                            return _types.FirstOrDefault(x => x.Name == context.Source.OfType.FirstOrDefault());
+                            return new GraphQLBoolean();
                         }
                     }
                 }
             };
-
-            ((GraphQLObjectField<IGraphQLType, IGraphQLType>) ofTypeType.Fields.ElementAt(3)).GraphQLObjectType =
-                ofTypeType;
-
-            var typeType = new GraphQLObjectType
-            {
-                Fields = new IGraphQLFieldType[]
-                {
-                    new GraphQLScalarField<IGraphQLType, string>
-                    {
-                        Name = "kind",
-                        Description = "The type that query operations will be rooted at.",
-                        Resolve = context => context.Source.Kind
-                    },
-                    new GraphQLScalarField<IGraphQLType, string>
-                    {
-                        Name = "name",
-                        Resolve = context => context.Source.Name
-                    },
-                    new GraphQLScalarField<IGraphQLType, string>
-                    {
-                        Name = "description",
-                        Resolve = context => context.Source.Description
-                    },
-                    new GraphQLObjectField<IGraphQLType, IGraphQLType>
-                    {
-                        Name = "ofType",
-                        GraphQLObjectType = ofTypeType,
-                        Resolve = context =>
-                        {
-                            if (context.Source == null ||
-                                context.Source.OfType == null)
-                            {
-                                return null;
-                            }
-                            return _types.FirstOrDefault(x => x.Name == context.Source.OfType.FirstOrDefault());
-                        }
-                    },
-                    new GraphQLSchemaFieldType
-                    {
-                        Name = "fields",
-                        OfType = typeof (GraphQLSchemaList<GraphQLNonNull<__Field>>),
-                        Args = "includeDeprecated: { type: GraphQLBoolean, defaultValue: false }",
-                        Resolve = schema => string.Empty
-                    },
-                    new GraphQLSchemaFieldType
-                    {
-                        Name = "interfaces",
-                        OfType = typeof (GraphQLSchemaList<GraphQLNonNull<__Type>>),
-                        Resolve = schema => string.Empty
-                    },
-                    new GraphQLSchemaFieldType
-                    {
-                        Name = "possibleTypes",
-                        OfType = typeof (GraphQLSchemaList<GraphQLNonNull<__Type>>),
-                        Resolve = schema => string.Empty
-                    },
-                    new GraphQLSchemaFieldType
-                    {
-                        Name = "possibleTypes",
-                        Args = "includeDeprecated: { type: GraphQLBoolean, defaultValue: false }",
-                        OfType = typeof (GraphQLSchemaList<GraphQLNonNull<__EnumValue>>),
-                        Resolve = schema => string.Empty
-                    },
-                    new GraphQLSchemaFieldType
-                    {
-                        Name = "inputFields",
-                        Args = "includeDeprecated: { type: GraphQLBoolean, defaultValue: false }",
-                        OfType = typeof (GraphQLSchemaList<GraphQLNonNull<__InputValue>>),
-                        Resolve = schema => string.Empty
-                    }
-                }
-            };
-
-
-            Name = "__type";
-            Description = @"The fundamental unit of any GraphQL Schema is the type. There are " +
-                          "many kinds of types in GraphQL as represented by the `__TypeKind` enum." +
-                          "\n\nDepending on the kind of a type, certain fields describe " +
-                          "information about that type. Scalar types provide no information " +
-                          "beyond a name and description, while Enum types provide their values. " +
-                          "Object and Interface types provide the fields they describe. Abstract " +
-                          "types, Union and Interface, provide the Object types possible " +
-                          "at runtime. List and NonNull types compose other types.'";
-            GraphQLObjectType = typeType;
-            Resolve =
-                context =>
-                    _types.FirstOrDefault(
-                        x => !context.Arguments.ContainsKey("name") || x.Name == context.Arguments["name"].ToString());
+            return ofTypeType;
         }
     }
 }

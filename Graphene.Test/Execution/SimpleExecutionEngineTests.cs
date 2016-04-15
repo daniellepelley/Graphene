@@ -2,6 +2,7 @@ using Graphene.Core.Model;
 using Graphene.Core.Parsers;
 using Graphene.Core.Types;
 using Graphene.Execution;
+using Graphene.Test.Data;
 using Newtonsoft.Json;
 using NUnit.Framework;
 
