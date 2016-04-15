@@ -9,6 +9,8 @@ namespace Graphene.Core.Types.Introspection
             get { return "__TypeKind"; }
         }
 
+        public string[] OfType { get; set; }
+
         public string Description
         {
             get

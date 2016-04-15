@@ -97,7 +97,9 @@
     <Compile Include="Types\GraphQLSchema.cs" />
     <Compile Include="Types\GraphQLString.cs" />
     <Compile Include="Types\GraphQlTypeSelector.cs" />
+    <Compile Include="Types\IGraphQLObject.cs" />
     <Compile Include="Types\IGraphQLType.cs" />
+    <Compile Include="Types\IInputField.cs" />
     <Compile Include="Types\Introspection\GraphQLSchemaList.cs" />
     <Compile Include="Types\Introspection\GraphQLNonNull.cs" />
     <Compile Include="Types\Introspection\GraphQLSchemaFieldType.cs" />

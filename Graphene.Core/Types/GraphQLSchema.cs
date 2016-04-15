@@ -20,11 +20,6 @@ namespace Graphene.Core.Types
         }
     }
 
-    //public class ObjectGraphType
-    //{
-
-    //}
-
     public interface IGraphQLSchema
     {
         

@@ -27,21 +27,34 @@ namespace Graphene.Core.Types.Introspection
 
             Fields = new IGraphQLFieldType[]
             {
-                new GraphQLScalar<IGraphQLType, object>
+                new GraphQLScalar<IGraphQLType, string>
                 {
                     Name = "kind",
                     Description = "The type that query operations will be rooted at.",
                     Resolve = context => context.Source.Kind
                 },
-                new GraphQLScalar<IGraphQLType, object>
+                new GraphQLScalar<IGraphQLType, string>
                 {
                     Name = "name",
                     Resolve = context => context.Source.Name
                 },
-                new GraphQLScalar<IGraphQLType, object>
+                new GraphQLScalar<IGraphQLType, string>
                 {
                     Name = "description",
                     Resolve = context => context.Source.Description
+                },
+                 new GraphQLObject<IGraphQLType, IGraphQLType>
+                {
+                    Name = "ofType",
+                    Resolve = context =>
+                    {
+                        if (context.Source == null ||
+                            context.Source.OfType == null)
+                        {
+                            return null;
+                        }
+                        return _types.FirstOrDefault(x => x.Name == context.Source.OfType.FirstOrDefault());
+                    }
                 },
                 new GraphQLSchemaFieldType
                 {

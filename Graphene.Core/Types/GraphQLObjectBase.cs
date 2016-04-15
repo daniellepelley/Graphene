@@ -10,7 +10,7 @@ namespace Graphene.Core.Types
         ExecutionBranch ToExecutionBranch(Selection[] selections, IDictionary<string, object> arguments);
     }
 
-    public class GraphQLObjectBase
+    public class GraphQLObjectBase : IGraphQLType
     {
         public IGraphQLFieldType this[string name]
         {
@@ -27,5 +27,10 @@ namespace Graphene.Core.Types
         public string[] OfType { get; set; }
         public IEnumerable<IGraphQLFieldType> Fields { get; set; }
         public IGraphQLFieldType[] Arguments { get; set; }
+
+        public bool HasField(string name)
+        {
+            return Fields.Count(x => x.Name == name) == 1;
+        }
     }
 }

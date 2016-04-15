@@ -18,10 +18,29 @@ namespace Graphene.Test.Execution
 
             var schema = CreateIntrospectionSchema();
 
-            var query = @"{__type(name:""String""){description}}";
+            var query = @"__type{
+                            kind
+                            name
+                            ofType {
+                              kind
+                              name
+                            }
+                          }";
+
+            //                              ofType {
+            //                                kind
+            //                                name
+            //                                ofType {
+            //                                  kind
+            //                                  name
+            //                                }
+            //                              }
+
+
+            //var query = @"{__type(name:""String""){description}}";
             var document = new DocumentParser().Parse(query); ;
 
-            var expected = @"{""data"":{""description"":""The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.""}}";
+            var expected = @"{""data"":{""kind"":""OBJECT"",""name"":""user""}}";
 
             var result = JsonConvert.SerializeObject(sut.Execute(schema, document));
             Assert.AreEqual(expected, result);
@@ -57,23 +76,26 @@ namespace Graphene.Test.Execution
 
             var result = JsonConvert.SerializeObject(sut.Execute(schema, document));
 
-            DoLots(schema, document, sut);
+            //DoLots(schema, document, sut);
             
             Assert.AreEqual(expected, result);
         }
 
-        private static void DoLots(IGraphQLSchema schema, Document document, ExecutionEngine sut)
-        {
-            for (int i = 0; i < 100000; i++)
-            {
-                sut.Execute(schema, document);
-            }
-        }
+        //private static void DoLots(IGraphQLSchema schema, Document document, ExecutionEngine sut)
+        //{
+        //    for (int i = 0; i < 100000; i++)
+        //    {
+        //        sut.Execute(schema, document);
+        //    }
+        //}
 
         private static GraphQLSchema CreateIntrospectionSchema()
         {
+            var query = ((GraphQLSchema) TestSchemas.UserSchema()).Query;
+
             var types = new IGraphQLType[]
             {
+                query,
                 new GraphQLString(),
                 new GraphQLInt() 
             };

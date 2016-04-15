@@ -5,10 +5,6 @@ namespace Graphene.Core.Types
         string Kind { get; }
         string Name { get; }
         string Description { get; }
-    }
-
-    public interface IGraphQLObject : IGraphQLType
-    {
-        IGraphQLFieldType this[string name] { get; }
+        string[] OfType { get; }
     }
 }

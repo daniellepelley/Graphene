@@ -32,7 +32,7 @@ namespace Graphene.Execution
 
             Validate(operation.Selections, schema.Query);
 
-            var executionBranch = new ExecutionNodeBuilder().Build(schema.Query as IToExecutionBranch, operation.Selections, argumentsDictionary);
+            var executionBranch = new ExecutionBranchBuilder().Build(schema.Query as IToExecutionBranch, operation.Selections, argumentsDictionary);
             return executionBranch.Execute().Value;
         }
 
@@ -40,6 +40,22 @@ namespace Graphene.Execution
         {
             foreach (var selection in selections)
             {
+                if (fieldType.Fields == null)
+                {
+                    throw new GraphQLException(string.Format("Field {0} does not exist", selection.Field.Name));                    
+                }
+
+                if (selection.Field.Name == null)
+                {
+                    
+                }
+
+                if (!fieldType.HasField(selection.Field.Name))
+                {
+                    
+                }
+
+
                 var field = fieldType[selection.Field.Name];
 
                 if (field == null)

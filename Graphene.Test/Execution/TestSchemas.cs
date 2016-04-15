@@ -16,6 +16,7 @@ namespace Graphene.Test.Execution
                 {
                     Name = "user",
                     Resolve = context => Data.GetData().FirstOrDefault(x => !context.Arguments.ContainsKey("Id") || x.Id == Convert.ToInt32(context.Arguments["Id"])),
+                    OfType = new [] {"user" },
                     Fields = new IGraphQLFieldType[]
                     {
                         new GraphQLScalar<TestUser, int>

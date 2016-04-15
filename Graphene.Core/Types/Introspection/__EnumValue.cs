@@ -19,6 +19,8 @@ namespace Graphene.Core.Types.Introspection
             }
         }
 
+        public string[] OfType { get; set; }
+
         public GraphQLSchemaFieldType[] Fields
         {
             get

@@ -6,5 +6,8 @@
         {
             get { return GraphQLKinds.Scalar; }
         }
+
+        public string[] OfType { get; set; }
+
     }
 }
