@@ -10,6 +10,7 @@ namespace Graphene.Owin
         public void Configuration(IAppBuilder app)
         {
             app.UseGraphQL();
+            app.UseGraphiQL();
         }
     }
 }

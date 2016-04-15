@@ -75,8 +75,13 @@ namespace Graphene.Owin
 
         private async Task ProcessQuery(string query, OwinContext owinContext)
         {
+            query = query.Replace(@"\n", " ");
+
             var document = new DocumentParser().Parse(query);
-            var json = _executionEngine.Execute(_schema, document);
+            var result = _executionEngine.Execute(_schema, document);
+
+            var json = JsonConvert.SerializeObject(result);
+
             owinContext.Response.Headers.Set("Content-Type", "application/json");
             await owinContext.Response.WriteAsync(json);
         }
@@ -85,7 +90,7 @@ namespace Graphene.Owin
         {
             var schema = new GraphQLSchema
             {
-                Query = new GraphQLObjectType
+                Query = new GraphQLObject
                 {
                     Name = "user",
                     Resolve =
@@ -97,51 +102,34 @@ namespace Graphene.Owin
                                          x.Id.ToString() == context.Arguments["id"].ToString()) &&
                                         (!context.Arguments.ContainsKey("name") ||
                                          x.Name.Contains(context.Arguments["name"].ToString()))),
+                    OfType = new[] {"user"},
                     Fields = new IGraphQLFieldType[]
                     {
-                        new GraphQLFieldType<int>
+                        new GraphQLScalar<TestUser, int>
                         {
-                            Name = "id",
-                            Resolve = context => ((TestUser) context.Source).Id
+                            Name = "Id",
+                            Resolve = context => context.Source.Id
                         },
-                        new GraphQLFieldType<string>
+                        new GraphQLScalar<TestUser, string>
                         {
-                            Name = "name",
-                            Resolve = context => ((TestUser) context.Source).Name
+                            Name = "Name",
+                            Resolve = context => context.Source.Name
                         },
-                        new GraphQLFieldType<int>
+                        new GraphQLObject<TestUser, TestUser>
                         {
-                            Name = "age",
-                            Resolve = context => ((TestUser) context.Source).Age
-                        },
-                        new GraphQLObjectType
-                        {
-                            Name = "boss",
-                            Resolve = context =>
-                            {
-                                var boss = ((TestUser) context.Source).Boss;
-
-                                if (boss != null)
-                                    return boss;
-
-                                return new TestUser();
-                            },
+                            Name = "Boss",
+                            Resolve = context => context.Source.Boss,
                             Fields = new IGraphQLFieldType[]
                             {
-                                new GraphQLFieldType<int>
+                                new GraphQLScalar<TestUser, int>
                                 {
-                                    Name = "id",
-                                    Resolve = context => ((TestUser) context.Source).Id
+                                    Name = "Id",
+                                    Resolve = context => context.Source.Id
                                 },
-                                new GraphQLFieldType<string>
+                                new GraphQLScalar<TestUser, string>
                                 {
-                                    Name = "name",
-                                    Resolve = context => ((TestUser) context.Source).Name
-                                },
-                                new GraphQLFieldType<int>
-                                {
-                                    Name = "age",
-                                    Resolve = context => ((TestUser) context.Source).Age
+                                    Name = "Name",
+                                    Resolve = context => context.Source.Name
                                 }
                             }.ToList()
                         }

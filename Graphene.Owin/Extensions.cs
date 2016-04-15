@@ -8,5 +8,12 @@ namespace Graphene.Owin
         {
             app.Use<GraphQLComponent>();
         }
+
+        public static void UseGraphiQL(this IAppBuilder app)
+        {
+            app.Use<GraphiQLComponent>();
+        }
+
+        
     }
 }
