@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Graphene.Core.Execution;
 using Graphene.Core.Model;
+using Graphene.Core.Types.Introspection;
 
 namespace Graphene.Core.Types
 {
@@ -33,5 +34,6 @@ namespace Graphene.Core.Types
         }
 
         public virtual Func<ResolveObjectContext<TInput>, IEnumerable<TOutput>> Resolve { get; set; }
+        public IEnumerable<IGraphQLArgument> Arguments { get; set; }
     }
 }

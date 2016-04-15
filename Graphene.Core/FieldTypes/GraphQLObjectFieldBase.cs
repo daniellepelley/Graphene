@@ -1,7 +1,9 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Graphene.Core.Execution;
 using Graphene.Core.Model;
+using Graphene.Core.Types.Introspection;
 
 namespace Graphene.Core.Types
 {
@@ -17,28 +19,21 @@ namespace Graphene.Core.Types
             get { return GraphQLObjectType.Fields.FirstOrDefault(x => x.Name == name); }
         }
 
-        //public IEnumerable<IGraphQLFieldType> Fields
-        //{
-        //    get { return GraphQLObjectType.Fields; }
-        //    set { GraphQLObjectType.Fields = value; }
-        //}
-
         public string Kind
         {
             get { return GraphQLKinds.Object; }
         }
 
-        public GraphQLObjectType GraphQLObjectType { get; set; }
+        public Func<GraphQLObjectType> GraphQLObjectType { get; set; }
 
         public string Name { get; set; }
         public string Description { get; set; }
         public string[] OfType { get; set; }
-
-        public IGraphQLFieldType[] Arguments { get; set; }
+        public IEnumerable<IGraphQLArgument> Arguments { get; set; } 
 
         public GraphQLObjectFieldBase()
         {
-            GraphQLObjectType = new GraphQLObjectType();
+            GraphQLObjectType = () => new GraphQLObjectType();
         }
     }
 }

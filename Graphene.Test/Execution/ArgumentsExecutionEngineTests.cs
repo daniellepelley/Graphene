@@ -1,9 +1,11 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Graphene.Core;
 using Graphene.Core.Model;
 using Graphene.Core.Parsers;
 using Graphene.Core.Types;
+using Graphene.Core.Types.Introspection;
 using Graphene.Execution;
 using Graphene.Test.Data;
 using Newtonsoft.Json;
@@ -32,30 +34,30 @@ namespace Graphene.Test.Execution
         [Test]
         public void WhenArgumentIsNotFound()
         {
-            AssertArgumentTypeHandling("GraphQLString", "1", "Argument 'id' has invalid value 1. Expected type 'String'");
+            AssertArgumentTypeHandling(new GraphQLString(), "1", "Argument 'id' has invalid value 1. Expected type 'String'");
         }
 
         [Test]
         public void WhenArgumentIsNotFound2()
         {
-            AssertArgumentTypeHandling("GraphQLString", "2", "Argument 'id' has invalid value 2. Expected type 'String'");
+            AssertArgumentTypeHandling(new GraphQLString(), "2", "Argument 'id' has invalid value 2. Expected type 'String'");
         }
 
         [Test]
         public void WhenArgumentIsNotFound3()
         {
-            AssertArgumentTypeHandling("GraphQLInt", @"""42""", "Argument 'id' has invalid value 42. Expected type 'Int'");
+            AssertArgumentTypeHandling(new GraphQLInt(), @"""42""", "Argument 'id' has invalid value 42. Expected type 'Int'");
         }
 
-        private void AssertArgumentTypeHandling(string graphQLType, string queryValue, string expectedErrorMessage)
+        private void AssertArgumentTypeHandling(IGraphQLType graphQLType, string queryValue, string expectedErrorMessage)
         {
             var sut = new ExecutionEngine();
 
-            var schema = CreateGraphQLSchema(new IGraphQLFieldType[] {
-                    new GraphQLScalarField<object, object>
+            var schema = CreateGraphQLSchema(new GraphQLArgument[] {
+                    new GraphQLArgument
                     {
                         Name = "id",
-                        OfType = new[] { graphQLType }
+                        Type = graphQLType
                     }});
 
             var query = "{user(id:" + queryValue + ") {id, name}}";
@@ -72,7 +74,7 @@ namespace Graphene.Test.Execution
             return JsonConvert.SerializeObject(sut.Execute(schema, document));
         }
 
-        private static GraphQLSchema CreateGraphQLSchema(IGraphQLFieldType[] arguments = null)
+        private static GraphQLSchema CreateGraphQLSchema(IEnumerable<IGraphQLArgument> arguments = null)
         {
             var schema = new GraphQLSchema
             {

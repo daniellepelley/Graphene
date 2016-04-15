@@ -54,30 +54,6 @@ namespace Graphene.Core.Types.Introspection
                     Name = "fields",
                     OfType = new[] {"GraphQLSchemaList", "__Field"},
                     GraphQLObjectType = new __Field(),
-                    //GraphQLObjectType = new GraphQLObjectType
-                    //{
-                    //    Fields = new IGraphQLFieldType[]
-                    //    {
-                    //        new GraphQLScalarField<IGraphQLFieldType, string>
-                    //        {
-                    //            Name = "name",
-                    //            OfType = new[] {"GraphQLString"},
-                    //            Resolve = context => context.Source.Name
-                    //        },
-                    //        new GraphQLScalarField<IGraphQLFieldType, string>
-                    //        {
-                    //            Name = "description",
-                    //            OfType = new[] {"GraphQLString"},
-                    //            Resolve = context => context.Source.Description
-                    //        },
-                    //        new GraphQLScalarField<IGraphQLFieldType, string>
-                    //        {
-                    //            Name = "kind",
-                    //            OfType = new[] {"GraphQLString"},
-                    //            Resolve = context => context.Source.Kind
-                    //        }
-                    //    }
-                    //},
                     Resolve = context =>
                     {
                         if (context.Source is GraphQLObjectType)

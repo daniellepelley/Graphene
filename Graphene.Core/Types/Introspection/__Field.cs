@@ -30,11 +30,12 @@ namespace Graphene.Core.Types.Introspection
                     OfType = new[] {"GraphQLString"},
                     Resolve = context => context.Source.Kind
                 },
-                new GraphQLScalarField<IGraphQLFieldType, string>
+                new GraphQLList<IGraphQLFieldType, IGraphQLArgument>
                 {
                     Name = "args",
                     OfType  = new[] {"GraphQLString"},
-                    Resolve = context => "Args"
+                    GraphQLObjectType = new __InputValue(),
+                    Resolve = context => context.Source.Arguments
                 },
                 new GraphQLObjectField<IGraphQLFieldType, string>
                 {

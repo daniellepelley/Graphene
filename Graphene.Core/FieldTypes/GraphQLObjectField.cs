@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Graphene.Core.Execution;
 using Graphene.Core.Model;
+using Graphene.Core.Types.Introspection;
 
 namespace Graphene.Core.Types
 {
@@ -39,6 +40,7 @@ namespace Graphene.Core.Types
         }
 
         public virtual Func<ResolveObjectContext<TInput>, TOutput> Resolve { get; set; }
+        public IEnumerable<IGraphQLArgument> Arguments { get; set; }
     }
 
     public class GraphQLObjectField<TOutput> : GraphQLObjectFieldBase, IToExecutionBranch
