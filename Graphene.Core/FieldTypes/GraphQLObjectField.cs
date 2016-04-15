@@ -6,12 +6,12 @@ using Graphene.Core.Model;
 
 namespace Graphene.Core.Types
 {
-    public class GraphQLObject : GraphQLObject<object, object>
+    public class GraphQLObjectField : GraphQLObjectField<object, object>
     {
 
     }
 
-    public class GraphQLList<TInput, TOutput> : GraphQLObjectBase, IGraphQLObject, IInputField<TInput>
+    public class GraphQLList<TInput, TOutput> : GraphQLObjectFieldBase, IInputField<TInput>
     {
         public ExecutionBranch ToExecutionBranch(Selection[] selections, Func<TInput> getter)
         {
@@ -41,7 +41,7 @@ namespace Graphene.Core.Types
         public virtual Func<ResolveObjectContext<TInput>, IEnumerable<TOutput>> Resolve { get; set; }
     }
 
-    public class GraphQLObject<TInput, TOutput> : GraphQLObjectBase, IGraphQLObject, IInputField<TInput>
+    public class GraphQLObjectField<TInput, TOutput> : GraphQLObjectFieldBase, IGraphQLObject, IInputField<TInput>
     {
         public ExecutionBranch ToExecutionBranch(Selection[] selections, Func<TInput> getter)
         {
@@ -71,7 +71,7 @@ namespace Graphene.Core.Types
         public virtual Func<ResolveObjectContext<TInput>, TOutput> Resolve { get; set; }
     }
 
-    public class GraphQLObject<TOutput> : GraphQLObjectBase, IGraphQLObject, IToExecutionBranch
+    public class GraphQLObjectField<TOutput> : GraphQLObjectFieldBase, IToExecutionBranch
     {
         public virtual Func<ResolveObjectContext, TOutput> Resolve { get; set; }
         public ExecutionBranch ToExecutionBranch(Selection[] selections, IDictionary<string, object> arguments)

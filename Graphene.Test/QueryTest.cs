@@ -10,34 +10,40 @@ namespace Graphene.Test
         [Test]
         public void CanBuildAQuery()
         {
-            var userType = new GraphQLObject
+            var userType = new GraphQLObjectField
             {
                 Name = "User",
-                Fields = new IGraphQLFieldType[]
+                GraphQLObjectType = new GraphQLObjectType
                 {
-                    new GraphQLScalar<object, object>
+                    Fields = new IGraphQLFieldType[]
                     {
-                        Name = "id"
-                    },
-                    new GraphQLScalar<object, object>
-                    {
-                        Name = "name"
+                        new GraphQLScalarField<object, object>
+                        {
+                            Name = "id"
+                        },
+                        new GraphQLScalarField<object, object>
+                        {
+                            Name = "name"
+                        }
                     }
-                }.ToList()
+                }
             };
 
             var schema = new GraphQLSchema
             {
-                Query = new GraphQLObject<object>
+                Query = new GraphQLObjectField<object>
                 {
                     Name = "Query",
-                    Fields = new IGraphQLFieldType[]
+                    GraphQLObjectType = new GraphQLObjectType
                     {
-                        new GraphQLScalar<object, object>
+                        Fields = new IGraphQLFieldType[]
                         {
-                            Name = "user",
-                        }
-                    }.ToList()
+                            new GraphQLScalarField<object, object>
+                            {
+                                Name = "user",
+                            }
+                        }.ToList()
+                    }
                 }
             };
 

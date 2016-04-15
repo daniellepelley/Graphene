@@ -6,30 +6,30 @@ using System.Threading.Tasks;
 
 namespace Graphene.Core.Types.Introspection
 {
-    //public class IntrospectionTypeWrapper : ScalarType
+    //public class IntrospectionTypeWrapper : ScalarFieldType
     //{
-    //    public IntrospectionTypeWrapper(ScalarType GraphQLObject)
+    //    public IntrospectionTypeWrapper(ScalarFieldType GraphQLObjectField)
     //    {
     //        Fields = new IGraphQLFieldType[]
     //        {
-    //            new GraphQLScalar
+    //            new GraphQLScalarField
     //            {
     //                Name = "kind",
     //                Description = "The type that query operations will be rooted at.",
     //                //OfType = new GraphQLNonNull<__TypeKind>>(),
-    //                Resolve = context => GraphQLObject.Kind
+    //                Resolve = context => GraphQLObjectField.Kind
     //            },
-    //            new GraphQLScalar
+    //            new GraphQLScalarField
     //            {
     //                Name = "name",
     //                //OfType = typeof (GraphQLString),
-    //                Resolve = context => GraphQLObject.Name
+    //                Resolve = context => GraphQLObjectField.Name
     //            },
-    //            new GraphQLScalar
+    //            new GraphQLScalarField
     //            {
     //                Name = "description",
     //                //OfType = typeof (GraphQLString),
-    //                Resolve = context => GraphQLObject.Description
+    //                Resolve = context => GraphQLObjectField.Description
     //            },
     //            new GraphQLSchemaFieldType
     //            {

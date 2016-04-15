@@ -36,11 +36,11 @@ namespace Graphene.Execution
             return executionBranch.Execute().Value;
         }
 
-        private void Validate(Selection[] selections, GraphQLObjectBase fieldType)
+        private void Validate(Selection[] selections, GraphQLObjectFieldBase fieldType)
         {
             foreach (var selection in selections)
             {
-                if (fieldType.Fields == null)
+                if (fieldType.GraphQLObjectType.Fields == null)
                 {
                     throw new GraphQLException(string.Format("Field {0} does not exist", selection.Field.Name));                    
                 }
@@ -50,7 +50,7 @@ namespace Graphene.Execution
                     
                 }
 
-                if (!fieldType.HasField(selection.Field.Name))
+                if (!fieldType.GraphQLObjectType.HasField(selection.Field.Name))
                 {
                     
                 }
@@ -65,7 +65,7 @@ namespace Graphene.Execution
 
                 if (field is IGraphQLObject)
                 {
-                    Validate(selection.Field.Selections, (GraphQLObjectBase)field);
+                    Validate(selection.Field.Selections, (GraphQLObjectFieldBase)field);
                 }
             }
         }

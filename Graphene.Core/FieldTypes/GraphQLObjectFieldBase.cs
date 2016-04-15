@@ -10,27 +10,35 @@ namespace Graphene.Core.Types
         ExecutionBranch ToExecutionBranch(Selection[] selections, IDictionary<string, object> arguments);
     }
 
-    public class GraphQLObjectBase : IGraphQLType
+    public class GraphQLObjectFieldBase
     {
         public IGraphQLFieldType this[string name]
         {
-            get { return Fields.FirstOrDefault(x => x.Name == name); }
+            get { return GraphQLObjectType.Fields.FirstOrDefault(x => x.Name == name); }
         }
+
+        //public IEnumerable<IGraphQLFieldType> Fields
+        //{
+        //    get { return GraphQLObjectType.Fields; }
+        //    set { GraphQLObjectType.Fields = value; }
+        //}
 
         public string Kind
         {
             get { return GraphQLKinds.Object; }
         }
 
+        public GraphQLObjectType GraphQLObjectType { get; set; }
+
         public string Name { get; set; }
         public string Description { get; set; }
         public string[] OfType { get; set; }
-        public IEnumerable<IGraphQLFieldType> Fields { get; set; }
+
         public IGraphQLFieldType[] Arguments { get; set; }
 
-        public bool HasField(string name)
+        public GraphQLObjectFieldBase()
         {
-            return Fields.Count(x => x.Name == name) == 1;
+            GraphQLObjectType = new GraphQLObjectType();
         }
     }
 }

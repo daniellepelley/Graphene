@@ -19,16 +19,16 @@ namespace Graphene.Test.Execution
 
     //        var resolveFieldContext = new ResolveFieldContext<object>
     //        {
-    //            Source = new TestUser
+    //            Source = new User
     //            {
     //                Name = "Dan"
     //            },
     //            Parent = new ResolveObjectContext<object>
     //            {
-    //                ObjectType = schema.Query
+    //                ObjectFieldType = schema.Query
     //            },
     //            FieldName = "name",
-    //            ScalarType = (GraphQLScalar)schema.Query.Fields[1]
+    //            ScalarFieldType = (GraphQLScalarField)schema.Query.Fields[1]
     //        };
 
     //        var result = sut.Execute(resolveFieldContext);
@@ -41,22 +41,22 @@ namespace Graphene.Test.Execution
     //    {
     //        var schema = new GraphQLSchema
     //        {
-    //            Query = new GraphQLObject
+    //            Query = new GraphQLObjectField
     //            {
     //                Name = "user",
     //                Arguments = arguments,
     //                Resolve = context => Data.GetData().Where(x => !context.Arguments.ContainsKey("id") || x.Id == Convert.ToInt32(context.Arguments["id"])),
     //                Fields = new IGraphQLFieldType[]
     //                {
-    //                    new GraphQLScalar
+    //                    new GraphQLScalarField
     //                    {
     //                        Name = "id",
-    //                        Resolve = context => ((TestUser) context.Source).Id.ToString()
+    //                        Resolve = context => ((User) context.Source).Id.ToString()
     //                    },
-    //                    new GraphQLScalar
+    //                    new GraphQLScalarField
     //                    {
     //                        Name = "name",
-    //                        Resolve = context => ((TestUser) context.Source).Name
+    //                        Resolve = context => ((User) context.Source).Name
     //                    }
     //                }.ToList()
     //            }

@@ -1,35 +1,23 @@
 using System.Linq;
+using Graphene.Test.Spike;
 
-namespace Graphene.Test.Spike
+namespace Graphene.Test.Data
 {
-    public class TestUser
-    {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public Boss Boss { get; set; }
-    }
-
-    public class Boss
-    {
-        public int Id { get; set; }
-        public string Name { get; set; }
-    }
-
     public static class Data
     {
-        public static IQueryable<TestUser> GetData()
+        public static IQueryable<User> GetData()
         {
             return GetTestUsersFromDatabase().Select(Map).AsQueryable();
         }
 
-        private static TestUser Map(TestUserDatabase testUserDatabase)
+        private static User Map(TestUserDatabase testUserDatabase)
         {
             if (testUserDatabase == null)
             {
                 return null;
             }
 
-            return new TestUser
+            return new User
             {
                 Id = testUserDatabase.Id,
                 Name = testUserDatabase.Firstname + "_" + testUserDatabase.Lastname,
@@ -65,7 +53,7 @@ namespace Graphene.Test.Spike
                         Id = 4,
                         Firstname= "Boss",
                         Lastname = "Smith"
-                   }
+                    }
                 },
                 new TestUserDatabase
                 {
@@ -77,7 +65,7 @@ namespace Graphene.Test.Spike
                         Id = 4,
                         Firstname= "Boss",
                         Lastname = "Lee"
-                   }
+                    }
                 },
                 new TestUserDatabase
                 {

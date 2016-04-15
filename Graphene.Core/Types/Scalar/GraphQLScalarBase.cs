@@ -8,6 +8,10 @@
         }
 
         public string[] OfType { get; set; }
+    }
 
+    public class GraphQLScalarBase<T> : GraphQLScalarBase
+    {
+        
     }
 }

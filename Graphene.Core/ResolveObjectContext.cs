@@ -23,7 +23,7 @@ namespace Graphene.Core
 
         //public ResolveObjectContext Parent { get; set; }
 
-        public GraphQLObject ObjectType { get; set; }
+        public GraphQLObjectField ObjectFieldType { get; set; }
 
         //public Selection[] Selections { get; set; }
 

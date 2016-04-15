@@ -5,6 +5,7 @@ using Graphene.Core.Model;
 using Graphene.Core.Parsers;
 using Graphene.Core.Types;
 using Graphene.Execution;
+using Graphene.Test.Data;
 using Graphene.Test.Spike;
 using Newtonsoft.Json;
 using NUnit.Framework;
@@ -52,7 +53,7 @@ namespace Graphene.Test.Execution
             var sut = new ExecutionEngine();
 
             var schema = CreateGraphQLSchema(new IGraphQLFieldType[] {
-                    new GraphQLScalar<object, object>
+                    new GraphQLScalarField<object, object>
                     {
                         Name = "id",
                         OfType = new[] { graphQLType }
@@ -76,24 +77,27 @@ namespace Graphene.Test.Execution
         {
             var schema = new GraphQLSchema
             {
-                Query = new GraphQLObject<object>
+                Query = new GraphQLObjectField<object>
                 {
                     Name = "user",
                     Arguments = arguments,
                     Resolve = Resolve,
-                    Fields = new IGraphQLFieldType[]
+                    GraphQLObjectType = new GraphQLObjectType
                     {
-                        new GraphQLScalar<object, object>
+                        Fields = new IGraphQLFieldType[]
                         {
-                            Name = "id",
-                            Resolve = context => ((TestUser) context.Source).Id
-                        },
-                        new GraphQLScalar<object, object>
-                        {
-                            Name = "name",
-                            Resolve = context => ((TestUser) context.Source).Name
+                            new GraphQLScalarField<object, object>
+                            {
+                                Name = "id",
+                                Resolve = context => ((User) context.Source).Id
+                            },
+                            new GraphQLScalarField<object, object>
+                            {
+                                Name = "name",
+                                Resolve = context => ((User) context.Source).Name
+                            }
                         }
-                    }.ToList()
+                    }
                 }
             };
             return schema;
@@ -101,7 +105,7 @@ namespace Graphene.Test.Execution
 
         private static object Resolve(ResolveObjectContext context)
         {
-            return Data.GetData().FirstOrDefault(x => !context.Arguments.ContainsKey("id") || x.Id == Convert.ToInt32(context.Arguments["id"]));
+            return Data.Data.GetData().FirstOrDefault(x => !context.Arguments.ContainsKey("id") || x.Id == Convert.ToInt32(context.Arguments["id"]));
         }
 
     }

@@ -8,7 +8,8 @@ namespace Graphene.Core.Types
         public abstract ExecutionNode ToExecutionNode(Func<TInput> getInput);
     }
 
-    public class GraphQLScalar<TInput, TOutput> : GraphQLScalar<TInput>, IGraphQLFieldType
+    public class GraphQLScalarField<TInput, TOutput>
+        : GraphQLScalar<TInput>, IGraphQLFieldType
     {
         public string Name { get; set; }
 

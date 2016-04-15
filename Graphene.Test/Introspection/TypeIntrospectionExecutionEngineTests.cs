@@ -25,7 +25,7 @@ namespace Graphene.Test.Execution
                               kind
                               name
                             }
-                          }";
+                        }";
 
             //                              ofType {
             //                                kind
@@ -95,7 +95,7 @@ namespace Graphene.Test.Execution
 
             var types = new IGraphQLType[]
             {
-                query,
+                query.GraphQLObjectType,
                 new GraphQLString(),
                 new GraphQLInt() 
             };
