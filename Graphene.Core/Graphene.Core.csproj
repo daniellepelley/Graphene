@@ -49,6 +49,7 @@
     <Compile Include="Execution\ExecutionTree.cs" />
     <Compile Include="Execution\ExecutionNode.cs" />
     <Compile Include="Execution\IExecutionItem.cs" />
+    <Compile Include="FieldTypes\GraphQLList.cs" />
     <Compile Include="IResolveContext.cs" />
     <Compile Include="ResolveObjectContext.cs" />
     <Compile Include="FieldTypes\GraphQLObjectFieldBase.cs" />
@@ -98,7 +99,7 @@
     <Compile Include="Types\GraphQLSchema.cs" />
     <Compile Include="Types\Scalar\GraphQLString.cs" />
     <Compile Include="Types\GraphQlTypeSelector.cs" />
-    <Compile Include="Types\IGraphQLObject.cs" />
+    <Compile Include="Types\Object\IGraphQLObject.cs" />
     <Compile Include="Types\Scalar\IGraphQLType.cs" />
     <Compile Include="FieldTypes\IInputField.cs" />
     <Compile Include="Types\Introspection\GraphQLSchemaList.cs" />

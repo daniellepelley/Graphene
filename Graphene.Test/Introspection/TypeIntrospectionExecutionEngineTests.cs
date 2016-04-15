@@ -40,7 +40,7 @@ namespace Graphene.Test.Execution
             //var query = @"{__type(name:""String""){description}}";
             var document = new DocumentParser().Parse(query); ;
 
-            var expected = @"{""data"":{""kind"":""OBJECT"",""name"":""user""}}";
+            var expected = @"{""data"":{""kind"":""OBJECT"",""name"":""User"",""ofType"":null}}";
 
             var result = JsonConvert.SerializeObject(sut.Execute(schema, document));
             Assert.AreEqual(expected, result);

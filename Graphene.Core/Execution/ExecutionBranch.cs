@@ -29,6 +29,12 @@ namespace Graphene.Core.Execution
                 Source = input
             };
             _value = _func(context);
+
+            if (_value == null)
+            {
+                return new KeyValuePair<string, object>(FieldName, null);
+            }
+
             return base.Execute();
         }
     }

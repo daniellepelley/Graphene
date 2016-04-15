@@ -5,7 +5,11 @@ namespace Graphene.Core.Types
 {
     public class GraphQLObjectType : IGraphQLType
     {
-        public string Kind { get; set; }
+        public string Kind
+        {
+            get { return "OBJECT"; }
+        }
+
         public string Name { get; set; }
         public string Description { get; set; }
         public string[] OfType { get; set; }
