@@ -50,7 +50,7 @@ namespace Graphene.TypeProvider
             }
 
 
-            return new GraphQLObjectField
+            return new GraphQLObjectField<object, object>
             {
                 Name = propertyInfo.Name,
                 Resolve = context => propertyInfo.GetValue(context.Source),

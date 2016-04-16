@@ -1,6 +1,6 @@
 ﻿namespace Graphene.Core.Model
 {
-    public class Fragment
+    public class Fragment : IHasSelections
     {
         public string Name { get; set; }
         public string Type { get; set; }

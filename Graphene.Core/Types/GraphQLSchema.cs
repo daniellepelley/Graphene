@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace Graphene.Core.Types
 {
     public class GraphQLSchema : IGraphQLSchema
@@ -17,6 +19,15 @@ namespace Graphene.Core.Types
         public string GetDirectives()
         {
             throw new System.NotImplementedException();
+        }
+
+        public IEnumerable<IGraphQLType> GetTypes()
+        {
+            return new IGraphQLType[]
+            {
+                new GraphQLString(),
+                new GraphQLBoolean()
+            };
         }
     }
 

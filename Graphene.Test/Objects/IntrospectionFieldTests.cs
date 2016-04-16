@@ -21,7 +21,7 @@ namespace Graphene.Test.Objects
         [Test]
         public void Name()
         {
-            var field = new GraphQLObjectField
+            var field = new GraphQLObjectField<object, object>
             {
                 Name = "foo"
             };
@@ -33,7 +33,7 @@ namespace Graphene.Test.Objects
         [Test]
         public void Description()
         {
-            var field = new GraphQLObjectField
+            var field = new GraphQLObjectField<object, object>
             {
                 Description = "This is foo"
             };
@@ -59,7 +59,7 @@ namespace Graphene.Test.Objects
         [Test]
         public void Arguments()
         {
-            var field = new GraphQLObjectField
+            var field = new GraphQLObjectField<object, object>
             {
                 Name = "foo",
                 Arguments = new IGraphQLArgument[]

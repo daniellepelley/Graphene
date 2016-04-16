@@ -3,17 +3,9 @@ using System.Linq;
 
 namespace Graphene.Core.Types.Introspection
 {
-    public class __Schema : GraphQLObjectField<GraphQLSchema>
+    public class __Schema : GraphQLObjectType
     {
-        private GraphQLSchema _schema;
-
-        public __Schema(GraphQLSchema schema)
-        {
-            _schema = schema;
-            SetUp(schema);
-        }
-
-        private void SetUp(GraphQLSchema schema)
+        public __Schema()
         {
             var queryType = new GraphQLObjectType
             {
@@ -66,41 +58,46 @@ namespace Graphene.Core.Types.Introspection
                 }
             };
 
-            var schemaType = new GraphQLObjectType
+            Fields = new IGraphQLFieldType[]
             {
-                Fields = new IGraphQLFieldType[]
+                new GraphQLObjectField<GraphQLSchema, GraphQLObjectFieldBase>
                 {
-                    new GraphQLObjectField<GraphQLSchema, GraphQLObjectFieldBase>
-                    {
-                        Name = "queryType",
-                        Description = "The type that query operations will be rooted at.",
-                        OfType = new[] {"GraphQLNonNull", "__Type"},
-                        GraphQLObjectType = () => queryType,
-                        Resolve = context => schema.Query
-                    },
-                    new GraphQLObjectField
-                    {
-                        Name = "mutationType",
-                        Description =
-                            "If this server supports mutation, the type that mutation operations will be rooted at.",
-                        OfType = new[] {"GraphQLNonNull", "__Type"},
-                        Resolve = context => _schema.Query
-                    },
-                    new GraphQLObjectField
-                    {
-                        Name = "subscriptionType",
-                        Description =
-                            "If this server support subscription, the type that subscription operations will be rooted at.",
-                        OfType = new[] {"GraphQLNonNull", "__Type"},
-                        Resolve = context => schema.GetSubscriptionType()
-                    },
-                    new GraphQLObjectField
-                    {
-                        Name = "directives",
-                        Description = "A list of all directives supported by this server.",
-                        OfType = new[] {"GraphQLNonNull", "__Type"},
-                        Resolve = context => schema.GetDirectives()
-                    }
+                    Name = "queryType",
+                    Description = "The type that query operations will be rooted at.",
+                    OfType = new[] {"GraphQLNonNull", "__Type"},
+                    GraphQLObjectType = () => queryType,
+                    Resolve = context => context.Source.Query
+                },
+                new GraphQLObjectField<GraphQLSchema, GraphQLObjectFieldBase>
+                {
+                    Name = "mutationType",
+                    Description =
+                        "If this server supports mutation, the type that mutation operations will be rooted at.",
+                    OfType = new[] {"GraphQLNonNull", "__Type"},
+                    Resolve = context => null
+                },
+                new GraphQLObjectField<GraphQLSchema, GraphQLObjectFieldBase>
+                {
+                    Name = "subscriptionType",
+                    Description =
+                        "If this server support subscription, the type that subscription operations will be rooted at.",
+                    OfType = new[] {"GraphQLNonNull", "__Type"},
+                    Resolve = context => null
+                },
+                new GraphQLObjectField<GraphQLSchema, GraphQLObjectFieldBase>
+                {
+                    Name = "directives",
+                    Description = "A list of all directives supported by this server.",
+                    OfType = new[] {"GraphQLNonNull", "__Type"},
+                    Resolve = context => null
+                },
+                new GraphQLList<GraphQLSchema, IGraphQLType>
+                {
+                    Name = "types",
+                    Description = "A list of all directives supported by this server.",
+                    GraphQLObjectType = () => new __Type(),
+                    OfType = new[] {"GraphQLNonNull", "__Type"},
+                    Resolve = context => context.Source.GetTypes()
                 }
             };
 
@@ -108,9 +105,6 @@ namespace Graphene.Core.Types.Introspection
             Description = @"A GraphQL Schema defines the capabilities of a GraphQL server. It " +
                           "exposes all available types and directives on the server, as well as " +
                           "the entry points for query, mutation, and subscription operations.";
-
-            GraphQLObjectType = () => schemaType;
-            Resolve = context => _schema;
         }
     }
 }

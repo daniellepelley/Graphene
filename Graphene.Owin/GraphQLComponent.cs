@@ -7,6 +7,7 @@ using System.Web.Configuration;
 using Graphene.Core;
 using Graphene.Core.Parsers;
 using Graphene.Core.Types;
+using Graphene.Core.Types.Introspection;
 using Graphene.Execution;
 using Graphene.Owin.Spike;
 using Graphene.Spike;
@@ -24,7 +25,7 @@ namespace Graphene.Owin
         public GraphQLComponent(Func<IDictionary<string, object>, Task> appFunc)
         {
             _appFunc = appFunc;
-            _schema = CreateSchema();
+            _schema = CreateIntrospectionSchema();
         }
 
         public async Task Invoke(IDictionary<string, object> environment)
@@ -86,57 +87,59 @@ namespace Graphene.Owin
             await owinContext.Response.WriteAsync(json);
         }
 
-        private GraphQLSchema CreateSchema()
+        private static GraphQLSchema CreateSchema()
         {
-            var schema = new GraphQLSchema
+           var schema = new GraphQLSchema
             {
-                Query = new GraphQLObject
+                Query = new GraphQLObjectField<TestUser>
                 {
-                    Name = "user",
-                    Resolve =
-                        context =>
-                            Data.GetData()
-                                .Where(
-                                    x =>
-                                        (!context.Arguments.ContainsKey("id") ||
-                                         x.Id.ToString() == context.Arguments["id"].ToString()) &&
-                                        (!context.Arguments.ContainsKey("name") ||
-                                         x.Name.Contains(context.Arguments["name"].ToString()))),
-                    OfType = new[] {"user"},
-                    Fields = new IGraphQLFieldType[]
+                    Name = "users",
+                    GraphQLObjectType = () =>new GraphQLObjectType
                     {
-                        new GraphQLScalar<TestUser, int>
+                        Fields = new IGraphQLFieldType[]
+                        {
+                            new GraphQLScalarField<TestUser, int>
                         {
                             Name = "Id",
                             Resolve = context => context.Source.Id
                         },
-                        new GraphQLScalar<TestUser, string>
+                        new GraphQLScalarField<TestUser, string>
                         {
                             Name = "Name",
                             Resolve = context => context.Source.Name
-                        },
-                        new GraphQLObject<TestUser, TestUser>
-                        {
-                            Name = "Boss",
-                            Resolve = context => context.Source.Boss,
-                            Fields = new IGraphQLFieldType[]
-                            {
-                                new GraphQLScalar<TestUser, int>
-                                {
-                                    Name = "Id",
-                                    Resolve = context => context.Source.Id
-                                },
-                                new GraphQLScalar<TestUser, string>
-                                {
-                                    Name = "Name",
-                                    Resolve = context => context.Source.Name
-                                }
-                            }.ToList()
                         }
-                    }.ToList()
-                }
-            };
+                    } 
+                },
+                    Resolve = _ => Data.GetData().First()
+            }};
+
             return schema;
         }
+
+
+        private static GraphQLSchema CreateIntrospectionSchema()
+        {
+            return new GraphQLSchema
+            {
+                Query = new GraphQLObjectField<object>
+                {
+                    Name = "IntrospectionQuery",
+                    GraphQLObjectType = () => new GraphQLObjectType
+                    {
+                        Fields = new IGraphQLFieldType[]
+                        {
+                            new GraphQLObjectField<object, GraphQLSchema>
+                            {
+                                Name = "__schema",
+                                GraphQLObjectType = () => new __Schema(),
+                                Resolve = _ => CreateSchema()
+                            }
+                        }
+                    },
+                    Resolve = _ => CreateSchema()
+                }
+            };
+        }
+
     }
 }

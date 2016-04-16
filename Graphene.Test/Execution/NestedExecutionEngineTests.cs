@@ -17,11 +17,11 @@ namespace Graphene.Test.Execution
 
             var schema = CreateGraphQLSchema();
 
-            var query = "{user(Id: 1) {Id, Name, Boss {Id, Name}}}";
+            var query = "{user(id: 1) {id, name, boss {id, name}}}";
             var document = new DocumentParser().Parse(query);
 
             var expected =
-                @"{""data"":{""Id"":1,""Name"":""Dan_Smith"",""Boss"":{""Id"":4,""Name"":""Boss_Smith""}}}";
+                @"{""data"":{""id"":1,""name"":""Dan_Smith"",""boss"":{""id"":4,""name"":""Boss_Smith""}}}";
             var result = Execute(sut, schema, document);
             Assert.AreEqual(expected, result);
         }
@@ -33,11 +33,11 @@ namespace Graphene.Test.Execution
 
             var schema = CreateGraphQLSchema();
 
-            var query = "{user(Id: 1) {Name, Boss {Name}}}";
+            var query = "{user(id: 1) {name, boss {name}}}";
             var document = new DocumentParser().Parse(query);
 
             var expected =
-                @"{""data"":{""Name"":""Dan_Smith"",""Boss"":{""Name"":""Boss_Smith""}}}";
+                @"{""data"":{""name"":""Dan_Smith"",""boss"":{""name"":""Boss_Smith""}}}";
             var result = Execute(sut, schema, document);
             Assert.AreEqual(expected, result);
         }

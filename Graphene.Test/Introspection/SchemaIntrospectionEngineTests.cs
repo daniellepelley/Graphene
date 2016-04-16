@@ -16,12 +16,12 @@ namespace Graphene.Test.Introspection
         {
             var sut = new ExecutionEngine(true);
 
-            var schema = CreateIntrospectionSchema();
+            var schema = TestSchemas.CreateIntrospectionSchema();
 
-            var query = @"{__schema{queryType{name, kind}}}";
+            var query = @"{IntrospectionQuery {__schema{queryType{name, kind}}}}";
             var document = new DocumentParser().Parse(query); ;
 
-            var expected = @"{""data"":{""queryType"":{""name"":""user"",""kind"":""OBJECT""}}}";
+            var expected = @"{""data"":{""__schema"":{""queryType"":{""name"":""user"",""kind"":""OBJECT""}}}}";
 
             var result = JsonConvert.SerializeObject(sut.Execute(schema, document));
             Assert.AreEqual(expected, result);
@@ -32,24 +32,55 @@ namespace Graphene.Test.Introspection
         {
             var sut = new ExecutionEngine(true);
 
-            var schema = CreateIntrospectionSchema();
+            var schema = TestSchemas.CreateIntrospectionSchema();
 
-            var query = @"{__schema{queryType{name, kind, fields{name}}}}";
+            var query = @"{IntrospectionQuery {__schema{queryType{name, kind, fields{name}}}}}";
             var document = new DocumentParser().Parse(query); ;
 
-            var expected = @"{""data"":{""queryType"":{""name"":""user"",""kind"":""OBJECT"",""fields"":[{""name"":""Id""},{""name"":""Name""},{""name"":""Boss""}]}}}";
+            var expected = @"{""data"":{""__schema"":{""queryType"":{""name"":""user"",""kind"":""OBJECT"",""fields"":[{""name"":""id""},{""name"":""name""},{""name"":""boss""}]}}}}";
 
             var result = JsonConvert.SerializeObject(sut.Execute(schema, document));
             Assert.AreEqual(expected, result);
         }
 
-        private static GraphQLSchema CreateIntrospectionSchema()
+        [Test]
+        public void Types()
         {
-            var newSchema = new GraphQLSchema
-            {
-                Query = new __Schema(TestSchemas.UserSchema() as GraphQLSchema)
-            };
-            return newSchema;
+            var sut = new ExecutionEngine(true);
+
+            var schema = TestSchemas.CreateIntrospectionSchema();
+
+            var query = @"{IntrospectionQuery {__schema{types{name, kind, fields{name}}}}}";
+            var document = new DocumentParser().Parse(query); ;
+
+            var expected = @"{""data"":{""__schema"":{""types"":[{""name"":""String"",""kind"":""SCALAR"",""fields"":null},{""name"":""Boolean"",""kind"":""SCALAR"",""fields"":null}]}}}";
+
+            var result = JsonConvert.SerializeObject(sut.Execute(schema, document));
+            Assert.AreEqual(expected, result);
         }
+
+        //private static GraphQLSchema CreateIntrospectionSchema()
+        //{
+        //    return new GraphQLSchema
+        //    {
+        //        Query = new GraphQLObjectField<object>
+        //        {
+        //            Name = "IntrospectionQuery",
+        //            GraphQLObjectType = () => new GraphQLObjectType
+        //            {
+        //                Fields = new IGraphQLFieldType[]
+        //                {
+        //                    new GraphQLObjectField<object, GraphQLSchema>
+        //                    {
+        //                        Name = "__schema",
+        //                        GraphQLObjectType = () => new __Schema(),
+        //                        Resolve = _ => TestSchemas.UserSchema()
+        //                    }
+        //                }
+        //            },
+        //            Resolve = _ => TestSchemas.UserSchema(),
+        //        }
+        //    };
+        //}
     }
 }

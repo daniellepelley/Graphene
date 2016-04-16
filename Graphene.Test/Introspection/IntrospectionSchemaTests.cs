@@ -100,28 +100,8 @@ namespace Graphene.Test.Introspection
 
             var document = new DocumentParser().Parse(queryObject.Query);
 
-            var result = new ExecutionEngine().Execute(new __Schema(), );
+            //var result = new ExecutionEngine().Execute(new __Schema(), );
             
-        }
-
-        private GraphQLSchema GetSchema()
-        {
-            return new GraphQLSchema
-            {
-                Query = new GraphQLObject
-                {
-                    Name = "IntrospectionQuery",
-                    Fields = new IGraphQLFieldType[]
-                    {
-                        new GraphQLObject<GraphQLSchema>
-                        {
-                            Name = "IntrospectionQuery",
-                            Type  = new __Schema(TestSchemas.UserSchema())
-                        }
-                    }
-                }
-            };
-
         }
 
 

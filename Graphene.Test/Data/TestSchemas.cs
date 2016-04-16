@@ -1,12 +1,13 @@
 using System;
 using System.Linq;
 using Graphene.Core.Types;
+using Graphene.Core.Types.Introspection;
 
 namespace Graphene.Test.Data
 {
     public static class TestSchemas
     {
-        public static IGraphQLSchema UserSchema()
+        public static GraphQLSchema UserSchema()
         {
             var userType = CreateUserType();
 
@@ -15,7 +16,7 @@ namespace Graphene.Test.Data
                 Query = new GraphQLObjectField<User>
                 {
                     Name = "user",
-                    Resolve = context => Test.Data.Data.GetData().FirstOrDefault(x => !context.Arguments.ContainsKey("Id") || x.Id == Convert.ToInt32(context.Arguments["Id"])),
+                    Resolve = context => Test.Data.Data.GetData().FirstOrDefault(x => !context.Arguments.ContainsKey("id") || x.Id == Convert.ToInt32(context.Arguments["id"])),
                     OfType = new [] {"user" },
                     GraphQLObjectType = () => userType
                 }
@@ -33,17 +34,17 @@ namespace Graphene.Test.Data
                 {
                     new GraphQLScalarField<User, int>
                     {
-                        Name = "Id",
+                        Name = "id",
                         Resolve = context => context.Source.Id
                     },
                     new GraphQLScalarField<User, string>
                     {
-                        Name = "Name",
+                        Name = "name",
                         Resolve = context => context.Source.Name
                     },
                     new GraphQLObjectField<User, Boss>
                     {
-                        Name = "Boss",
+                        Name = "boss",
                         Resolve = context => context.Source.Boss,
                         GraphQLObjectType = () => CreateBossType()
                     }
@@ -62,17 +63,43 @@ namespace Graphene.Test.Data
                 {
                     new GraphQLScalarField<Boss, int>
                     {
-                        Name = "Id",
+                        Name = "id",
                         Resolve = context => context.Source.Id
                     },
                     new GraphQLScalarField<Boss, string>
                     {
-                        Name = "Name",
+                        Name = "name",
                         Resolve = context => context.Source.Name
                     }
                 }
             };
             return bossType;
         }
+
+        public static GraphQLSchema CreateIntrospectionSchema()
+        {
+            return new GraphQLSchema
+            {
+                Query = new GraphQLObjectField<object>
+                {
+                    Name = "IntrospectionQuery",
+                    GraphQLObjectType = () => new GraphQLObjectType
+                    {
+                        Fields = new IGraphQLFieldType[]
+                        {
+                            new GraphQLObjectField<object, GraphQLSchema>
+                            {
+                                Name = "__schema",
+                                GraphQLObjectType = () => new __Schema(),
+                                Resolve = _ => UserSchema()
+                            }
+                        }
+                    },
+                    Resolve = _ => UserSchema()
+                }
+            };
+        }
+
+
     }
 }

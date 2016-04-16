@@ -57,6 +57,8 @@
     <Compile Include="Execution Tree\ExecutionNodeTests.cs" />
     <Compile Include="Execution\ArgumentsExecutionEngineTests.cs" />
     <Compile Include="Data\TestSchemas.cs" />
+    <Compile Include="Execution\FragmentsTests.cs" />
+    <Compile Include="Introspection\IntrospectionSchemaTests.cs" />
     <Compile Include="Introspection\TypeIntrospectionExecutionEngineTests.cs" />
     <Compile Include="Execution\NestedExecutionEngineTests.cs" />
     <Compile Include="Introspection\SchemaIntrospectionEngineTests.cs" />

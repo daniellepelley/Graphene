@@ -81,8 +81,8 @@ namespace Graphene.Test.Objects
             var field1 = (IDictionary<string, object>)list[0];
             var field2 = (IDictionary<string, object>) list[1];
 
-            Assert.AreEqual("Id", field1["name"]);
-            Assert.AreEqual("Name", field2["name"]);
+            Assert.AreEqual("id", field1["name"]);
+            Assert.AreEqual("name", field2["name"]);
         }
 
         [Test]

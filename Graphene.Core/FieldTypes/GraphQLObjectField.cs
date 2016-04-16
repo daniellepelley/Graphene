@@ -7,7 +7,7 @@ using Graphene.Core.Types.Introspection;
 
 namespace Graphene.Core.Types
 {
-    public class GraphQLObjectField : GraphQLObjectField<object, object>
+    public class GraphQLObjectField : GraphQLObjectField<object>, IGraphQLFieldType
     {
 
     }
