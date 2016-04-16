@@ -16,8 +16,14 @@ namespace Graphene.Test.Data
                 Query = new GraphQLObjectField<User>
                 {
                     Name = "user",
-                    Resolve = context => Test.Data.Data.GetData().FirstOrDefault(x => !context.Arguments.ContainsKey("id") || x.Id == Convert.ToInt32(context.Arguments["id"])),
-                    OfType = new [] {"user" },
+                    Resolve =
+                        context =>
+                            Test.Data.Data.GetData()
+                                .FirstOrDefault(
+                                    x =>
+                                        !context.Arguments.ContainsKey("id") ||
+                                        x.Id == Convert.ToInt32(context.Arguments["id"])),
+                    OfType = new[] {"user"},
                     GraphQLObjectType = () => userType
                 }
             };
@@ -101,5 +107,229 @@ namespace Graphene.Test.Data
         }
 
 
+
+        public static string GraphiQlQueryWithFragments
+        {
+            get { return @"
+                query IntrospectionQuery {
+    __schema {
+      queryType { name }
+      mutationType { name }
+      subscriptionType { name }
+      types {
+        ...FullType
+      }
+      directives {
+        name
+        description
+        args {
+          ...InputValue
+        }
+        onOperation
+        onFragment
+        onField
+      }
+    }
+  }
+
+  fragment FullType on __Type {
+    kind
+    name
+    description
+    fields(includeDeprecated: true) {
+      name
+      description
+      args {
+        ...InputValue
+      }
+      type {
+        ...TypeRef
+      }
+      isDeprecated
+      deprecationReason
+    }
+    inputFields {
+      ...InputValue
+    }
+    interfaces {
+      ...TypeRef
+    }
+    enumValues(includeDeprecated: true) {
+      name
+      description
+      isDeprecated
+      deprecationReason
+    }
+    possibleTypes {
+      ...TypeRef
+    }
+  }
+
+  fragment InputValue on __InputValue {
+    name
+    description
+    type { ...TypeRef }
+    defaultValue
+  }
+
+  fragment TypeRef on __Type {
+    kind
+    name
+    ofType {
+      kind
+      name
+      ofType {
+        kind
+        name
+        ofType {
+          kind
+          name
+        }
+      }
+    }
+  }"; }
+        }
+
+
+        public static string GraphiQlQueryWithoutFragments
+        {
+            get { return @"
+                query IntrospectionQuery {
+    __schema {
+      queryType { name }
+      mutationType { name }
+      subscriptionType { name }
+      types {
+   kind
+    name
+    description
+    fields(includeDeprecated: true) {
+      name
+      description
+      args {
+    name
+    description
+    type {     kind
+    name
+    ofType {
+      kind
+      name
+      ofType {
+        kind
+        name
+        ofType {
+          kind
+          name
+        }
+      }
+    } }
+    defaultValue
+      }
+      type {
+            kind
+    name
+    ofType {
+      kind
+      name
+      ofType {
+        kind
+        name
+        ofType {
+          kind
+          name
+        }
+      }
+    }
+      }
+      isDeprecated
+      deprecationReason
+    }
+    inputFields {
+    name
+    description
+    type {     kind
+    name
+    ofType {
+      kind
+      name
+      ofType {
+        kind
+        name
+        ofType {
+          kind
+          name
+        }
+      }
+    } }
+    defaultValue
+    }
+    interfaces {
+          kind
+    name
+    ofType {
+      kind
+      name
+      ofType {
+        kind
+        name
+        ofType {
+          kind
+          name
+        }
+      }
+    }
+    }
+    enumValues(includeDeprecated: true) {
+      name
+      description
+      isDeprecated
+      deprecationReason
+    }
+    possibleTypes {
+          kind
+    name
+    ofType {
+      kind
+      name
+      ofType {
+        kind
+        name
+        ofType {
+          kind
+          name
+        }
+      }
+    }
+    }
+      }
+      directives {
+        name
+        description
+        args {    name
+    description
+    type {     kind
+    name
+    ofType {
+      kind
+      name
+      ofType {
+        kind
+        name
+        ofType {
+          kind
+          name
+        }
+      }
+    } }
+    defaultValue
+        }
+        onOperation
+        onFragment
+        onField
+      }
+    }
+  }";
+            }
+        }
     }
 }

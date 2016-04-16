@@ -1,8 +1,10 @@
+using Graphene.Core.Model;
 using Graphene.Core.Parsers;
 using Graphene.Core.Types;
 using Graphene.Core.Types.Introspection;
 using Graphene.Execution;
 using Graphene.Schema;
+using Graphene.Test.Data;
 using Graphene.Test.Execution;
 using Newtonsoft.Json;
 using NUnit.Framework;
@@ -13,98 +15,59 @@ namespace Graphene.Test.Introspection
 
     public class GraphiqlTest
     {
-        private string query = @"{""query"":""
-                query IntrospectionQuery {
-    __schema {
-      queryType { name }
-      mutationType { name }
-      subscriptionType { name }
-      types {
-        ...FullType
-      }
-      directives {
-        name
-        description
-        args {
-          ...InputValue
-        }
-        onOperation
-        onFragment
-        onField
-      }
-    }
-  }
+        private string _queryWithoutFragments = @"{""query"":""" + TestSchemas.GraphiQlQueryWithoutFragments + @""",""variables"":null}";
 
-  fragment FullType on __Type {
-    kind
-    name
-    description
-    fields(includeDeprecated: true) {
-      name
-      description
-      args {
-        ...InputValue
-      }
-      type {
-        ...TypeRef
-      }
-      isDeprecated
-      deprecationReason
-    }
-    inputFields {
-      ...InputValue
-    }
-    interfaces {
-      ...TypeRef
-    }
-    enumValues(includeDeprecated: true) {
-      name
-      description
-      isDeprecated
-      deprecationReason
-    }
-    possibleTypes {
-      ...TypeRef
-    }
-  }
-
-  fragment InputValue on __InputValue {
-    name
-    description
-    type { ...TypeRef }
-    defaultValue
-  }
-
-  fragment TypeRef on __Type {
-    kind
-    name
-    ofType {
-      kind
-      name
-      ofType {
-        kind
-        name
-        ofType {
-          kind
-          name
-        }
-      }
-    }
-  }"",""variables"":null}";
-
+        private string _queryWithFragments = @"{""query"":""" + TestSchemas.GraphiQlQueryWithFragments + @""",""variables"":null}";
 
         [Test]
-        public void StringDescription()
+        public void WithFragments()
+        {
+            var json = RunQuery(_queryWithFragments);
+
+            Assert.IsFalse(json.Contains("errors"));
+        }
+
+        [Test]
+        public void WithoutFragments()
+        {
+            var json = RunQuery(_queryWithoutFragments);
+
+            Assert.IsFalse(json.Contains("errors"));
+        }
+
+        [Test]
+        public void CompareDocuments()
+        {
+            var documentWithoutFragments = CreateDocument(_queryWithoutFragments);
+            var jsonWithoutFragments = JsonConvert.SerializeObject(documentWithoutFragments);
+
+            var documentWithFragments = CreateDocument(_queryWithFragments);
+
+            new FragmentProcessor().Process(documentWithFragments, true);
+            
+            var jsonWithFragments = JsonConvert.SerializeObject(documentWithFragments);
+
+            Assert.AreEqual(jsonWithoutFragments, jsonWithFragments);
+        }
+
+        public string RunQuery(string query)
+        {
+            var document = CreateDocument(query);
+
+            var result = new ExecutionEngine().Execute(TestSchemas.CreateIntrospectionSchema(), document);
+
+            var json = JsonConvert.SerializeObject(result);
+
+            return json;            
+        }
+
+        private static Document CreateDocument(string query)
         {
             var queryObject = JsonConvert.DeserializeObject<QueryObject>(query);
 
             var document = new DocumentParser().Parse(queryObject.Query);
-
-            //var result = new ExecutionEngine().Execute(new __Schema(), );
-            
+            return document;
         }
-
-
     }
 
     public class QueryObject

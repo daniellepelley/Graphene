@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Graphene.Core;
 using Graphene.Core.Model;
+using Graphene.Core.Parsers;
 using Graphene.Core.Types;
 
 namespace Graphene.Execution
@@ -40,6 +41,8 @@ namespace Graphene.Execution
             {
                 throw new Exception("No operation");
             }
+
+            new FragmentProcessor().Process(document, true);
 
             var operation = document.Operations.First();
 
