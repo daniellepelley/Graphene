@@ -9,7 +9,7 @@ namespace Graphene.Core.Types
 {
     public interface IToExecutionBranch
     {
-        ExecutionBranch ToExecutionBranch(Selection[] selections, IDictionary<string, object> arguments);
+        ExecutionBranch ToExecutionBranch(Field field);
     }
 
     public class GraphQLObjectFieldBase
@@ -36,6 +36,7 @@ namespace Graphene.Core.Types
         public GraphQLObjectFieldBase()
         {
             GraphQLObjectType = () => _type;
+            Arguments = new IGraphQLArgument[0];
         }
     }
 }

@@ -11,31 +11,23 @@ namespace Graphene.Test.Parser
         public void Parse()
         {
             var sut = new OperationParser();
-            var result = sut.Parse(new GraphQLLexer(@"{user(id:1){name}}"));
+            var result = sut.Parse(new GraphQLLexerFeed(@"query Operation{user(id:1){name}}"));
             Assert.AreEqual(null, result.Name);
-            Assert.AreEqual("user", result.Directives.First().Name);
-            Assert.AreEqual("name", result.Selections.First().Field.Name);
+            Assert.AreEqual("Operation", result.Directives.First().Name);
+            Assert.AreEqual("user", result.Selections.First().Field.Name);
         }
 
         [Test]
-        public void WithoutBrackets()
+        public void ParseWithBrackets()
         {
             var sut = new OperationParser();
-            var result = sut.Parse(new GraphQLLexer(@"user(id:1){name}"));
+            var result = sut.Parse(new GraphQLLexerFeed(@"{query Operation{user(id:1){name,age}}}"));
             Assert.AreEqual(null, result.Name);
-            Assert.AreEqual("user", result.Directives.First().Name);
-            Assert.AreEqual("name", result.Selections.First().Field.Name);
-        }
 
-        [Test]
-        public void Without2Fields()
-        {
-            var sut = new OperationParser();
-            var result = sut.Parse(new GraphQLLexer(@"user(id:1){name,age}"));
-            Assert.AreEqual(null, result.Name);
-            Assert.AreEqual("user", result.Directives.First().Name);
-            Assert.AreEqual("name", result.Selections.ElementAt(0).Field.Name);
-            Assert.AreEqual("age", result.Selections.ElementAt(1).Field.Name);
+            Assert.AreEqual("Operation", result.Directives.First().Name);
+            Assert.AreEqual("user", result.Selections.First().Field.Name);
+            Assert.AreEqual("name", result.Selections.First().Field.Selections.ElementAt(0).Field.Name);
+            Assert.AreEqual("age", result.Selections.First().Field.Selections.ElementAt(1).Field.Name);
         }
     }
 }

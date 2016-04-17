@@ -10,15 +10,7 @@ namespace Graphene.Test.Parser
         public void ParseWithoutBrackets()
         {
             var sut = new DirectiveParser();
-            var result = sut.Parse(new GraphQLLexer("customer(id : 1)"));
-            Assert.AreEqual("customer", result.Name);
-        }
-
-        [Test]
-        public void ParseWithBrackets()
-        {
-            var sut = new DirectiveParser();
-            var result = sut.Parse(new GraphQLLexer("{customer(id : 1)}"));
+            var result = sut.Parse(new GraphQLLexerFeed("query customer(id : 1)"));
             Assert.AreEqual("customer", result.Name);
         }
     }

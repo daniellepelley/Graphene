@@ -6,6 +6,12 @@ namespace Graphene.Core
     {
         public GraphQLException(string message)
             :base(message)
-        { }    
+        { }
+
+        public GraphQLException(string format, params object[] values)
+            : base(string.Format(format, values))
+        {
+            
+        }
     }
 }

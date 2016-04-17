@@ -21,7 +21,7 @@ namespace Graphene.Test.Parser
                           }";
 
 
-            var fragments = sut.Parse(new GraphQLLexer(query));
+            var fragments = sut.Parse(new GraphQLLexerFeed(query));
 
             var fragment = fragments.First();
 
@@ -75,7 +75,7 @@ namespace Graphene.Test.Parser
                           }";
 
 
-            var fragments = sut.Parse(new GraphQLLexer( query));
+            var fragments = sut.Parse(new GraphQLLexerFeed(query));
             var fragment = fragments.First();
 
             Assert.AreEqual("FullType", fragment.Name);

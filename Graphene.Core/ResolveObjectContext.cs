@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Graphene.Core.Model;
 using Graphene.Core.Types;
+using Graphene.Core.Types.Introspection;
 
 namespace Graphene.Core
 {
@@ -27,7 +28,9 @@ namespace Graphene.Core
 
         //public Selection[] Selections { get; set; }
 
-        public IDictionary<string, object> Arguments { get; set; }
+        public Argument[] Arguments { get; set; }
+
+        
 
         //public GraphQLSchema Schema { get; set; }
 

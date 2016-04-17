@@ -5,9 +5,15 @@ using Graphene.Core.Types.Introspection;
 
 namespace Graphene.Core.Types
 {
-    public abstract class GraphQLScalar<TInput>
+    public interface IGraphQLScalarField : IHasType
+    {
+        IGraphQLType Type { get; set; }
+    }
+
+    public abstract class GraphQLScalar<TInput> : IGraphQLScalarField
     {
         public abstract ExecutionNode ToExecutionNode(Func<TInput> getInput);
+        public IGraphQLType Type { get; set; }
     }
 
     public class GraphQLScalarField<TInput, TOutput>
@@ -30,6 +36,11 @@ namespace Graphene.Core.Types
         }
 
         public Func<ResolveFieldContext<TInput>, TOutput> Resolve;
+
+        public GraphQLScalarField()
+        {
+            Arguments = new IGraphQLArgument[0];
+        }
 
         public override ExecutionNode ToExecutionNode(Func<TInput> getInput)
         {

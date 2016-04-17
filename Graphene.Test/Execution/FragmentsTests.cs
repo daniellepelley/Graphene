@@ -18,7 +18,7 @@ namespace Graphene.Test.Execution
         {
             var query = @"{user(id:""1"") {...Test}}fragment Test on __Type {id,name}";
 
-            var expected = @"{""data"":{""id"":1,""name"":""Dan_Smith""}}";
+            var expected = @"{""data"":{""user"":{""id"":1,""name"":""Dan_Smith""}}}";
 
             RunTest(query, expected);
         }
@@ -46,7 +46,7 @@ namespace Graphene.Test.Execution
         public void AfterTest()
         {
             var query = @"{user(id:""1"") {...Test,name}}fragment Test on __Type {id}";
-            var expected = @"{""data"":{""id"":1,""name"":""Dan_Smith""}}";
+            var expected = @"{""data"":{""user"":{""id"":1,""name"":""Dan_Smith""}}}";
             RunTest(query, expected);
         }
 
@@ -54,7 +54,7 @@ namespace Graphene.Test.Execution
         public void BeforeTest()
         {
             var query = @"{user(id:""1"") {id ...Test}}fragment Test on __Type {name}";
-            var expected = @"{""data"":{""id"":1,""name"":""Dan_Smith""}}";
+            var expected = @"{""data"":{""user"":{""id"":1,""name"":""Dan_Smith""}}}";
             RunTest(query, expected);
         }
 
@@ -65,7 +65,7 @@ namespace Graphene.Test.Execution
 
             //query = @"{user(id:""1"") {id name boss { name }}}";
 
-            var expected = @"{""data"":{""id"":1,""name"":""Dan_Smith"",""boss"":{""name"":""Boss_Smith""}}}";
+            var expected = @"{""data"":{""user"":{""id"":1,""name"":""Dan_Smith"",""boss"":{""name"":""Boss_Smith""}}}}";
             RunTest(query, expected);
         }
 

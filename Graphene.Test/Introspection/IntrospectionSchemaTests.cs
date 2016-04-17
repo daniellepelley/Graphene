@@ -1,3 +1,5 @@
+using System.IO;
+using System.Text;
 using Graphene.Core.Model;
 using Graphene.Core.Parsers;
 using Graphene.Core.Types;
@@ -28,6 +30,31 @@ namespace Graphene.Test.Introspection
         }
 
         [Test]
+        public void WithFragmentsShould()
+        {
+            var actual = RunQuery(_queryWithFragments);
+
+            var expected = FormatJson(File.ReadAllText(@"Introspection\Response.json"));
+
+            var start = 0;//2658 + 2275;
+
+
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.AppendLine(expected.Substring(start, expected.Length - start));
+            stringBuilder.AppendLine(actual.Substring(start, actual.Length - start));
+            File.WriteAllText(@"C:\Users\Danny\Source\Repos\Graphene\Graphene.Test\Introspection\Actual.json", stringBuilder.ToString());
+             
+        
+            Assert.AreEqual(expected, actual);
+        }
+
+        private static string FormatJson(string json)
+        {
+            dynamic parsedJson = JsonConvert.DeserializeObject(json);
+            return JsonConvert.SerializeObject(parsedJson, Formatting.None);
+        }
+
+        [Test]
         public void WithoutFragments()
         {
             var json = RunQuery(_queryWithoutFragments);
@@ -45,7 +72,7 @@ namespace Graphene.Test.Introspection
 
             new FragmentProcessor().Process(documentWithFragments, true);
             
-            var jsonWithFragments = JsonConvert.SerializeObject(documentWithFragments);
+            var jsonWithFragments = JsonConvert.SerializeObject(documentWithFragments, new JsonSerializerSettings { Formatting = Formatting.Indented});
 
             Assert.AreEqual(jsonWithoutFragments, jsonWithFragments);
         }

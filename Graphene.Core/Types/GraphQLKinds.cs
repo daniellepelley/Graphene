@@ -8,5 +8,6 @@
         public static string Union = "UNION";
         public static string List = "LIST";
         public static string NonNull = "NON-NULL";
+        public static string Enum = "ENUM";
     }
 }

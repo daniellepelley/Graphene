@@ -1,59 +1,153 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using Graphene.Core;
 using Graphene.Core.Types;
 using Graphene.Core.Types.Introspection;
 
 namespace Graphene.Test.Data
 {
+    public class SchemaBuilder
+    {
+        private IEnumerable<IGraphQLArgument> _arguments;
+        private Func<ResolveObjectContext, User> _resolve;
+
+        public SchemaBuilder()
+        {
+            _resolve = context =>
+                Data.GetData()
+                    .FirstOrDefault(
+                        x =>
+                            context.Arguments.All(arg => arg.Name != "id") ||
+                             x.Id == Convert.ToInt32(context.Arguments.First(arg => arg.Name == "id").Value));
+        }
+
+        public SchemaBuilder WithArguments(IEnumerable<IGraphQLArgument> arguments)
+        {
+            _arguments = arguments;
+            return this;
+        }
+
+        public SchemaBuilder WithResolve(Func<ResolveObjectContext, User> resolve)
+        {
+            _resolve = resolve;
+            return this;
+        }
+
+        public GraphQLSchema Build()
+        {
+            var userType = TestSchemas.CreateUserType();
+
+            return new GraphQLSchema
+            {
+                Query = new GraphQLObjectField<object>
+                {
+                    Name = "Query",
+                    GraphQLObjectType = () => new GraphQLObjectType
+                    {
+                        Fields = new IGraphQLFieldType[]
+                        {
+                            new GraphQLObjectField<User>
+                            {
+                                Name = "user",
+                                Arguments = _arguments,
+                                Resolve = _resolve,
+                                OfType = new[] {"user"},
+                                GraphQLObjectType = () => userType
+                            }
+                        }
+                    },
+                    Resolve = _ => null
+                }
+            };
+        }
+    }
+
+
     public static class TestSchemas
     {
+
+        private static GraphQLObjectType GetUserType()
+        {
+            return CreateUserType();
+        }
+
         public static GraphQLSchema UserSchema()
         {
             var userType = CreateUserType();
 
             var schema = new GraphQLSchema
             {
-                Query = new GraphQLObjectField<User>
+                Query = new GraphQLObjectField
                 {
-                    Name = "user",
-                    Resolve =
-                        context =>
-                            Test.Data.Data.GetData()
-                                .FirstOrDefault(
-                                    x =>
-                                        !context.Arguments.ContainsKey("id") ||
-                                        x.Id == Convert.ToInt32(context.Arguments["id"])),
-                    OfType = new[] {"user"},
-                    GraphQLObjectType = () => userType
+                    Name = "Query",
+                    GraphQLObjectType = () => new GraphQLObjectType
+                    {
+                        Name = "Query",
+                        Fields = new IGraphQLFieldType[]
+                        {
+                            new GraphQLObjectField<User>
+                            {
+                                Name = "user",
+                                Arguments = new []
+                                {
+                                    new GraphQLArgument { Name = "id", Type = new GraphQLString() }
+                                },
+                                Resolve =
+                                    context =>
+                                        Data.GetData()
+                                            .FirstOrDefault(
+                                        x =>
+                                            context.Arguments.All(arg => arg.Name != "id") ||
+                                             x.Id == Convert.ToInt32(context.Arguments.First(arg => arg.Name == "id").Value)),
+                                                OfType = new[] {"user"},
+                                GraphQLObjectType = GetUserType
+                            }
+                        }
+                    },
+                    Resolve = _ => string.Empty
                 }
             };
+
+            schema.Types = new IGraphQLType[]
+            {
+                schema.Query.GraphQLObjectType(),
+                new GraphQLString(),
+                userType,
+                new __Schema(), 
+                new __Type(),
+                new __TypeKind()
+                
+            };
+
             return schema;
         }
-
+        
         public static GraphQLObjectType CreateUserType()
         {
             var userType = new GraphQLObjectType
             {
                 Name = "User",
-                Description = "This is a user",
                 Fields = new IGraphQLFieldType[]
                 {
                     new GraphQLScalarField<User, int>
                     {
                         Name = "id",
-                        Resolve = context => context.Source.Id
+                        Resolve = context => context.Source.Id,
+                        Type = new GraphQLString()
                     },
                     new GraphQLScalarField<User, string>
                     {
                         Name = "name",
-                        Resolve = context => context.Source.Name
+                        Resolve = context => context.Source.Name,
+                        Type = new GraphQLString()
                     },
-                    new GraphQLObjectField<User, Boss>
-                    {
-                        Name = "boss",
-                        Resolve = context => context.Source.Boss,
-                        GraphQLObjectType = () => CreateBossType()
-                    }
+                    //new GraphQLObjectField<User, Boss>
+                    //{
+                    //    Name = "boss",
+                    //    Resolve = context => context.Source.Boss,
+                    //    GraphQLObjectType = () => CreateBossType()
+                    //}
                 }
             };
             return userType;
@@ -84,6 +178,16 @@ namespace Graphene.Test.Data
 
         public static GraphQLSchema CreateIntrospectionSchema()
         {
+            return CreateIntrospectionSchema(new GraphQLObjectField<GraphQLSchema>
+            {
+                Name = "__schema",
+                GraphQLObjectType = () => new __Schema(),
+                Resolve = _ => UserSchema()
+            });
+        }
+
+        public static GraphQLSchema CreateIntrospectionSchema(IGraphQLFieldType type)
+        {
             return new GraphQLSchema
             {
                 Query = new GraphQLObjectField<object>
@@ -93,20 +197,13 @@ namespace Graphene.Test.Data
                     {
                         Fields = new IGraphQLFieldType[]
                         {
-                            new GraphQLObjectField<object, GraphQLSchema>
-                            {
-                                Name = "__schema",
-                                GraphQLObjectType = () => new __Schema(),
-                                Resolve = _ => UserSchema()
-                            }
+                            type
                         }
                     },
                     Resolve = _ => UserSchema()
                 }
             };
         }
-
-
 
         public static string GraphiQlQueryWithFragments
         {

@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Graphene.Core.Model;
 using Graphene.Core.Types;
+using Graphene.Core.Types.Introspection;
 
 namespace Graphene.Core
 {
@@ -16,7 +17,7 @@ namespace Graphene.Core
         public GraphQLScalarField<object, GraphQLScalarBase> ScalarFieldType { get; set; }
         public ResolveObjectContext Parent { get; set; }
 
-        public IDictionary<string, object> Arguments { get; set; }
+        public Argument[] Arguments { get; set; }
 
         //public object RootValue { get; set; }
 
@@ -40,7 +41,7 @@ namespace Graphene.Core
 
         //ResolveObjectContext Parent { get; set; }
 
-        IDictionary<string, object> Arguments { get; set; }
+        Argument[] Arguments { get; set; }
 
         //GraphQLSchema Schema { get; set; }
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Graphene.Core.Model;
 
 namespace Graphene.Core.Execution
 {
@@ -54,14 +55,14 @@ namespace Graphene.Core.Execution
     {
         private readonly Func<ResolveObjectContext, TOutput> _getter;
         private TOutput _value;
-        private readonly IDictionary<string, object> _arguments;
+        private readonly Argument[] _arguments;
 
         public TOutput GetOutput()
         {
             return _value;
         }
 
-        public ExecutionBranch(string fieldName, IDictionary<string, object> arguments, Func<ResolveObjectContext, TOutput> getter)
+        public ExecutionBranch(string fieldName, Argument[] arguments, Func<ResolveObjectContext, TOutput> getter)
         {
             _arguments = arguments;
             FieldName = fieldName;

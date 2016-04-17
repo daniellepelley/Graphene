@@ -24,7 +24,7 @@ namespace Graphene.Test.Execution
                 @"{""data"":[{""id"":1,""name"":""Dan_Smith""},{""id"":2,""name"":""Lee_Smith""},{""id"":3,""name"":""Nick_Smith""}]}";
 
             var expected =
-                @"{""data"":{""id"":1,""name"":""Dan_Smith""}}";
+                @"{""data"":{""user"":{""id"":1,""name"":""Dan_Smith""}}}";
             var result = Execute(sut, schema, document);
             Assert.AreEqual(expected, result);
         }
@@ -39,9 +39,9 @@ namespace Graphene.Test.Execution
             var query = "{user {name}}";
             var document = new DocumentParser().Parse(query); ;
 
-            var expectedWhenList = @"{""data"":[{""name"":""Dan_Smith""},{""name"":""Lee_Smith""},{""name"":""Nick_Smith""}]}";
+            var expectedWhenList = @"{""data"":{""user"":[{""name"":""Dan_Smith""},{""name"":""Lee_Smith""},{""name"":""Nick_Smith""}]}}";
 
-            var expected = @"{""data"":{""name"":""Dan_Smith""}}";
+            var expected = @"{""data"":{""user"":{""name"":""Dan_Smith""}}}";
 
             var result = Execute(sut, schema, document);
             Assert.AreEqual(expected, result);
@@ -54,10 +54,10 @@ namespace Graphene.Test.Execution
 
             var schema = CreateGraphQLSchema();
 
-            var query = "{user(Id :1) {name}}";
+            var query = "{user(id :1) {name}}";
             var document = new DocumentParser().Parse(query); ;
 
-            var expected = @"{""data"":{""name"":""Dan_Smith""}}";
+            var expected = @"{""data"":{""user"":{""name"":""Dan_Smith""}}}";
             var result = Execute(sut, schema, document);
             Assert.AreEqual(expected, result);
         }
@@ -72,7 +72,7 @@ namespace Graphene.Test.Execution
             var query = "{foo(Id :1) {Name}}";
             var document = new DocumentParser().Parse(query); ;
 
-            var expected = @"{""errors"":[{""message"":""Object foo does not exist""}]}";
+            var expected = @"{""errors"":[{""message"":""Type foo not known""}]}";
             var result = Execute(sut, schema, document);
             Assert.AreEqual(expected, result);
         }
@@ -84,7 +84,7 @@ namespace Graphene.Test.Execution
 
             var schema = CreateGraphQLSchema();
 
-            var query = "{user(Id :1) {foo}}";
+            var query = "{user(id :1) {foo}}";
             var document = new DocumentParser().Parse(query); ;
 
             var expected = @"{""errors"":[{""message"":""Field foo does not exist""}]}";

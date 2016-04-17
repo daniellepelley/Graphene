@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using System.Linq;
 
 namespace Graphene.Core.Types.Introspection
@@ -35,7 +36,10 @@ namespace Graphene.Core.Types.Introspection
                     Name = "args",
                     OfType  = new[] {"GraphQLString"},
                     GraphQLObjectType = () => new __InputValue(),
-                    Resolve = context => context.Source.Arguments
+                    Resolve = context =>
+                    {
+                        return context.Source.Arguments;
+                    }
                 },
                 new GraphQLObjectField<IGraphQLFieldType, IGraphQLType>
                 {
@@ -44,27 +48,34 @@ namespace Graphene.Core.Types.Introspection
                     GraphQLObjectType = () => new __Type(),
                     Resolve = context =>
                     {
-                        var graphQLObjectField = context.Source as GraphQLObjectField;
+                        var graphQLScalarField = context.Source as IHasType;
 
-                        if (graphQLObjectField == null)
+                        if (graphQLScalarField != null)
                         {
-                            return null;
+                            return graphQLScalarField.Type;
                         }
 
-                        return graphQLObjectField.GraphQLObjectType();
+                        var graphQLObjectField = context.Source as GraphQLObjectFieldBase;
+
+                        if (graphQLObjectField != null)
+                        {
+                            return graphQLObjectField.GraphQLObjectType();
+                        }
+
+                        return null;
                     }
                 },
-                new GraphQLScalarField<IGraphQLFieldType, string>
+                new GraphQLScalarField<IGraphQLFieldType, bool>
                 {
                     Name = "isDeprecated",
                     OfType  = new[] {"GraphQLString"},
-                    Resolve = context => string.Empty
+                    Resolve = context => false
                 },
                 new GraphQLScalarField<IGraphQLFieldType, string>
                 {
                     Name = "deprecationReason",
                     OfType  = new[] {"GraphQLString"},
-                    Resolve = context => string.Empty
+                    Resolve = context => null
                 }
             };
         }

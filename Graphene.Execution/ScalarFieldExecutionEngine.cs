@@ -10,9 +10,9 @@ namespace Graphene.Execution
 {
     public class ExecutionBranchBuilder
     {
-        public ExecutionBranch Build(IToExecutionBranch graphQLType, Selection[] selections, IDictionary<string, object> arguments)
+        public ExecutionBranch Build(IToExecutionBranch graphQLType, Field field)
         {
-            var generator = graphQLType.ToExecutionBranch(selections, arguments);
+            var generator = graphQLType.ToExecutionBranch(field);
             return generator;
         }
     }

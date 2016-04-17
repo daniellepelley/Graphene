@@ -9,6 +9,7 @@ namespace Graphene.Core.Types.Introspection
         {
             var queryType = new GraphQLObjectType
             {
+                Name = "__Type",
                 Fields = new IGraphQLFieldType[]
                 {
                     new GraphQLScalarField<GraphQLObjectFieldBase, string>
@@ -60,6 +61,15 @@ namespace Graphene.Core.Types.Introspection
 
             Fields = new IGraphQLFieldType[]
             {
+                new GraphQLList<GraphQLSchema, IGraphQLType>
+                {
+                    Name = "types",
+                    Description = "A list of all types supported by this server.",
+                    GraphQLObjectType = () => new __Type(),
+                    Type = new __Type(),
+                    OfType = new[] {"GraphQLNonNull", "__Type"},
+                    Resolve = context => context.Source.GetTypes()
+                },
                 new GraphQLObjectField<GraphQLSchema, GraphQLObjectFieldBase>
                 {
                     Name = "queryType",
@@ -74,6 +84,7 @@ namespace Graphene.Core.Types.Introspection
                     Description =
                         "If this server supports mutation, the type that mutation operations will be rooted at.",
                     OfType = new[] {"GraphQLNonNull", "__Type"},
+                    GraphQLObjectType = () => new __Type(),
                     Resolve = context => null
                 },
                 new GraphQLObjectField<GraphQLSchema, GraphQLObjectFieldBase>
@@ -82,6 +93,7 @@ namespace Graphene.Core.Types.Introspection
                     Description =
                         "If this server support subscription, the type that subscription operations will be rooted at.",
                     OfType = new[] {"GraphQLNonNull", "__Type"},
+                    GraphQLObjectType = () => new __Type(),
                     Resolve = context => null
                 },
                 new GraphQLObjectField<GraphQLSchema, GraphQLObjectFieldBase>
@@ -89,16 +101,9 @@ namespace Graphene.Core.Types.Introspection
                     Name = "directives",
                     Description = "A list of all directives supported by this server.",
                     OfType = new[] {"GraphQLNonNull", "__Type"},
+                    GraphQLObjectType = () => new __Directive(),
                     Resolve = context => null
                 },
-                new GraphQLList<GraphQLSchema, IGraphQLType>
-                {
-                    Name = "types",
-                    Description = "A list of all directives supported by this server.",
-                    GraphQLObjectType = () => new __Type(),
-                    OfType = new[] {"GraphQLNonNull", "__Type"},
-                    Resolve = context => context.Source.GetTypes()
-                }
             };
 
             Name = "__schema";

@@ -26,7 +26,7 @@ namespace Graphene.Test.Execution
             var document = new DocumentParser().Parse(query); ;
 
             var expected =
-                @"{""data"":{""id"":1,""name"":""Dan_Smith""}}";
+                @"{""data"":{""user"":{""id"":1,""name"":""Dan_Smith""}}}";
             var result = Execute(sut, schema, document);
             Assert.AreEqual(expected, result);
         }
@@ -76,6 +76,13 @@ namespace Graphene.Test.Execution
 
         private static GraphQLSchema CreateGraphQLSchema(IEnumerable<IGraphQLArgument> arguments = null)
         {
+
+            return new SchemaBuilder()
+                .WithArguments(arguments)
+                .WithResolve(Resolve)
+                .Build();
+
+
             var schema = new GraphQLSchema
             {
                 Query = new GraphQLObjectField<User>
@@ -106,7 +113,7 @@ namespace Graphene.Test.Execution
 
         private static User Resolve(ResolveObjectContext context)
         {
-            return Data.Data.GetData().FirstOrDefault(x => !context.Arguments.ContainsKey("id") || x.Id == Convert.ToInt32(context.Arguments["id"]));
+            return Data.Data.GetData().FirstOrDefault(x => context.Arguments.All(arg => arg.Name != "id") || x.Id == Convert.ToInt32(context.Arguments.First(arg => arg.Name == "id").Value));
         }
     }
 }

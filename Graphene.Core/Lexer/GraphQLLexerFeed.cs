@@ -7,11 +7,16 @@ namespace Graphene.Core.Lexer
     {
         private readonly ILexerToken[] _tokens;
 
-        private int index;
+        private int _index;
 
         public GraphQLLexerFeed(IEnumerable<ILexerToken> tokens)
         {
             _tokens = tokens.ToArray();
+        }
+
+        public GraphQLLexerFeed(string query)
+        {
+            _tokens = new GraphQLLexer(query).All().ToArray();
         }
 
         public IEnumerable<ILexerToken> All()
@@ -19,16 +24,26 @@ namespace Graphene.Core.Lexer
             return _tokens;
         }
 
+        public ILexerToken Peek()
+        {
+            return _tokens[_index];
+        }
+
+        public ILexerToken PeekAhead(int number)
+        {
+            return _tokens[_index + number];
+        }
+
         public ILexerToken Next()
         {
-            var current = _tokens[index];
-            index++;
+            var current = _tokens[_index];
+            _index++;
             return current;
         }
 
         public bool IsComplete()
         {
-            return index >= _tokens.Length;
+            return _index >= _tokens.Length;
         }
     }
 }

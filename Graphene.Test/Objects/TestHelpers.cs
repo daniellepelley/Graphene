@@ -19,8 +19,7 @@ namespace Graphene.Test.Objects
             };
 
             var document = new DocumentParser().Parse(queryPart);
-            var selections = document.Operations.First().Selections;
-            var executionBranch = field.ToExecutionBranch(selections, new Dictionary<string, object>());
+            var executionBranch = field.ToExecutionBranch(document.Operations.First().Selections.First().Field);
             var result = executionBranch.Execute();
 
             return (IDictionary<string, object>)result.Value;

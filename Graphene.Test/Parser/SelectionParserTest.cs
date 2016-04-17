@@ -9,20 +9,46 @@ namespace Graphene.Test.Parser
     public class SelectionParserTest
     {
         [Test]
-        public void Parse1()
+        public void OneSelection()
         {
             var sut = new SelectionsParser();
-            var result = sut.Parse(new GraphQLLexer(@"{name}"));
+            var result = sut.Parse(new GraphQLLexerFeed(@"{name}"));
             Assert.AreEqual("name", result.First().Field.Name);
+            Assert.AreEqual(0, result.First().Field.Arguments.Length);
         }
 
         [Test]
-        public void Parse2()
+        public void TwoSelections()
         {
             var sut = new SelectionsParser();
-            var result = sut.Parse(new GraphQLLexer(@"{name,age}"));
+            var result = sut.Parse(new GraphQLLexerFeed(@"{name,age}"));
             Assert.AreEqual("name", result.ElementAt(0).Field.Name);
             Assert.AreEqual("age", result.ElementAt(1).Field.Name);
+            Assert.AreEqual(0, result.First().Field.Arguments.Length);
+        }
+
+        [Test]
+        public void OneSelectionWithOneArgument()
+        {
+            var sut = new SelectionsParser();
+            var result = sut.Parse(new GraphQLLexerFeed(@"{name(id: 1)}"));
+            Assert.AreEqual("name", result.First().Field.Name);
+            Assert.AreEqual(1, result.First().Field.Arguments.Length);
+            Assert.AreEqual("id", result.First().Field.Arguments.First().Name);
+            Assert.AreEqual(1, result.First().Field.Arguments.First().Value);
+        }
+
+        [Test]
+        public void OneSelectionWithTwoArgument()
+        {
+            var sut = new SelectionsParser();
+            var result = sut.Parse(new GraphQLLexerFeed(@"{name(  id : 1, id2:value)}"));
+            Assert.AreEqual("name", result.First().Field.Name);
+            Assert.AreEqual(2, result.First().Field.Arguments.Length);
+            Assert.AreEqual("id", result.First().Field.Arguments.ElementAt(0).Name);
+            Assert.AreEqual(1, result.First().Field.Arguments.ElementAt(0).Value);
+            Assert.AreEqual("id2", result.First().Field.Arguments.ElementAt(1).Name);
+            Assert.AreEqual("value", result.First().Field.Arguments.ElementAt(1).Value);
         }
 
         [Test]
@@ -48,7 +74,7 @@ namespace Graphene.Test.Parser
             var query = sb.ToString();
 
             var sut = new SelectionsParser();
-            var result = sut.Parse(new GraphQLLexer(query));
+            var result = sut.Parse(new GraphQLLexerFeed(query));
             Assert.AreEqual("me", result.First().Field.Name);
             Assert.AreEqual("id", result.First().Field.Selections.ElementAt(0).Field.Name);
             Assert.AreEqual("firstName", result.First().Field.Selections.ElementAt(1).Field.Name);

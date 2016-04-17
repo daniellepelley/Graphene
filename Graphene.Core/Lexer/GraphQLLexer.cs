@@ -4,7 +4,7 @@ using Graphene.Core.Parsers;
 
 namespace Graphene.Core.Lexer
 {
-    public class GraphQLLexer : IGraphQLLexerFeed
+    public class GraphQLLexer
     {
         private readonly GraphQLLexerCursor _cursor = new GraphQLLexerCursor();
 
@@ -24,14 +24,7 @@ namespace Graphene.Core.Lexer
 
         public IEnumerable<ILexerToken> All()
         {
-            while (_cursor.Index < _cursor.Text.Length)
-            {
-                yield return Next();
-            }
-        }
-
-        public ILexerToken Next()
-        {
+            var output = new List<ILexerToken>();
             while (_cursor.Index < _cursor.Text.Length)
             {
                 var next = GetLexerToken();
@@ -40,7 +33,7 @@ namespace Graphene.Core.Lexer
                 {
                     if (next is LexerToken)
                     {
-                        return next;
+                        output.Add(next);
                     }
                 }
                 else
@@ -48,7 +41,7 @@ namespace Graphene.Core.Lexer
                     _cursor.Index++;
                 }
             }
-            return null;
+            return output;
         }
 
         private ILexerToken GetLexerToken()
@@ -56,11 +49,6 @@ namespace Graphene.Core.Lexer
             return _tokenizers
                 .Select(tokenizer => tokenizer.Handle(_cursor))
                 .FirstOrDefault(token => token != null);
-        }
-
-        public bool IsComplete()
-        {
-            return _cursor.Index >= _cursor.Text.Length;
         }
     }
 }

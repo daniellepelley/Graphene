@@ -45,7 +45,7 @@ namespace Graphene.Core.Parsers
                 }
                 else if (current.Type == GraphQLTokenType.ParenL)
                 {
-                    var arguments = new ArgumentsParser().GetArguments(feed);
+                    output.Last().Field.Arguments = new ArgumentsParser().GetArguments(feed);
                 }
             }
             return output.ToArray();

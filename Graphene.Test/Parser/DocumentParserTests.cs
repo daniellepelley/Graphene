@@ -14,31 +14,32 @@ namespace Graphene.Test.Parser
             var result = sut.Parse(@"{user(id:1){name}}");
             var operation = result.Operations.First();
 
-            Assert.AreEqual("user", operation.Directives.First().Name);
-            Assert.AreEqual("name", operation.Selections.First().Field.Name);
+            Assert.IsTrue(string.IsNullOrEmpty(operation.Directives.First().Name));
+            Assert.AreEqual("user", operation.Selections.First().Field.Name);
+            Assert.AreEqual("name", operation.Selections.First().Field.Selections.First().Field.Name);
         }
 
         [Test]
         public void WithoutBrackets()
         {
             var sut = new DocumentParser();
-            var result = sut.Parse(@"user(id:1){name}");
+            var result = sut.Parse(@"{user(id:1){name}}");
             var operation = result.Operations.First();
 
-            Assert.AreEqual("user", operation.Directives.First().Name);
-            Assert.AreEqual("name", operation.Selections.First().Field.Name);
+            Assert.AreEqual("user", operation.Selections.First().Field.Name);
+            Assert.AreEqual("name", operation.Selections.First().Field.Selections.First().Field.Name);
         }
 
         [Test]
         public void Without2Fields()
         {
             var sut = new DocumentParser();
-            var result = sut.Parse(@"user(id:1){name,age}");
+            var result = sut.Parse(@"{user(id:1){name,age}}");
             var operation = result.Operations.First();
 
-            Assert.AreEqual("user", operation.Directives.First().Name);
-            Assert.AreEqual("name", operation.Selections.ElementAt(0).Field.Name);
-            Assert.AreEqual("age", operation.Selections.ElementAt(1).Field.Name);
+            Assert.AreEqual("user", operation.Selections.First().Field.Name);
+            Assert.AreEqual("name", operation.Selections.First().Field.Selections.ElementAt(0).Field.Name);
+            Assert.AreEqual("age", operation.Selections.First().Field.Selections.ElementAt(1).Field.Name);
         }
 
         [Test]
@@ -46,7 +47,7 @@ namespace Graphene.Test.Parser
         {
             var sut = new DocumentParser();
 
-            var query = @"query IntrospectionQuery {
+            var query = @"{query IntrospectionQuery {
                             __schema {
                               queryType { name }
                               mutationType { name }
@@ -122,7 +123,8 @@ namespace Graphene.Test.Parser
                                 }
                               }
                             }
-                          }";
+                          }
+                        }";
 
             var result = sut.Parse(query);
             var operation = result.Operations.First();

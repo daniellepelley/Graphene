@@ -7,5 +7,7 @@ namespace Graphene.Core.Lexer
         IEnumerable<ILexerToken> All();
         ILexerToken Next();
         bool IsComplete();
+        ILexerToken Peek();
+        ILexerToken PeekAhead(int i);
     }
 }

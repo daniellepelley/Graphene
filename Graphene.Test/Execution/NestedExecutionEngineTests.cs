@@ -21,7 +21,7 @@ namespace Graphene.Test.Execution
             var document = new DocumentParser().Parse(query);
 
             var expected =
-                @"{""data"":{""id"":1,""name"":""Dan_Smith"",""boss"":{""id"":4,""name"":""Boss_Smith""}}}";
+                @"{""data"":{""user"":{""id"":1,""name"":""Dan_Smith"",""boss"":{""id"":4,""name"":""Boss_Smith""}}}}";
             var result = Execute(sut, schema, document);
             Assert.AreEqual(expected, result);
         }
@@ -37,7 +37,7 @@ namespace Graphene.Test.Execution
             var document = new DocumentParser().Parse(query);
 
             var expected =
-                @"{""data"":{""name"":""Dan_Smith"",""boss"":{""name"":""Boss_Smith""}}}";
+                @"{""data"":{""user"":{""name"":""Dan_Smith"",""boss"":{""name"":""Boss_Smith""}}}}";
             var result = Execute(sut, schema, document);
             Assert.AreEqual(expected, result);
         }

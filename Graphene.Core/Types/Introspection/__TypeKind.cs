@@ -1,23 +1,36 @@
+using System.Security.Cryptography.X509Certificates;
+
 namespace Graphene.Core.Types.Introspection
 {
-    public class __TypeKind : IGraphQLObject
+    public class __TypeKind : GraphQLEnum<IGraphQLKind>
     {
-        public string Kind { get; private set; }
-
-        public string Name
+        public __TypeKind()
         {
-            get { return "__TypeKind"; }
-        }
+            Name = "__TypeKind";
+            Description = @"An enum describing what kind of type a given `__Type` is.";
 
-        public string[] OfType { get; set; }
-
-        public string Description
-        {
-            get
+            Values = new IGraphQLKind[]
             {
-                return @"An enum describing what kind of type a given `__Type` is.";
-            }
+                new GraphQLKind
+                {
+                    Value = GraphQLKinds.Scalar,
+                    Description = "Indicates this type is a scalar."
+                },
+                new GraphQLKind
+                {
+                    Value = GraphQLKinds.Object,
+                    Description = "Indicates this type is an object. `fields` and `interfaces` are valid fields."
+                },
+                new GraphQLKind
+                {
+                    Value = GraphQLKinds.Interface,
+                    Description = "Indicates this type is an interface. `fields` and `possibleTypes` are valid fields."
+                }
+            };
         }
+
+
+
 
         //values: {
         //  SCALAR: {
@@ -59,9 +72,17 @@ namespace Graphene.Core.Types.Introspection
         //    description: 'Indicates this type is a non-null. ' +
         //                 '`ofType` is a valid field.'
         //  },
-        public IGraphQLFieldType this[string name]
-        {
-            get { throw new System.NotImplementedException(); }
-        }
+    }
+
+    public interface IGraphQLKind
+    {
+        string Value { get; set; }
+        string Description { get; set; }
+    }
+
+    public class GraphQLKind : IGraphQLKind
+    {
+        public string Value { get; set; }
+        public string Description { get; set; }
     }
 }

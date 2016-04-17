@@ -10,30 +10,44 @@ namespace Graphene.Execution
 {
     public class OperationExecutionEngine : IOperationExecutionEngine
     {
-        //private readonly ObjectExecutionEngine _objectExecutionEngine;
-
-        //public OperationExecutionEngine()
-        //{
-            //_objectExecutionEngine = new ObjectExecutionEngine();
-        //}
-
         public object Execute(Operation operation, GraphQLSchema schema)
         {
-            var argumentsDictionary = GetArguments(operation);
+            //var argumentsDictionary = GetArguments(operation);
 
-            ValidateArguments(schema, argumentsDictionary);
+            ValidateArguments(schema, operation);
 
             var directive = operation.Directives.First().Name;
 
-            if (schema.Query.Name != directive)
+            if (!string.IsNullOrEmpty(directive) &&
+                schema.Query.Name != directive)
             {
                 throw new GraphQLException(string.Format("Object {0} does not exist", directive));
             }
 
-            Validate(operation.Selections, schema.Query);
+            foreach (var selection in operation.Selections)
+            {
+                var typeField = schema.Query[selection.Field.Name];
 
-            var executionBranch = new ExecutionBranchBuilder().Build(schema.Query as IToExecutionBranch, operation.Selections, argumentsDictionary);
-            return executionBranch.Execute().Value;
+                if (typeField == null)
+                {
+                    throw new GraphQLException("Type {0} not known", selection.Field.Name);
+                }
+
+                Validate(operation.Selections.First().Field.Selections, typeField as GraphQLObjectFieldBase);
+                var executionBranch = new ExecutionBranchBuilder().Build(typeField as IToExecutionBranch, operation.Selections.First().Field);
+
+                return new[] {executionBranch.Execute()}.ToDictionary(x => x.Key, x => x.Value);
+            }
+
+            //var baseType = schema.Query.GraphQLObjectType();
+
+
+
+            //Validate(operation.Selections.First().Field.Selections, (GraphQLObjectFieldBase)baseType.Fields.First());
+
+            //var executionBranch = new ExecutionBranchBuilder().Build(schema.Query as IToExecutionBranch, operation.Selections.First().Field.Selections, argumentsDictionary);
+            //return executionBranch.Execute().Value;
+            return null;
         }
 
         private void Validate(Selection[] selections, GraphQLObjectFieldBase fieldType)
@@ -47,17 +61,17 @@ namespace Graphene.Execution
             {
                 if (fieldType.GraphQLObjectType().Fields == null)
                 {
-                    throw new GraphQLException(string.Format("Field {0} does not exist", selection.Field.Name));                    
+                    throw new GraphQLException(string.Format("Field {0} does not exist", selection.Field.Name));
                 }
 
                 if (selection.Field.Name == null)
                 {
-                    
+
                 }
 
                 if (!fieldType.GraphQLObjectType().HasField(selection.Field.Name))
                 {
-                    
+
                 }
 
 
@@ -70,7 +84,7 @@ namespace Graphene.Execution
 
                 if (field is IGraphQLObject)
                 {
-                    Validate(selection.Field.Selections, (GraphQLObjectFieldBase)field);
+                    Validate(selection.Field.Selections, (GraphQLObjectFieldBase) field);
                 }
             }
         }
@@ -95,34 +109,55 @@ namespace Graphene.Execution
             return argumentsDictionary;
         }
 
-        private static void ValidateArguments(GraphQLSchema schema, Dictionary<string, object> argumentsDictionary)
-        {
-            if (schema.Query.Arguments != null)
-            {
-                foreach (var argument in schema.Query.Arguments)
-                {
-                    if (argumentsDictionary.ContainsKey(argument.Name))
-                    {
-                        var value = argumentsDictionary[argument.Name];
 
-                        if (argument.Type is GraphQLString)
-                        {
-                            var str = value as string;
-                            if (string.IsNullOrEmpty(str))
-                            {
-                                throw new GraphQLException(
-                                    string.Format(@"Argument 'id' has invalid value {0}. Expected type 'String'", value));
-                            }
-                        }
-                        else if (argument.Type is GraphQLInt)
-                        {
-                            if (!(value is int))
-                            {
-                                throw new GraphQLException(
-                                    string.Format(@"Argument 'id' has invalid value {0}. Expected type 'Int'", value));
-                            }
-                        }
+        private static void ValidateArguments(Argument[] arguments, GraphQLObjectFieldBase objectField)
+        {
+            if (objectField.Arguments == null)
+            {
+                return;
+            }
+
+            foreach (var argument in arguments)
+            {
+                var arg = objectField.Arguments.FirstOrDefault(x => x.Name == argument.Name);
+
+                if (arg == null)
+                {
+                    throw new GraphQLException(
+                        string.Format(@"Argument '{0}' does not exist", argument.Name));
+                }
+
+                if (arg.Type is GraphQLString)
+                {
+                    var str = argument.Value as string;
+                    if (string.IsNullOrEmpty(str))
+                    {
+                        throw new GraphQLException(
+                            string.Format(@"Argument '{0}' has invalid value {1}. Expected type 'String'", argument.Name,
+                                argument.Value));
                     }
+                }
+                else if (arg.Type is GraphQLInt)
+                {
+                    if (!(argument.Value is int))
+                    {
+                        throw new GraphQLException(
+                            string.Format(@"Argument '{0}' has invalid value {1}. Expected type 'Int'", argument.Name,
+                                argument.Value));
+                    }
+                }
+            }
+        }
+
+        private static void ValidateArguments(GraphQLSchema schema, Operation operation)
+        {
+            foreach (var selection in operation.Selections)
+            {
+                var typeField = schema.Query[selection.Field.Name] as GraphQLObjectFieldBase;
+
+                if (typeField != null)
+                {
+                    ValidateArguments(selection.Field.Arguments, typeField);
                 }
             }
         }

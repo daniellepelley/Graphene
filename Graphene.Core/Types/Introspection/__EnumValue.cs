@@ -1,63 +1,40 @@
 namespace Graphene.Core.Types.Introspection
 {
-    public class __EnumValue : IGraphQLObject
+    public class __EnumValue : GraphQLObjectType
     {
-        public string Kind { get; private set; }
-
-        public string Name
+        public __EnumValue()
         {
-            get { return "__EnumValue"; }
-        }
-
-        public string Description
-        {
-            get
+            Name = "__EnumValue";
+            Description = @"One possible value for a given Enum. Enum values are unique values, not " +
+                          "a placeholder for a string or numeric value. However an Enum value is " +
+                          "returned in a JSON response as a string.";
+            Fields = new IGraphQLFieldType[]
             {
-                return @"One possible value for a given Enum. Enum values are unique values, not " +
-                       "a placeholder for a string or numeric value. However an Enum value is " +
-                       "returned in a JSON response as a string.";
-            }
-        }
-
-        public string[] OfType { get; set; }
-
-        public GraphQLSchemaFieldType[] Fields
-        {
-            get
-            {
-                return new[]
+                new GraphQLScalarField<IGraphQLType, string>
                 {
-                    new GraphQLSchemaFieldType
-                    {
-                        Name = "name",
-                        OfType = typeof (GraphQLNonNull<GraphQLString>),
-                        Resolve = schema => string.Empty
-                    },
-                    new GraphQLSchemaFieldType
-                    {
-                        Name = "description",
-                        OfType = typeof (GraphQLString),
-                        Resolve = schema => string.Empty
-                    },
-                    new GraphQLSchemaFieldType
-                    {
-                        Name = "isDeprecated",
-                        OfType = typeof (GraphQLNonNull<GraphQLString>),
-                        Resolve = schema => string.Empty
-                    },
-                    new GraphQLSchemaFieldType
-                    {
-                        Name = "deprecationReason",
-                        OfType = typeof (GraphQLString),
-                        Resolve = schema => string.Empty
-                    }
-                };
-            }
-        }
-
-        public IGraphQLFieldType this[string name]
-        {
-            get { throw new System.NotImplementedException(); }
+                    Name = "name",
+                    //OfType = typeof (GraphQLNonNull<GraphQLString>),
+                    Resolve = schema => string.Empty
+                },
+                new GraphQLScalarField<IGraphQLType, string>
+                {
+                    Name = "description",
+                    //OfType = typeof (GraphQLString),
+                    Resolve = schema => string.Empty
+                },
+                new GraphQLScalarField<IGraphQLType, bool>
+                {
+                    Name = "isDeprecated",
+                    //OfType = typeof (GraphQLNonNull<GraphQLString>),
+                    Resolve = schema => false
+                },
+                new GraphQLScalarField<IGraphQLType, string>
+                {
+                    Name = "deprecationReason",
+                    //OfType = typeof (GraphQLString),
+                    Resolve = schema => string.Empty
+                }
+            };
         }
     }
 }

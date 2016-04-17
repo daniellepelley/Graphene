@@ -40,17 +40,16 @@ namespace Graphene.Core.Types
         }
 
         public virtual Func<ResolveObjectContext<TInput>, TOutput> Resolve { get; set; }
-        public IEnumerable<IGraphQLArgument> Arguments { get; set; }
     }
 
-    public class GraphQLObjectField<TOutput> : GraphQLObjectFieldBase, IToExecutionBranch
+    public class GraphQLObjectField<TOutput> : GraphQLObjectFieldBase, IToExecutionBranch, IGraphQLFieldType
     {
         public virtual Func<ResolveObjectContext, TOutput> Resolve { get; set; }
-        public ExecutionBranch ToExecutionBranch(Selection[] selections, IDictionary<string, object> arguments)
+        public ExecutionBranch ToExecutionBranch(Field field)
         {
-            var executionRoot = new ExecutionBranch<TOutput>(Name, arguments, Resolve);
+            var executionRoot = new ExecutionBranch<TOutput>(Name, field.Arguments, Resolve);
 
-            foreach (var selection in selections)
+            foreach (var selection in field.Selections)
             {
                 var graphQLScalar = this[selection.Field.Name] as GraphQLScalar<TOutput>;
 

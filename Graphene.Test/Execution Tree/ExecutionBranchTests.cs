@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Graphene.Core;
 using Graphene.Core.Execution;
+using Graphene.Core.Model;
 using Graphene.Core.Types;
 using Graphene.Test.Data;
 using Newtonsoft.Json;
@@ -21,7 +22,7 @@ namespace Graphene.Test.Execution_Tree
                     Name = "Dan"
                 });
 
-            var sut = new ExecutionBranch<User>("user", new Dictionary<string, object>(), getter);
+            var sut = new ExecutionBranch<User>("user", new Argument[0], getter);
             
             var scalar1 = new GraphQLScalarField<User, string>
             {
@@ -63,7 +64,7 @@ namespace Graphene.Test.Execution_Tree
                     }
                 });
 
-            var generator = new ExecutionBranch<User>("user", new Dictionary<string, object>(), getter);
+            var generator = new ExecutionBranch<User>("user", new Argument[0], getter);
 
             var scalar1 = new GraphQLScalarField<User, string>
             {

@@ -96,6 +96,7 @@ namespace Graphene.Owin
                     Name = "users",
                     GraphQLObjectType = () =>new GraphQLObjectType
                     {
+                        Name = "User",
                         Fields = new IGraphQLFieldType[]
                         {
                             new GraphQLScalarField<TestUser, int>
