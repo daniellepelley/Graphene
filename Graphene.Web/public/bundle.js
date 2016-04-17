@@ -69,8 +69,7 @@
 	var _isomorphicFetch2 = _interopRequireDefault(_isomorphicFetch);
 
 	function graphQLFetcher(graphQLParams) {
-	  alert("oh yeah");
-	  return (0, _isomorphicFetch2['default'])(window.location.origin + '/api/GraphQL', {
+	  return (0, _isomorphicFetch2['default'])(window.location.origin + '/api/graphql', {
 	    method: 'post',
 	    headers: { 'Content-Type': 'application/json' },
 	    body: JSON.stringify(graphQLParams)

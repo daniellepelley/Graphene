@@ -34,6 +34,13 @@ namespace Graphene.Execution
                 }
 
                 Validate(operation.Selections.First().Field.Selections, typeField as GraphQLObjectFieldBase);
+
+                if (!(typeField is IToExecutionBranch))
+                {
+                    throw new GraphQLException("Field type must inherite from IToExecutionBranch");
+                }
+
+
                 var executionBranch = new ExecutionBranchBuilder().Build(typeField as IToExecutionBranch, operation.Selections.First().Field);
 
                 return new[] {executionBranch.Execute()}.ToDictionary(x => x.Key, x => x.Value);

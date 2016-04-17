@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Configuration;
 using Graphene.Core;
+using Graphene.Core.Model;
 using Graphene.Core.Parsers;
 using Graphene.Core.Types;
 using Graphene.Core.Types.Introspection;
@@ -32,7 +33,21 @@ namespace Graphene.Owin
         {
             var owinContext = new OwinContext(environment);
 
-            if (owinContext.Request.Path.Value == "/graphqlspike")
+            if (owinContext.Request.Method == "POST")
+            {
+                var query = new StreamReader(owinContext.Request.Body).ReadToEnd();
+                query = query
+                    .Replace(((char)9).ToString(), string.Empty)
+                    .Replace(((char)10).ToString(), string.Empty)
+                    .Replace(((char)13).ToString(), string.Empty)
+                    .Replace(@"/n", string.Empty)
+                    .Replace(@"\n", string.Empty);
+
+                var qo = JsonConvert.DeserializeObject<QueryObject>(query);
+
+                await ProcessQuery("{ " + qo.Query + " }", owinContext);
+            }
+            else if (owinContext.Request.Path.Value == "/graphqlspike")
             {
                 _executionEngine = new SpikeExecutionEngine<TestUser>(Data.GetData());
 
@@ -55,11 +70,6 @@ namespace Graphene.Owin
                     var query = owinContext.Request.Query["query"];
                     await ProcessQuery(query, owinContext);
                 }
-                else if (owinContext.Request.Method == "POST")
-                {
-                    var query = new StreamReader(owinContext.Request.Body).ReadToEnd();
-                    await ProcessQuery(query, owinContext);
-                }
             }
             else if (owinContext.Request.Path.Value == "/graphdocument")
             {
@@ -79,7 +89,13 @@ namespace Graphene.Owin
             query = query.Replace(@"\n", " ");
 
             var document = new DocumentParser().Parse(query);
-            var result = _executionEngine.Execute(_schema, document);
+
+            var schema = query.Contains("IntrospectionQuery")
+                ? CreateIntrospectionSchema()
+                : CreateSchema();
+
+
+            var result = _executionEngine.Execute(schema, document);
 
             var json = JsonConvert.SerializeObject(result);
 
@@ -89,12 +105,8 @@ namespace Graphene.Owin
 
         private static GraphQLSchema CreateSchema()
         {
-           var schema = new GraphQLSchema
-            {
-                Query = new GraphQLObjectField<TestUser>
-                {
-                    Name = "users",
-                    GraphQLObjectType = () =>new GraphQLObjectType
+
+            var userType = new GraphQLObjectType
                     {
                         Name = "User",
                         Fields = new IGraphQLFieldType[]
@@ -109,10 +121,52 @@ namespace Graphene.Owin
                             Name = "Name",
                             Resolve = context => context.Source.Name
                         }
-                    } 
-                },
-                    Resolve = _ => Data.GetData().First()
-            }};
+                    }
+                };
+
+            var schema = new GraphQLSchema
+            {
+                Query = new GraphQLObjectField
+                {
+                    Name = "Query",
+                    GraphQLObjectType = () => new GraphQLObjectType
+                    {
+                        Name = "Query",
+                        Fields = new IGraphQLFieldType[]
+                        {
+                            new GraphQLObjectField<TestUser>
+                            {
+                                Name = "user",
+                                Arguments = new []
+                                {
+                                    new GraphQLArgument { Name = "id", Type = new GraphQLString() }
+                                },
+                                Resolve = _ => Data.GetData().First() ,      
+                                OfType = new[] {"user"},
+                                GraphQLObjectType = () => userType
+                            }
+                        }
+                    },
+                    Resolve = _ => string.Empty
+                }
+            };
+
+
+           schema.Types = new IGraphQLType[]
+            {
+                schema.Query.GraphQLObjectType(),
+                new GraphQLString(),
+                userType,
+                new __Schema(), 
+                new __Type(),
+                new __TypeKind(),
+                new GraphQLBoolean(),
+                new __Field(),
+                new __InputValue(),
+                new __EnumValue(),
+                new __Directive()
+            };
+
 
             return schema;
         }
@@ -122,14 +176,14 @@ namespace Graphene.Owin
         {
             return new GraphQLSchema
             {
-                Query = new GraphQLObjectField<object>
+                Query = new GraphQLObjectField
                 {
                     Name = "IntrospectionQuery",
                     GraphQLObjectType = () => new GraphQLObjectType
                     {
                         Fields = new IGraphQLFieldType[]
                         {
-                            new GraphQLObjectField<object, GraphQLSchema>
+                            new GraphQLObjectField<GraphQLSchema>
                             {
                                 Name = "__schema",
                                 GraphQLObjectType = () => new __Schema(),

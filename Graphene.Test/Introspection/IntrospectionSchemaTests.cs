@@ -96,10 +96,4 @@ namespace Graphene.Test.Introspection
             return document;
         }
     }
-
-    public class QueryObject
-    {
-        public string Query { get; set; }
-        public string Variables { get; set; }
-    }
 }

@@ -30,7 +30,9 @@ namespace Graphene.Owin
 
             if (owinContext.Request.Path.Value == "/")
             {
-                var html = @"<!DOCTYPE html><html><head><meta charset=""utf-8"" /><meta name=""viewport"" content=""width=device-width"" /><title>GraphiQL</title><link rel=""stylesheet"" href=""/public/codemirror.css"" /><link rel=""stylesheet"" href=""/public/foldgutter.css"" /><link rel=""stylesheet"" href=""/public/lint.css"" /><link rel=""stylesheet"" href=""/public/show-hint.css"" /><link rel=""stylesheet"" href=""/public/app.css"" /></head><body><div class=""container body-content""><div id=""app""></div></div><script src=""/public/bundle.js"" type=""text/javascript""></script></body></html>";
+                var html = File.ReadAllText(@"C:\Users\Danny\Source\Repos\Graphene\Graphene.Owin\app\index.html");
+
+                //var html = @"<!DOCTYPE html><html><head><meta charset=""utf-8"" /><meta name=""viewport"" content=""width=device-width"" /><title>GraphiQL</title><link rel=""stylesheet"" href=""/public/codemirror.css"" /><link rel=""stylesheet"" href=""/public/foldgutter.css"" /><link rel=""stylesheet"" href=""/public/lint.css"" /><link rel=""stylesheet"" href=""/public/show-hint.css"" /><link rel=""stylesheet"" href=""/public/app.css"" /></head><body><div class=""container body-content""><div id=""app""></div></div><script src=""/public/bundle.js"" type=""text/javascript""></script></body></html>";
                 await owinContext.Response.WriteAsync(html);
             }
             else
