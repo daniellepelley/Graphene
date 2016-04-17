@@ -435,13 +435,9 @@
               "args": [
               ],
               "type": {
-                "kind": "NON_NULL",
-                "name": null,
-                "ofType": {
                   "kind": "OBJECT",
                   "name": "__Type",
                   "ofType": null
-                }
               },
               "isDeprecated": false,
               "deprecationReason": null
@@ -618,13 +614,9 @@
               "args": [
               ],
               "type": {
-                "kind": "NON_NULL",
-                "name": null,
-                "ofType": {
                   "kind": "SCALAR",
                   "name": "String",
                   "ofType": null
-                }
               },
               "isDeprecated": false,
               "deprecationReason": null
@@ -648,20 +640,9 @@
               "args": [
               ],
               "type": {
-                "kind": "NON_NULL",
-                "name": null,
-                "ofType": {
-                  "kind": "LIST",
-                  "name": null,
-                  "ofType": {
-                    "kind": "NON_NULL",
-                    "name": null,
-                    "ofType": {
-                      "kind": "OBJECT",
-                      "name": "__InputValue"
-                    }
-                  }
-                }
+                "kind": "OBJECT",
+                "name": "__InputValue",
+                "ofType": null
               },
               "isDeprecated": false,
               "deprecationReason": null
@@ -672,13 +653,9 @@
               "args": [
               ],
               "type": {
-                "kind": "NON_NULL",
-                "name": null,
-                "ofType": {
-                  "kind": "SCALAR",
-                  "name": "Boolean",
-                  "ofType": null
-                }
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
               },
               "isDeprecated": false,
               "deprecationReason": null
@@ -689,13 +666,9 @@
               "args": [
               ],
               "type": {
-                "kind": "NON_NULL",
-                "name": null,
-                "ofType": {
                   "kind": "SCALAR",
                   "name": "Boolean",
                   "ofType": null
-                }
               },
               "isDeprecated": false,
               "deprecationReason": null
@@ -706,13 +679,9 @@
               "args": [
               ],
               "type": {
-                "kind": "NON_NULL",
-                "name": null,
-                "ofType": {
                   "kind": "SCALAR",
                   "name": "Boolean",
                   "ofType": null
-                }
               },
               "isDeprecated": false,
               "deprecationReason": null
@@ -734,13 +703,9 @@
               "name": "if",
               "description": "Included when true.",
               "type": {
-                "kind": "NON_NULL",
-                "name": null,
-                "ofType": {
                   "kind": "SCALAR",
                   "name": "Boolean",
                   "ofType": null
-                }
               },
               "defaultValue": null
             }
@@ -757,13 +722,9 @@
               "name": "if",
               "description": "Skipped when true.",
               "type": {
-                "kind": "NON_NULL",
-                "name": null,
-                "ofType": {
                   "kind": "SCALAR",
                   "name": "Boolean",
                   "ofType": null
-                }
               },
               "defaultValue": null
             }

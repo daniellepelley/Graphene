@@ -116,8 +116,12 @@ namespace Graphene.Test.Data
                 userType,
                 new __Schema(), 
                 new __Type(),
-                new __TypeKind()
-                
+                new __TypeKind(),
+                new GraphQLBoolean(),
+                new __Field(),
+                new __InputValue(),
+                new __EnumValue(),
+                new __Directive()
             };
 
             return schema;

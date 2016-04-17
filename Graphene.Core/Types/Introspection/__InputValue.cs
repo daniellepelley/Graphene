@@ -14,12 +14,14 @@ namespace Graphene.Core.Types.Introspection
                 new GraphQLScalarField<IGraphQLArgument, string>
                 {
                     Name = "name",
+                    Type = new GraphQLString(),
                     OfType = new[] {"GraphQLString"},
                     Resolve = context => context.Source.Name
                 },
                 new GraphQLScalarField<IGraphQLArgument, string>
                 {
                     Name = "description",
+                    Type = new GraphQLString(),
                     OfType = new[] {"GraphQLString"},
                     Resolve = context => context.Source.Description
                 },
@@ -33,6 +35,8 @@ namespace Graphene.Core.Types.Introspection
                 new GraphQLScalarField<IGraphQLArgument, string>
                 {
                     Name = "defaultValue",
+                    Description = "A GraphQL-formatted string representing the default value for this input value.",
+                    Type= new GraphQLString(),
                     OfType = new[] {"GraphQLString"},
                     Resolve = context => context.Source.DefaultValue
                 }

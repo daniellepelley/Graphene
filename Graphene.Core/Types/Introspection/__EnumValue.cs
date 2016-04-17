@@ -1,3 +1,5 @@
+using Newtonsoft.Json;
+
 namespace Graphene.Core.Types.Introspection
 {
     public class __EnumValue : GraphQLObjectType
@@ -10,29 +12,33 @@ namespace Graphene.Core.Types.Introspection
                           "returned in a JSON response as a string.";
             Fields = new IGraphQLFieldType[]
             {
-                new GraphQLScalarField<IGraphQLType, string>
+                new GraphQLScalarField<IGraphQLKind, string>
                 {
                     Name = "name",
+                    Type= new GraphQLString(),
                     //OfType = typeof (GraphQLNonNull<GraphQLString>),
-                    Resolve = schema => string.Empty
+                    Resolve = context => context.Source.Name
                 },
-                new GraphQLScalarField<IGraphQLType, string>
+                new GraphQLScalarField<IGraphQLKind, string>
                 {
                     Name = "description",
+                    Type= new GraphQLString(),
                     //OfType = typeof (GraphQLString),
-                    Resolve = schema => string.Empty
+                    Resolve = context => context.Source.Description
                 },
-                new GraphQLScalarField<IGraphQLType, bool>
+                new GraphQLScalarField<IGraphQLKind, bool>
                 {
                     Name = "isDeprecated",
+                    Type= new GraphQLBoolean(),
                     //OfType = typeof (GraphQLNonNull<GraphQLString>),
-                    Resolve = schema => false
+                    Resolve = context => false
                 },
-                new GraphQLScalarField<IGraphQLType, string>
+                new GraphQLScalarField<IGraphQLKind, string>
                 {
                     Name = "deprecationReason",
+                    Type= new GraphQLString(),
                     //OfType = typeof (GraphQLString),
-                    Resolve = schema => string.Empty
+                    Resolve = context => null
                 }
             };
         }

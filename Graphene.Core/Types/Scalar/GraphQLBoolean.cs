@@ -9,7 +9,7 @@ namespace Graphene.Core.Types
 
         public string Description
         {
-            get { return "This is a boolean"; }
+            get { return "The `Boolean` scalar type represents `true` or `false`."; }
         }
     }
 }

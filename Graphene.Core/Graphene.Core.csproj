@@ -89,6 +89,7 @@
     <Compile Include="ResolveContextBuilder.cs" />
     <Compile Include="ResolveFieldContext.cs" />
     <Compile Include="Types\Extensions.cs" />
+    <Compile Include="Types\Introspection\__Directive.cs" />
     <Compile Include="Types\Object\GraphQLObjectType.cs" />
     <Compile Include="Types\Scalar\GraphQLBoolean.cs" />
     <Compile Include="Types\Scalar\GraphQLFloat.cs" />

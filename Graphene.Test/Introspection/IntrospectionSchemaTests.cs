@@ -36,13 +36,13 @@ namespace Graphene.Test.Introspection
 
             var expected = FormatJson(File.ReadAllText(@"Introspection\Response.json"));
 
-            var start = 0;//2658 + 2275;
+            var start = 2658 + 2275 + 1359 + 1384 +989 + 936;
 
 
             StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.AppendLine(expected.Substring(start, expected.Length - start));
             stringBuilder.AppendLine(actual.Substring(start, actual.Length - start));
-            File.WriteAllText(@"C:\Users\Danny\Source\Repos\Graphene\Graphene.Test\Introspection\Actual.json", stringBuilder.ToString());
+            //File.WriteAllText(@"C:\Users\Danny\Source\Repos\Graphene\Graphene.Test\Introspection\Actual.json", stringBuilder.ToString());
              
         
             Assert.AreEqual(expected, actual);

@@ -69,7 +69,7 @@ namespace Graphene.Core.Types.Introspection
                     Name = "interfaces",
                     Type = new GraphQLString(),
                     //OfType = typeof (GraphQLSchemaList<GraphQLNonNull<__Type>>),
-                    Resolve = context => context.Source.Kind == "SCALAR" ? null : new string[0]
+                    Resolve = context => context.Source.Kind != "OBJECT" ? null : new string[0]
                 },
                 new GraphQLObjectField<IGraphQLType, string>
                 {
@@ -82,6 +82,7 @@ namespace Graphene.Core.Types.Introspection
                 {
                     Name = "enumValues",
                     Type = new __EnumValue(),
+                    GraphQLObjectType = () => new __EnumValue(),
                     Arguments = new [] 
                     {
                       new GraphQLArgument
@@ -167,14 +168,6 @@ namespace Graphene.Core.Types.Introspection
                 }
             };
             return ofTypeType;
-        }
-    }
-
-    public class __Directive : GraphQLObjectType
-    {
-        public __Directive()
-        {
-            Name = "__Directive";
         }
     }
 }

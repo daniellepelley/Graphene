@@ -46,7 +46,7 @@ namespace Graphene.Execution
             //Validate(operation.Selections.First().Field.Selections, (GraphQLObjectFieldBase)baseType.Fields.First());
 
             //var executionBranch = new ExecutionBranchBuilder().Build(schema.Query as IToExecutionBranch, operation.Selections.First().Field.Selections, argumentsDictionary);
-            //return executionBranch.Execute().Value;
+            //return executionBranch.Execute().Name;
             return null;
         }
 

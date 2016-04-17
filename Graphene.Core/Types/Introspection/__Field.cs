@@ -17,25 +17,22 @@ namespace Graphene.Core.Types.Introspection
                 {
                     Name = "name",
                     OfType = new[] {"GraphQLString"},
+                    Type = new GraphQLString(),
                     Resolve = context => context.Source.Name
                 },
                 new GraphQLScalarField<IGraphQLFieldType, string>
                 {
                     Name = "description",
+                    Type = new GraphQLString(),
                     OfType = new[] {"GraphQLString"},
                     Resolve = context => context.Source.Description
-                },
-                new GraphQLScalarField<IGraphQLFieldType, string>
-                {
-                    Name = "kind",
-                    OfType = new[] {"GraphQLString"},
-                    Resolve = context => context.Source.Kind
                 },
                 new GraphQLList<IGraphQLFieldType, IGraphQLArgument>
                 {
                     Name = "args",
                     OfType  = new[] {"GraphQLString"},
                     GraphQLObjectType = () => new __InputValue(),
+                    Type = new __InputValue(),
                     Resolve = context =>
                     {
                         return context.Source.Arguments;
@@ -68,16 +65,20 @@ namespace Graphene.Core.Types.Introspection
                 new GraphQLScalarField<IGraphQLFieldType, bool>
                 {
                     Name = "isDeprecated",
+                    Type = new GraphQLBoolean(),
                     OfType  = new[] {"GraphQLString"},
                     Resolve = context => false
                 },
                 new GraphQLScalarField<IGraphQLFieldType, string>
                 {
                     Name = "deprecationReason",
+                    Type = new GraphQLString(),
                     OfType  = new[] {"GraphQLString"},
                     Resolve = context => null
                 }
             };
         }
     }
+
+    //,"directives":[{"name":"include","description":"Directs the executor to include this field or fragment only when the `if` argument is true.","args":[{"name":"if","description":"Included when true.","type":{"kind":"SCALAR","name":"Boolean","ofType":null},"defaultValue":null}],"onOperation":false,"onFragment":true,"onField":true},{"name":"skip","description":"Directs the executor to skip this field or fragment when the `if` argument is true.","args":[{"name":"if","description":"Skipped when true.","type":{"kind":"SCALAR","name":"Boolean","ofType":null},"defaultValue":null}],"onOperation":false,"onFragment":true,"onField":true}]}}}
 }

@@ -13,23 +13,46 @@ namespace Graphene.Core.Types.Introspection
             {
                 new GraphQLKind
                 {
-                    Value = GraphQLKinds.Scalar,
+                    Name = GraphQLKinds.Scalar,
                     Description = "Indicates this type is a scalar."
                 },
                 new GraphQLKind
                 {
-                    Value = GraphQLKinds.Object,
+                    Name = GraphQLKinds.Object,
                     Description = "Indicates this type is an object. `fields` and `interfaces` are valid fields."
                 },
                 new GraphQLKind
                 {
-                    Value = GraphQLKinds.Interface,
+                    Name = GraphQLKinds.Interface,
                     Description = "Indicates this type is an interface. `fields` and `possibleTypes` are valid fields."
+                },
+                new GraphQLKind
+                {
+                    Name = GraphQLKinds.Union,
+                    Description = "Indicates this type is a union. `possibleTypes` is a valid field."
+                },
+                new GraphQLKind
+                {
+                    Name = GraphQLKinds.Enum,
+                    Description = "Indicates this type is an enum. `enumValues` is a valid field."
+                },
+                new GraphQLKind
+                {
+                    Name = GraphQLKinds.InputObject,
+                    Description = "Indicates this type is an input object. `inputFields` is a valid field."
+                },
+                new GraphQLKind
+                {
+                    Name = GraphQLKinds.List,
+                    Description = "Indicates this type is a list. `ofType` is a valid field."
+                },
+                new GraphQLKind
+                {
+                    Name = GraphQLKinds.NonNull,
+                    Description = "Indicates this type is a non-null. `ofType` is a valid field."
                 }
             };
         }
-
-
 
 
         //values: {
@@ -76,13 +99,13 @@ namespace Graphene.Core.Types.Introspection
 
     public interface IGraphQLKind
     {
-        string Value { get; set; }
+        string Name { get; set; }
         string Description { get; set; }
     }
 
     public class GraphQLKind : IGraphQLKind
     {
-        public string Value { get; set; }
+        public string Name { get; set; }
         public string Description { get; set; }
     }
 }
