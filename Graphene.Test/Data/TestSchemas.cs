@@ -74,8 +74,16 @@ namespace Graphene.Test.Data
 
         public static GraphQLSchema UserSchema()
         {
-            var userType = CreateUserType();
+            return UserSchema(CreateUserType());
+        }
 
+        public static GraphQLSchema UserSchemaWithBoss()
+        {
+            return UserSchema(CreateUserTypeWithBoss());
+        }
+
+        public static GraphQLSchema UserSchema(GraphQLObjectType userType)
+        {
             var schema = new GraphQLSchema
             {
                 Query = new GraphQLObjectField
@@ -101,7 +109,7 @@ namespace Graphene.Test.Data
                                             context.Arguments.All(arg => arg.Name != "id") ||
                                              x.Id == Convert.ToInt32(context.Arguments.First(arg => arg.Name == "id").Value)),
                                                 OfType = new[] {"user"},
-                                GraphQLObjectType = GetUserType
+                                GraphQLObjectType = () => userType
                             }
                         }
                     },
@@ -126,7 +134,7 @@ namespace Graphene.Test.Data
 
             return schema;
         }
-        
+
         public static GraphQLObjectType CreateUserType()
         {
             var userType = new GraphQLObjectType
@@ -152,6 +160,36 @@ namespace Graphene.Test.Data
                     //    Resolve = context => context.Source.Boss,
                     //    GraphQLObjectType = () => CreateBossType()
                     //}
+                }
+            };
+            return userType;
+        }
+
+        public static GraphQLObjectType CreateUserTypeWithBoss()
+        {
+            var userType = new GraphQLObjectType
+            {
+                Name = "User",
+                Fields = new IGraphQLFieldType[]
+                {
+                    new GraphQLScalarField<User, int>
+                    {
+                        Name = "id",
+                        Resolve = context => context.Source.Id,
+                        Type = new GraphQLString()
+                    },
+                    new GraphQLScalarField<User, string>
+                    {
+                        Name = "name",
+                        Resolve = context => context.Source.Name,
+                        Type = new GraphQLString()
+                    },
+                    new GraphQLObjectField<User, Boss>
+                    {
+                        Name = "boss",
+                        Resolve = context => context.Source.Boss,
+                        GraphQLObjectType = () => CreateBossType()
+                    }
                 }
             };
             return userType;

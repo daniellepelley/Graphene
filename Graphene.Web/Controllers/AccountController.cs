@@ -29,7 +29,6 @@ namespace GraphQL.GraphiQL.Controllers
             }
         }
 
-
         public object Post(GraphQLQuery query)
         {
             var engine = new ExecutionEngine();

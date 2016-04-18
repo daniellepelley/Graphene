@@ -17,7 +17,7 @@ namespace Graphene.Test.Execution
 
             var schema = CreateGraphQLSchema();
 
-            var query = "{user(id: 1) {id, name, boss {id, name}}}";
+            var query = @"{user(id: ""1"") {id, name, boss {id, name}}}";
             var document = new DocumentParser().Parse(query);
 
             var expected =
@@ -33,7 +33,7 @@ namespace Graphene.Test.Execution
 
             var schema = CreateGraphQLSchema();
 
-            var query = "{user(id: 1) {name, boss {name}}}";
+            var query = @"{user(id: ""1"") {name, boss {name}}}";
             var document = new DocumentParser().Parse(query);
 
             var expected =
@@ -49,7 +49,7 @@ namespace Graphene.Test.Execution
 
         private static IGraphQLSchema CreateGraphQLSchema()
         {
-            return TestSchemas.UserSchema();
+            return TestSchemas.UserSchemaWithBoss();
         }
     }
 }

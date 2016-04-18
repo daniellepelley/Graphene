@@ -88,13 +88,13 @@ namespace Graphene.Test.Objects
         [Test]
         public void GraphQLFieldsOfType()
         {
-            var actual = TestType("fields", _ => TestSchemas.CreateBossType(), "{kind}");
+            var actual = TestType("fields", _ => TestSchemas.CreateBossType(), "{isDeprecated,deprecationReason}");
             var list = (List<object>)actual;
             var field1 = (IDictionary<string, object>)list[0];
             var field2 = (IDictionary<string, object>)list[1];
 
-            Assert.AreEqual("SCALAR", field1["kind"]);
-            Assert.AreEqual("SCALAR", field2["kind"]);
+            Assert.AreEqual(false, field1["isDeprecated"]);
+            Assert.AreEqual(null, field2["deprecationReason"]);
         }
     }
 }

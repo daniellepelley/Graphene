@@ -50,6 +50,7 @@
     <Compile Include="Execution\ExecutionNode.cs" />
     <Compile Include="Execution\IExecutionItem.cs" />
     <Compile Include="FieldTypes\GraphQLList.cs" />
+    <Compile Include="FieldTypes\IToExecutionBranch.cs" />
     <Compile Include="IResolveContext.cs" />
     <Compile Include="Model\QueryObject.cs" />
     <Compile Include="Parsers\FragmentProcessor.cs" />

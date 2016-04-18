@@ -58,7 +58,7 @@ namespace Graphene.Test.Execution
             var stringType = new GraphQLBoolean();
 
             var actual = Map(stringType, new[] {"name", "description", "kind"});
-            var expected = @"{""name"":""Boolean"",""description"":""This is a boolean"",""kind"":""SCALAR""}";
+            var expected = @"{""name"":""Boolean"",""description"":""The `Boolean` scalar type represents `true` or `false`."",""kind"":""SCALAR""}";
 
             Assert.AreEqual(expected, actual);
         }

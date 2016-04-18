@@ -27,7 +27,7 @@ namespace Graphene.Test.Execution
         {
             var sut = new ExecutionEngine();
 
-            var schema = TestSchemas.UserSchema();
+            var schema = TestSchemas.UserSchemaWithBoss();
 
             var document = new DocumentParser().Parse(query);
 

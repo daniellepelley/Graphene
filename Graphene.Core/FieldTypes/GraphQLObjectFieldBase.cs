@@ -1,17 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Graphene.Core.Execution;
-using Graphene.Core.Model;
 using Graphene.Core.Types.Introspection;
 
 namespace Graphene.Core.Types
 {
-    public interface IToExecutionBranch
-    {
-        ExecutionBranch ToExecutionBranch(Field field);
-    }
-
     public class GraphQLObjectFieldBase
     {
         private GraphQLObjectType _type = new GraphQLObjectType();

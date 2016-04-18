@@ -54,7 +54,7 @@ namespace Graphene.Test.Execution
 
             var schema = CreateGraphQLSchema();
 
-            var query = "{user(id :1) {name}}";
+            var query = @"{user(id :""1"") {name}}";
             var document = new DocumentParser().Parse(query); ;
 
             var expected = @"{""data"":{""user"":{""name"":""Dan_Smith""}}}";
@@ -84,7 +84,7 @@ namespace Graphene.Test.Execution
 
             var schema = CreateGraphQLSchema();
 
-            var query = "{user(id :1) {foo}}";
+            var query = @"{user(id :""1"") {foo}}";
             var document = new DocumentParser().Parse(query); ;
 
             var expected = @"{""errors"":[{""message"":""Field foo does not exist""}]}";

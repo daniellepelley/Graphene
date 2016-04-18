@@ -79,6 +79,4 @@ namespace Graphene.Core.Types.Introspection
             };
         }
     }
-
-    //,"directives":[{"name":"include","description":"Directs the executor to include this field or fragment only when the `if` argument is true.","args":[{"name":"if","description":"Included when true.","type":{"kind":"SCALAR","name":"Boolean","ofType":null},"defaultValue":null}],"onOperation":false,"onFragment":true,"onField":true},{"name":"skip","description":"Directs the executor to skip this field or fragment when the `if` argument is true.","args":[{"name":"if","description":"Skipped when true.","type":{"kind":"SCALAR","name":"Boolean","ofType":null},"defaultValue":null}],"onOperation":false,"onFragment":true,"onField":true}]}}}
 }

@@ -63,7 +63,6 @@ namespace Graphene.Core.Types.Introspection
                         return null;
                     }
                 },
-                //"inputFields":null,"interfaces":[],"enumValues":null,"possibleTypes":null
                 new GraphQLScalarField<IGraphQLType, string[]>
                 {
                     Name = "interfaces",
