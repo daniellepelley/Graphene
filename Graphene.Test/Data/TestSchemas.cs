@@ -43,20 +43,8 @@ namespace Graphene.Test.Data
                 Query = new GraphQLObjectField<object>
                 {
                     Name = "Query",
-                    GraphQLObjectType = () => new GraphQLObjectType
-                    {
-                        Fields = new IGraphQLFieldType[]
-                        {
-                            new GraphQLObjectField<User>
-                            {
-                                Name = "user",
-                                Arguments = _arguments,
-                                Resolve = _resolve,
-                                OfType = new[] {"user"},
-                                GraphQLObjectType = () => userType
-                            }
-                        }
-                    },
+                    Type
+                    GraphQLObjectType = () => ,
                     Resolve = _ => null
                 }
             };

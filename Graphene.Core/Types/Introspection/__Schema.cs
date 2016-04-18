@@ -31,7 +31,6 @@ namespace Graphene.Core.Types.Introspection
                         OfType = new[] {"GraphQLSchemaList", "__Field"},
                         GraphQLObjectType = () => new GraphQLObjectType
                         {
-
                             Fields = new List<IGraphQLFieldType>
                             {
                                 new GraphQLScalarField<IGraphQLFieldType, string>
@@ -66,7 +65,7 @@ namespace Graphene.Core.Types.Introspection
                     Name = "types",
                     Description = "A list of all types supported by this server.",
                     GraphQLObjectType = () => new __Type(),
-                    Type = new __Type(),
+                    Type = new GraphQLNonNull(new GraphQLList(new GraphQLNonNull(new __Type()))),
                     OfType = new[] {"GraphQLNonNull", "__Type"},
                     Resolve = context => context.Source.GetTypes()
                 },
@@ -75,6 +74,7 @@ namespace Graphene.Core.Types.Introspection
                     Name = "queryType",
                     Description = "The type that query operations will be rooted at.",
                     OfType = new[] {"GraphQLNonNull", "__Type"},
+                    Type = new GraphQLNonNull(new __Type()),
                     GraphQLObjectType = () => queryType,
                     Resolve = context => context.Source.Query
                 },

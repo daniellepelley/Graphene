@@ -108,7 +108,6 @@
     <Compile Include="FieldTypes\IInputField.cs" />
     <Compile Include="Types\Introspection\GraphQLSchemaList.cs" />
     <Compile Include="Types\Introspection\GraphQLNonNull.cs" />
-    <Compile Include="Types\Introspection\GraphQLSchemaFieldType.cs" />
     <Compile Include="Types\Introspection\IntrospectionTypeWrapper.cs" />
     <Compile Include="Types\Introspection\__EnumValue.cs" />
     <Compile Include="Types\Introspection\__Field.cs" />
@@ -117,7 +116,7 @@
     <Compile Include="Types\Introspection\__Type.cs" />
     <Compile Include="Types\Introspection\__TypeKind.cs" />
     <Compile Include="Types\Mapper.cs" />
-    <Compile Include="Types\Scalar\NonNullGraphQLType.cs" />
+    <Compile Include="Types\Scalar\GraphQLNonNull.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

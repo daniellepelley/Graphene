@@ -19,6 +19,7 @@ namespace Graphene.Core.Types
             get { return GraphQLKinds.Object; }
         }
 
+        [Obsolete("Should move onto using Type field")]
         public Func<GraphQLObjectType> GraphQLObjectType { get; set; }
 
         public string Name { get; set; }

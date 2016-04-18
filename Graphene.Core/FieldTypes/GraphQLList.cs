@@ -6,7 +6,7 @@ using Graphene.Core.Types.Introspection;
 
 namespace Graphene.Core.Types
 {
-    public class GraphQLList<TInput, TOutput> : GraphQLObjectFieldBase, IInputField<TInput>, IHasType
+    public class GraphQLList<TInput, TOutput> : GraphQLObjectFieldBase, IInputField<TInput>
     {
         public ExecutionBranch ToExecutionBranch(Selection[] selections, Func<TInput> getter)
         {
@@ -36,10 +36,5 @@ namespace Graphene.Core.Types
         public virtual Func<ResolveObjectContext<TInput>, IEnumerable<TOutput>> Resolve { get; set; }
 
         public IGraphQLType Type { get; set; }
-    }
-
-    public interface IHasType
-    {
-        IGraphQLType Type { get; set; }
     }
 }

@@ -33,34 +33,14 @@ namespace Graphene.Core.Types.Introspection
                     OfType  = new[] {"GraphQLString"},
                     GraphQLObjectType = () => new __InputValue(),
                     Type = new __InputValue(),
-                    Resolve = context =>
-                    {
-                        return context.Source.Arguments;
-                    }
+                    Resolve = context => context.Source.Arguments
                 },
                 new GraphQLObjectField<IGraphQLFieldType, IGraphQLType>
                 {
                     Name = "type",
                     OfType  = new[] {"GraphQLString"},
                     GraphQLObjectType = () => new __Type(),
-                    Resolve = context =>
-                    {
-                        var graphQLScalarField = context.Source as IHasType;
-
-                        if (graphQLScalarField != null)
-                        {
-                            return graphQLScalarField.Type;
-                        }
-
-                        var graphQLObjectField = context.Source as GraphQLObjectFieldBase;
-
-                        if (graphQLObjectField != null)
-                        {
-                            return graphQLObjectField.GraphQLObjectType();
-                        }
-
-                        return null;
-                    }
+                    Resolve = context => context.Source.Type
                 },
                 new GraphQLScalarField<IGraphQLFieldType, bool>
                 {

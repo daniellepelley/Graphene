@@ -112,61 +112,49 @@ namespace Graphene.Core.Types.Introspection
                 {
                     Name = "ofType",
                     GraphQLObjectType = () => new __Type(),
-                    Resolve = context =>
-                    {
-                        if (context.Source == null)
-                        {
-                            return null;
-                        }
-
-                        if (context.Source.OfType == null)
-                        {
-                            return null;
-                        }
-                        return new GraphQLBoolean();
-                    }
-                },
-            };
-        }
-
-        private static GraphQLObjectType GraphQLObjectType()
-        {
-            var ofTypeType = new GraphQLObjectType
-            {
-                Fields = new IGraphQLFieldType[]
-                {
-                    new GraphQLScalarField<IGraphQLType, string>
-                    {
-                        Name = "kind",
-                        //Description = "The type that query operations will be rooted at.",
-                        Resolve = context => context.Source.Kind
-                    },
-                    new GraphQLScalarField<IGraphQLType, string>
-                    {
-                        Name = "name",
-                        Resolve = context => context.Source.Name
-                    },
-                    new GraphQLScalarField<IGraphQLType, string>
-                    {
-                        Name = "description",
-                        Resolve = context => context.Source.Description
-                    },
-                    new GraphQLObjectField<IGraphQLType, IGraphQLType>
-                    {
-                        Name = "ofType",
-                        Resolve = context =>
-                        {
-                            if (context.Source == null ||
-                                context.Source.OfType == null)
-                            {
-                                return null;
-                            }
-                            return new GraphQLBoolean();
-                        }
-                    }
+                    Resolve = context => context.Source == null ? null : context.Source.OfType
                 }
             };
-            return ofTypeType;
         }
+
+        //private static GraphQLObjectType GraphQLObjectType()
+        //{
+        //    var ofTypeType = new GraphQLObjectType
+        //    {
+        //        Fields = new IGraphQLFieldType[]
+        //        {
+        //            new GraphQLScalarField<IGraphQLType, string>
+        //            {
+        //                Name = "kind",
+        //                //Description = "The type that query operations will be rooted at.",
+        //                Resolve = context => context.Source.Kind
+        //            },
+        //            new GraphQLScalarField<IGraphQLType, string>
+        //            {
+        //                Name = "name",
+        //                Resolve = context => context.Source.Name
+        //            },
+        //            new GraphQLScalarField<IGraphQLType, string>
+        //            {
+        //                Name = "description",
+        //                Resolve = context => context.Source.Description
+        //            },
+        //            new GraphQLObjectField<IGraphQLType, IGraphQLType>
+        //            {
+        //                Name = "ofType",
+        //                Resolve = context =>
+        //                {
+        //                    if (context.Source == null ||
+        //                        context.Source.OfType == null)
+        //                    {
+        //                        return null;
+        //                    }
+        //                    return new GraphQLBoolean();
+        //                }
+        //            }
+        //        }
+        //    };
+        //    return ofTypeType;
+        //}
     }
 }

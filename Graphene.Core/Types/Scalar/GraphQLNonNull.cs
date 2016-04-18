@@ -1,25 +1,20 @@
+using System.Collections.Generic;
+using System.Linq;
+
 namespace Graphene.Core.Types
 {
-    public interface IGraphQLType
-    {
-        string Kind { get; }
-        string Name { get; }
-        string Description { get; }
-        IGraphQLType OfType { get; }
-    }
-
-    public class GraphQLList : IGraphQLType
+    public class GraphQLNonNull : IGraphQLType
     {
         private readonly IGraphQLType _graphQLType;
 
-        public GraphQLList(IGraphQLType graphQLType)
+        public GraphQLNonNull(IGraphQLType graphQLType)
         {
             _graphQLType = graphQLType;
         }
 
         public string Kind
         {
-            get { return GraphQLKinds.List; }
+            get { return GraphQLKinds.NonNull; }
         }
 
         public string Name
@@ -29,12 +24,13 @@ namespace Graphene.Core.Types
 
         public string Description
         {
-            get { return "Describes a list"; }
+            get { return "This is a NonNull"; }
         }
 
         public IGraphQLType OfType
         {
             get { return _graphQLType; }
+
         }
     }
 }

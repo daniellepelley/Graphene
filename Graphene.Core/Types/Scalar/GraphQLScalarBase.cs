@@ -7,7 +7,7 @@
             get { return GraphQLKinds.Scalar; }
         }
 
-        public string[] OfType { get; set; }
+        public IGraphQLType OfType { get; set; }
     }
 
     public class GraphQLEnum : IGraphQLType
@@ -20,7 +20,7 @@
         public string Name { get; set; }
         public string Description { get; set; }
 
-        public string[] OfType { get; set; }
+        public IGraphQLType OfType { get; set; }
     }
 
     public class GraphQLEnum<T> : GraphQLEnum

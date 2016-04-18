@@ -40,6 +40,7 @@ namespace Graphene.Core.Types
         }
 
         public virtual Func<ResolveObjectContext<TInput>, TOutput> Resolve { get; set; }
+        public IGraphQLType Type { get; set; }
     }
 
     public class GraphQLObjectField<TOutput> : GraphQLObjectFieldBase, IToExecutionBranch, IGraphQLFieldType
@@ -74,5 +75,7 @@ namespace Graphene.Core.Types
 
             return executionRoot;
         }
+
+        public IGraphQLType Type { get; set; }
     }
 }

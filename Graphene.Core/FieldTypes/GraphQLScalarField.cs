@@ -5,9 +5,9 @@ using Graphene.Core.Types.Introspection;
 
 namespace Graphene.Core.Types
 {
-    public interface IGraphQLScalarField : IHasType
+    public interface IGraphQLScalarField
     {
-        IGraphQLType Type { get; set; }
+
     }
 
     public abstract class GraphQLScalar<TInput> : IGraphQLScalarField

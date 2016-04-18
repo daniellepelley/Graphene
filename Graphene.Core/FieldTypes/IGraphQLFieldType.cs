@@ -10,6 +10,7 @@ namespace Graphene.Core.Types
         string Description { get; set; }
         string[] OfType { get; set; }
         IGraphQLFieldType this[string name] { get; }
-        IEnumerable<IGraphQLArgument> Arguments { get; set; } 
+        IEnumerable<IGraphQLArgument> Arguments { get; set; }
+        IGraphQLType Type { get; set; }
     }
 }

@@ -25,20 +25,20 @@ namespace Graphene.Test.Introspection
         }
 
         [Test]
-        [Ignore("Needs directives adding to it")]
+        //[Ignore("Needs directives adding to it")]
         public void WithFragmentsShould()
         {
             var actual = RunQuery(_queryWithFragments);
 
-            var expected = FormatJson(File.ReadAllText(@"Introspection\Response.json"));
+            var expected = FormatJson(File.ReadAllText(@"Introspection\ResponseWithTypeOf.json"));
 
-            var start = 2658 + 2275 + 1359 + 1384 +989 + 936;
+            var start = 0;//2658 + 2275 + 1359 + 1384 +989 + 936;
 
 
             StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.AppendLine(expected.Substring(start, expected.Length - start));
             stringBuilder.AppendLine(actual.Substring(start, actual.Length - start));
-            //File.WriteAllText(@"C:\Users\Danny\Source\Repos\Graphene\Graphene.Test\Introspection\Actual.json", stringBuilder.ToString());
+            File.WriteAllText(@"C:\Users\lepelleyd\Source\Repos\Graphene\Graphene.Test\Introspection\Actual.json", stringBuilder.ToString());
              
         
             Assert.AreEqual(expected, actual);
