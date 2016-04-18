@@ -1,10 +1,6 @@
-using System.Linq;
 using Graphene.Core.Parsers;
-using Graphene.Core.Types;
-using Graphene.Core.Types.Introspection;
 using Graphene.Execution;
 using Graphene.Test.Data;
-using Graphene.Test.Execution;
 using Newtonsoft.Json;
 using NUnit.Framework;
 

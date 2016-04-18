@@ -53,10 +53,6 @@
       <Project>{7f25ecd1-89ca-4d83-93ef-8b53ab5595d2}</Project>
       <Name>Graphene.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Graphene.Schema\Graphene.Schema.csproj">
-      <Project>{fc11e4de-0ee7-44a0-9f59-874a34042ed8}</Project>
-      <Name>Graphene.Schema</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

@@ -2,15 +2,10 @@ using System.IO;
 using System.Text;
 using Graphene.Core.Model;
 using Graphene.Core.Parsers;
-using Graphene.Core.Types;
-using Graphene.Core.Types.Introspection;
 using Graphene.Execution;
-using Graphene.Schema;
 using Graphene.Test.Data;
-using Graphene.Test.Execution;
 using Newtonsoft.Json;
 using NUnit.Framework;
-using GraphQLSchema = Graphene.Core.Types.GraphQLSchema;
 
 namespace Graphene.Test.Introspection
 {

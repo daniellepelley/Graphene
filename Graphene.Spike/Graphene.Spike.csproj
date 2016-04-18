@@ -58,10 +58,6 @@
       <Project>{0f97b45b-7646-4f7d-8a33-d197852061c5}</Project>
       <Name>Graphene.Execution</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Graphene.Schema\Graphene.Schema.csproj">
-      <Project>{fc11e4de-0ee7-44a0-9f59-874a34042ed8}</Project>
-      <Name>Graphene.Schema</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

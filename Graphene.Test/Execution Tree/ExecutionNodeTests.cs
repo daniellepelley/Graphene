@@ -1,7 +1,6 @@
 ﻿using System;
 using Graphene.Core.Types;
 using Graphene.Test.Data;
-using Graphene.Test.Spike;
 using NUnit.Framework;
 
 namespace Graphene.Test.Execution_Tree
