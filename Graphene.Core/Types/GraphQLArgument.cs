@@ -1,7 +1,4 @@
-using System;
 using System.Collections.Generic;
-using Graphene.Core.FieldTypes;
-using Graphene.Core.Parsers;
 using Graphene.Core.Types.Scalar;
 
 namespace Graphene.Core.Types

@@ -1,7 +1,5 @@
 using Graphene.Core.FieldTypes;
 using Graphene.Core.Types.Object;
-using Graphene.Core.Types.Scalar;
-using Newtonsoft.Json;
 
 namespace Graphene.Core.Types.Introspection
 {

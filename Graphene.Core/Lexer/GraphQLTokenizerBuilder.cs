@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using Graphene.Core.Parsers;
 
 namespace Graphene.Core.Lexer
 {

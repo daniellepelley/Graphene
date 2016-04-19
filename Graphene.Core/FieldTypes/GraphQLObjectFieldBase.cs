@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using Graphene.Core.Types;
-using Graphene.Core.Types.Introspection;
 using Graphene.Core.Types.Object;
 using Graphene.Core.Types.Scalar;
 
