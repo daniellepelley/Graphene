@@ -17,37 +17,37 @@ namespace Graphene.Core.Types.Introspection
 
             Fields = new IGraphQLFieldType[]
             {
-                new GraphQLScalarField<Directive, string>
+                new GraphQLScalarField<GraphQLDirective, string>
                 {
                     Name = "name",
                     Type = new ChainType(_typeList, "NonNull", "String"),
                     Resolve = context => context.Source.Name
                 },
-                new GraphQLScalarField<Directive, string>
+                new GraphQLScalarField<GraphQLDirective, string>
                 {
                     Name = "description",
                     Type = new ChainType(_typeList, "String"),
                     Resolve = context => context.Source.Description
                 },
-                new GraphQLList<Directive, IGraphQLArgument>
+                new GraphQLList<GraphQLDirective, IGraphQLArgument>
                 {
                     Name = "args",
                     Type = new ChainType(_typeList, "NonNull", "List", "NonNull", "__InputValue"),
                     Resolve = context => context.Source.Arguments
                 },
-                new GraphQLScalarField<Directive, bool>
+                new GraphQLScalarField<GraphQLDirective, bool>
                 {
                     Name = "onOperation",
                     Type = new ChainType(_typeList, "NonNull", "Boolean"),
                     Resolve = context => context.Source.OnOperation
                 },
-                new GraphQLScalarField<Directive, bool>
+                new GraphQLScalarField<GraphQLDirective, bool>
                 {
                     Name = "onFragment",
                     Type = new ChainType(_typeList, "NonNull", "Boolean"),
                     Resolve = context => context.Source.OnFragment
                 },
-                new GraphQLScalarField<Directive, bool>
+                new GraphQLScalarField<GraphQLDirective, bool>
                 {
                     Name = "onField",
                     Type = new ChainType(_typeList, "NonNull", "Boolean"),

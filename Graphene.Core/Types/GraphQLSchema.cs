@@ -26,11 +26,11 @@ namespace Graphene.Core.Types
             throw new System.NotImplementedException();
         }
 
-        public Directive[] GetDirectives()
+        public GraphQLDirective[] GetDirectives()
         {
             return new[]
             {
-                new Directive
+                new GraphQLDirective
                 {
                     Name = "include",
                     Description = "Directs the executor to include this field or fragment only when the `if` argument is true.",
@@ -48,7 +48,7 @@ namespace Graphene.Core.Types
                     OnFragment = true,
                     OnField = true
                 },
-                new Directive
+                new GraphQLDirective
                 {
                     Name = "skip",
                     Description = "Directs the executor to skip this field or fragment when the `if` argument is true.",

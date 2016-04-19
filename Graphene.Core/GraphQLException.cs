@@ -10,8 +10,6 @@ namespace Graphene.Core
 
         public GraphQLException(string format, params object[] values)
             : base(string.Format(format, values))
-        {
-            
-        }
+        { }
     }
 }

@@ -89,7 +89,7 @@ namespace Graphene.Core.Types.Introspection
                     Type = new ChainType(_typeList, "__Type"),
                     Resolve = context => null
                 },
-                new GraphQLList<GraphQLSchema, Directive>
+                new GraphQLList<GraphQLSchema, GraphQLDirective>
                 {
                     Name = "directives",
                     Description = "A list of all directives supported by this server.",

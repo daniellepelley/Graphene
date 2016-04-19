@@ -94,6 +94,7 @@
     <Compile Include="Types\ChainType.cs" />
     <Compile Include="Types\Extensions.cs" />
     <Compile Include="Types\GraphQLArgument.cs" />
+    <Compile Include="Types\GraphQLDirective.cs" />
     <Compile Include="Types\IGraphQLArgument.cs" />
     <Compile Include="Types\Introspection\__Directive.cs" />
     <Compile Include="Types\ITypeList.cs" />
