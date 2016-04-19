@@ -6,7 +6,7 @@ using Graphene.Core.Types.Scalar;
 
 namespace Graphene.Core.Types
 {
-    public class TypeList : ITypeList, IEnumerable<IGraphQLType>
+    public class TypeList : ITypeList
     {
         private readonly Dictionary<string, IGraphQLType> _dictionary;
 
