@@ -19,13 +19,11 @@ namespace Graphene.Core.Types.Introspection
                     {
                         Name = "kind",
                         Description = "The type that query operations will be rooted at.",
-                        OfType = new[] {"GraphQLNonNull", "__TypeKind"},
                         Resolve = context => context.Source.Kind
                     },
                     new GraphQLScalarField<GraphQLObjectFieldBase, string>
                     {
                         Name = "name",
-                        OfType = new[] {"GraphQLString"},
                         Resolve = context => context.Source.Name
                     },
                     new GraphQLList<GraphQLObjectFieldBase, IGraphQLFieldType>
@@ -38,19 +36,16 @@ namespace Graphene.Core.Types.Introspection
                                 new GraphQLScalarField<IGraphQLFieldType, string>
                                 {
                                     Name = "name",
-                                    OfType = new[] {"GraphQLString"},
                                     Resolve = context => context.Source.Name
                                 },
                                 new GraphQLScalarField<IGraphQLFieldType, string>
                                 {
                                     Name = "description",
-                                    OfType = new[] {"GraphQLString"},
                                     Resolve = context => context.Source.Description
                                 },
                                 new GraphQLScalarField<IGraphQLFieldType, string>
                                 {
                                     Name = "kind",
-                                    OfType = new[] {"GraphQLString"},
                                     Resolve = context => context.Source.Kind
                                 }
                             }
@@ -66,7 +61,6 @@ namespace Graphene.Core.Types.Introspection
                 {
                     Name = "types",
                     Description = "A list of all types supported by this server.",
-                    //GraphQLObjectType = () => new __Type(),
                     Type = new ChainType("NonNull", "List", "NonNull", "__Type"),
                     Resolve = context => context.Source.GetTypes()
                 },
@@ -75,7 +69,6 @@ namespace Graphene.Core.Types.Introspection
                     Name = "queryType",
                     Description = "The type that query operations will be rooted at.",
                     Type = new GraphQLNonNull(queryType),
-                    //GraphQLObjectType = () => queryType,
                     Resolve = context => context.Source.Query
                 },
                 new GraphQLObjectField<GraphQLSchema, GraphQLObjectFieldBase>
@@ -84,7 +77,6 @@ namespace Graphene.Core.Types.Introspection
                     Description =
                         "If this server supports mutation, the type that mutation operations will be rooted at.",
                     Type = new __Type(),
-                    //GraphQLObjectType = () => new __Type(),
                     Resolve = context => null
                 },
                 new GraphQLObjectField<GraphQLSchema, GraphQLObjectFieldBase>
@@ -93,7 +85,6 @@ namespace Graphene.Core.Types.Introspection
                     Description =
                         "If this server support subscription, the type that subscription operations will be rooted at.",
                     Type = new __Type(),
-                    //GraphQLObjectType = () => new __Type(),
                     Resolve = context => null
                 },
                 new GraphQLObjectField<GraphQLSchema, GraphQLObjectFieldBase>
@@ -101,7 +92,6 @@ namespace Graphene.Core.Types.Introspection
                     Name = "directives",
                     Description = "A list of all directives supported by this server.",
                     Type = new GraphQLNonNull(new GraphQLList(new GraphQLNonNull(new __Directive()))),
-                    //GraphQLObjectType = () => new __Directive(),
                     Resolve = context => null
                 },
             };

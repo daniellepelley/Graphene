@@ -23,7 +23,6 @@ namespace Graphene.Core.FieldTypes
         }
 
         public string Description { get; set; }
-        public string[] OfType { get; set; }
         public IEnumerable<IGraphQLArgument> Arguments { get; set; }
         public bool IsDeprecated { get; set; }
         public string DeprecationReason { get; set; }

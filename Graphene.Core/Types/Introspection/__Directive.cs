@@ -18,7 +18,6 @@ In some cases, you need to provide options to alter GraphQL’s execution behavior
                 new GraphQLScalarField<IGraphQLFieldType, string>
                 {
                     Name = "name",
-                    OfType = new[] {"GraphQLString"},
                     Type = new GraphQLNonNull(new GraphQLString()),
                     Resolve = context => context.Source.Name
                 },
@@ -26,13 +25,11 @@ In some cases, you need to provide options to alter GraphQL’s execution behavior
                 {
                     Name = "description",
                     Type = new GraphQLString(),
-                    OfType = new[] {"GraphQLString"},
                     Resolve = context => context.Source.Description
                 },
                 new GraphQLList<IGraphQLFieldType, IGraphQLArgument>
                 {
                     Name = "args",
-                    //GraphQLObjectType = () => new __InputValue(),
                     Type = new GraphQLNonNull(new GraphQLList(new GraphQLNonNull(new __InputValue()))),
                     Resolve = context => context.Source.Arguments
                 },
@@ -40,20 +37,17 @@ In some cases, you need to provide options to alter GraphQL’s execution behavior
                 {
                     Name = "onOperation",
                     Type = new GraphQLNonNull(new GraphQLBoolean()),
-                    OfType  = new[] {"GraphQLString"},
                     Resolve = context => false
                 },                new GraphQLScalarField<IGraphQLFieldType, bool>
                 {
                     Name = "onFragment",
                     Type = new GraphQLNonNull(new GraphQLBoolean()),
-                    OfType  = new[] {"GraphQLString"},
                     Resolve = context => false
                 },
                 new GraphQLScalarField<IGraphQLFieldType, bool>
                 {
                     Name = "onField",
                     Type = new GraphQLNonNull(new GraphQLBoolean()),
-                    OfType  = new[] {"GraphQLString"},
                     Resolve = context => false
                 }
             };

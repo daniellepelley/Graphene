@@ -19,21 +19,18 @@ namespace Graphene.Core.Types.Introspection
                 {
                     Name = "name",
                     Type = new GraphQLNonNull(new GraphQLString()),
-                    OfType = new[] {"GraphQLString"},
                     Resolve = context => context.Source.Name
                 },
                 new GraphQLScalarField<IGraphQLArgument, string>
                 {
                     Name = "description",
                     Type = new GraphQLString(),
-                    OfType = new[] {"GraphQLString"},
                     Resolve = context => context.Source.Description
                 },
                 new GraphQLObjectField<IGraphQLArgument, IGraphQLType>
                 {
                     Name = "type",
                     Type = new ChainType("NonNull", "__Type"),
-                    //GraphQLObjectType = () => new __Type(),
                     Resolve = context => context.Source.Type
                 },
                 new GraphQLScalarField<IGraphQLArgument, string>
@@ -41,7 +38,6 @@ namespace Graphene.Core.Types.Introspection
                     Name = "defaultValue",
                     Description = "A GraphQL-formatted string representing the default value for this input value.",
                     Type= new GraphQLString(),
-                    OfType = new[] {"GraphQLString"},
                     Resolve = context => context.Source.DefaultValue
                 }
             };

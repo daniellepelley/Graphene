@@ -19,7 +19,6 @@ namespace Graphene.Core.Types.Introspection
                 new GraphQLScalarField<IGraphQLFieldType, string>
                 {
                     Name = "name",
-                    OfType = new[] {"GraphQLString"},
                     Type = new GraphQLNonNull(new GraphQLString()),
                     Resolve = context => context.Source.Name
                 },
@@ -27,13 +26,11 @@ namespace Graphene.Core.Types.Introspection
                 {
                     Name = "description",
                     Type = new GraphQLString(),
-                    OfType = new[] {"GraphQLString"},
                     Resolve = context => context.Source.Description
                 },
                 new GraphQLList<IGraphQLFieldType, IGraphQLArgument>
                 {
                     Name = "args",
-                    //GraphQLObjectType = () => new __InputValue(),
                     Type = new GraphQLNonNull(new GraphQLList(new GraphQLNonNull(new __InputValue()))),
                     Resolve = context => context.Source.Arguments
                 },
@@ -41,24 +38,18 @@ namespace Graphene.Core.Types.Introspection
                 {
                     Name = "type",
                     Type = new ChainType("NonNull", "__Type"),
-                    //GraphQLObjectType = () => new __Type(),
-                    Resolve = context =>
-                    {
-                        return context.Source.Type;
-                    }
+                    Resolve = context => context.Source.Type
                 },
                 new GraphQLScalarField<IGraphQLFieldType, bool>
                 {
                     Name = "isDeprecated",
                     Type = new GraphQLNonNull(new GraphQLBoolean()),
-                    OfType  = new[] {"GraphQLString"},
                     Resolve = context => context.Source.IsDeprecated
                 },
                 new GraphQLScalarField<IGraphQLFieldType, string>
                 {
                     Name = "deprecationReason",
                     Type = new GraphQLString(),
-                    OfType  = new[] {"GraphQLString"},
                     Resolve = context => context.Source.DeprecationReason
                 }
             };
