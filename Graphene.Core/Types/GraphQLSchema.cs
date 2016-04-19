@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using Graphene.Core.FieldTypes;
 using Graphene.Core.Types.Object;
 using Graphene.Core.Types.Scalar;
@@ -27,9 +28,47 @@ namespace Graphene.Core.Types
             throw new System.NotImplementedException();
         }
 
-        public string GetDirectives()
+        public Directive[] GetDirectives()
         {
-            throw new System.NotImplementedException();
+            return new[]
+            {
+                new Directive
+                {
+                    Name = "include",
+                    Description = "Directs the executor to include this field or fragment only when the `if` argument is true.",
+                    Arguments = new IGraphQLArgument[]
+                    {
+                        new GraphQLArgument
+                        {
+                          Name = "if",
+                          Description = "Included when true.",
+                          Type = new ChainType(Types, "NonNull", "Boolean"),
+                          DefaultValue = null      
+                        }
+                    },
+                    OnOperation = false,
+                    OnFragment = true,
+                    OnField = true
+                },
+                new Directive
+                {
+                    Name = "skip",
+                    Description = "Directs the executor to skip this field or fragment when the `if` argument is true.",
+                    Arguments = new IGraphQLArgument[]
+                    {
+                        new GraphQLArgument
+                        {
+                          Name = "if",
+                          Description = "Skipped when true.",
+                          Type = new ChainType(Types, "NonNull", "Boolean"),
+                          DefaultValue = null      
+                        }
+                    },
+                    OnOperation = false,
+                    OnFragment = true,
+                    OnField = true
+                }
+            };
         }
 
         public IEnumerable<IGraphQLType> GetTypes()

@@ -1,12 +1,9 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using Graphene.Core;
-using Graphene.Core.Execution;
 using Graphene.Core.FieldTypes;
 using Graphene.Core.Model;
 using Graphene.Core.Types;
-using Graphene.Core.Types.Object;
 using Graphene.Core.Types.Scalar;
 
 namespace Graphene.Execution
@@ -107,7 +104,7 @@ namespace Graphene.Execution
         {
             foreach (var selection in operation.Selections)
             {
-                var typeField = schema.QueryType[selection.Field.Name] as GraphQLObjectFieldBase;
+                var typeField = schema.QueryType.GetField(selection.Field.Name) as GraphQLObjectFieldBase;
 
                 if (typeField != null)
                 {

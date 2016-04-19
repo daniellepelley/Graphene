@@ -93,8 +93,8 @@
     <Compile Include="ResolveFieldContext.cs" />
     <Compile Include="Types\ChainType.cs" />
     <Compile Include="Types\Extensions.cs" />
-    <Compile Include="Types\Introspection\GraphQLArgument.cs" />
-    <Compile Include="Types\Introspection\IGraphQLArgument.cs" />
+    <Compile Include="Types\GraphQLArgument.cs" />
+    <Compile Include="Types\IGraphQLArgument.cs" />
     <Compile Include="Types\Introspection\__Directive.cs" />
     <Compile Include="Types\ITypeList.cs" />
     <Compile Include="Types\Object\GraphQLObjectType.cs" />
@@ -108,12 +108,8 @@
     <Compile Include="Types\GraphQLSchema.cs" />
     <Compile Include="Types\Scalar\GraphQLString.cs" />
     <Compile Include="Types\GraphQlTypeSelector.cs" />
-    <Compile Include="Types\Object\IGraphQLObject.cs" />
     <Compile Include="Types\Scalar\IGraphQLType.cs" />
     <Compile Include="FieldTypes\IInputField.cs" />
-    <Compile Include="Types\Introspection\GraphQLSchemaList.cs" />
-    <Compile Include="Types\Introspection\GraphQLNonNull.cs" />
-    <Compile Include="Types\Introspection\IntrospectionTypeWrapper.cs" />
     <Compile Include="Types\Introspection\__EnumValue.cs" />
     <Compile Include="Types\Introspection\__Field.cs" />
     <Compile Include="Types\Introspection\__InputValue.cs" />

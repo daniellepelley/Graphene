@@ -25,7 +25,7 @@ namespace Graphene.Test.Introspection
         }
 
         [Test]
-        //[Ignore("Needs directives adding to it")]
+        [Ignore("Needs directives adding to it")]
         public void WithFragmentsShould()
         {
             var actual = RunQuery(_queryWithFragments);

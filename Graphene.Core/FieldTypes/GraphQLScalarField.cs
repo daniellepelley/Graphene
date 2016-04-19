@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Graphene.Core.Execution;
 using Graphene.Core.Model;
+using Graphene.Core.Types;
 using Graphene.Core.Types.Introspection;
 using Graphene.Core.Types.Scalar;
 

@@ -90,13 +90,13 @@ namespace Graphene.Core.Types.Introspection
                     Type = new ChainType(_typeList, "__Type"),
                     Resolve = context => null
                 },
-                new GraphQLObjectField<GraphQLSchema, GraphQLObjectFieldBase>
+                new GraphQLList<GraphQLSchema, Directive>
                 {
                     Name = "directives",
                     Description = "A list of all directives supported by this server.",
                     Type = new ChainType(_typeList, "NonNull", "List", "NonNull", "__Directive"),
-                    Resolve = context => null
-                },
+                    Resolve = context => context.Source.GetDirectives()
+                }
             };
 
             Name = "__schema";
