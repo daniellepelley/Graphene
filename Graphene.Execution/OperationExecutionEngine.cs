@@ -15,68 +15,31 @@ namespace Graphene.Execution
     {
         public object Execute(Operation operation, GraphQLSchema schema)
         {
-            //var argumentsDictionary = GetArguments(operation);
-
             ValidateArguments(schema, operation);
 
-            var directive = operation.Directives.First().Name;
+            Validate(operation.Selections, schema.QueryType);
 
-            //if (!string.IsNullOrEmpty(directive) &&
-            //    schema.QueryType.Name != directive)
-            //{
-            //    throw new GraphQLException(string.Format("Object {0} does not exist", directive));
-            //}
+            var executionBranch =
+                new ExecutionBranchBuilder().Build(
+                    schema.QueryType.GetField(operation.Selections.First().Field.Name) as IToExecutionBranch,
+                    operation.Selections.First().Field);
 
-            foreach (var selection in operation.Selections)
-            {
-                var typeField = schema.QueryType[selection.Field.Name];
+            return new[] {executionBranch.Execute()}.ToDictionary(x => x.Key, x => x.Value);
 
-                if (typeField == null)
-                {
-                    throw new GraphQLException("Type {0} not known", selection.Field.Name);
-                }
-
-                Validate(operation.Selections.First().Field.Selections, typeField as GraphQLObjectFieldBase);
-
-                if (!(typeField is IToExecutionBranch))
-                {
-                    throw new GraphQLException("Fields type must inherite from IToExecutionBranch");
-                }
-
-
-                var executionBranch = new ExecutionBranchBuilder().Build(typeField as IToExecutionBranch, operation.Selections.First().Field);
-
-                return new[] {executionBranch.Execute()}.ToDictionary(x => x.Key, x => x.Value);
-            }
-
-            //var baseType = schema.QueryType.GraphQLObjectType();
-
-
-
-            //Validate(operation.Selections.First().Fields.Selections, (GraphQLObjectFieldBase)baseType.Fields.First());
-
-            //var executionBranch = new ExecutionBranchBuilder().Build(schema.QueryType as IToExecutionBranch, operation.Selections.First().Fields.Selections, argumentsDictionary);
-            //return executionBranch.Execute().Name;
-            return null;
         }
 
-        private void Validate(Selection[] selections, IGraphQLFieldType fieldType)
+        private void Validate(Selection[] selections, IGraphQLType type)
         {
-            //if (!(fieldType is IToExecutionBranch))
-            //{
-            //    throw new GraphQLException("Fields type must inherite from IToExecutionBranch");
-            //}
-            
             foreach (var selection in selections)
             {
-                var field = fieldType.Type.GetField(selection.Field.Name);
+                var field = type.GetField(selection.Field.Name);
 
                 if (field == null)
                 {
-                    throw new GraphQLException("Field {0} not found on {1} {2}", selection.Field.Name, fieldType.Type.Name, fieldType.Type.Kind);
+                    throw new GraphQLException("Field {0} not found on {1} {2}", selection.Field.Name, type.Name, type.Kind);
                 }
 
-                Validate(selection.Field.Selections, field);
+                Validate(selection.Field.Selections, field.Type);
             }
         }
 

@@ -17,7 +17,7 @@ namespace Graphene.Test.Introspection
         //[Ignore("Introspection to be done")]
         public void StringDescription()
         {
-            var sut = new ExecutionEngine(true);
+            var sut = new ExecutionEngine();
 
             var schema = CreateIntrospectionSchema(TestSchemas.CreateUserType());
 
@@ -52,7 +52,7 @@ namespace Graphene.Test.Introspection
         [Test]
         public void StringNameAndDescription()
         {
-            var sut = new ExecutionEngine(true);
+            var sut = new ExecutionEngine();
 
             var schema = CreateIntrospectionSchema(new GraphQLString());
 
@@ -68,7 +68,7 @@ namespace Graphene.Test.Introspection
         [Test]
         public void IntNameAndDescription()
         {
-            var sut = new ExecutionEngine(true);
+            var sut = new ExecutionEngine();
 
             var schema = CreateIntrospectionSchema(new GraphQLInt());
 

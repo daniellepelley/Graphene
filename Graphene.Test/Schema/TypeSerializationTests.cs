@@ -16,7 +16,7 @@ namespace Graphene.Test.Schema
         [Test]
         public void StringTypeTest()
         {
-            var sut = new ExecutionEngine(true);
+            var sut = new ExecutionEngine();
 
             var schema = CreateIntrospectionSchema(new GraphQLString());
 

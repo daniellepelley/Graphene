@@ -11,17 +11,10 @@ namespace Graphene.Execution
     public class ExecutionEngine : IExecutionEngine
     {
         private readonly IOperationExecutionEngine _operationExecutionEngine;
-        private readonly bool _throwErrors;
 
         public ExecutionEngine()
         {
             _operationExecutionEngine = new OperationExecutionEngine();
-        }
-
-        public ExecutionEngine(bool throwErrors)
-            :this()
-        {
-            _throwErrors = throwErrors;
         }
 
         public object Execute(IGraphQLSchema iGraphQLSchema, Document document)
@@ -32,42 +25,19 @@ namespace Graphene.Execution
 
         private object InternalExecute(GraphQLSchema schema, Document document)
         {
-            if (schema.QueryType == null)
-            {
-                throw new Exception("QueryType empty");
-            }
-
-            if (!document.Operations.Any())
-            {
-                throw new Exception("No operation");
-            }
+            Validate(schema, document);
 
             new FragmentProcessor().Process(document, true);
 
             var operation = document.Operations.First();
 
-            if (_throwErrors)
-            {
-                return new Dictionary<string, object>
-                {
-                    {"data", _operationExecutionEngine.Execute(operation, schema)}
-                };
-            }
-
             try
             {
-                return new Dictionary<string, object>
-                {
-                    {"data", _operationExecutionEngine.Execute(operation, schema)}
-                };
+                var output = _operationExecutionEngine.Execute(operation, schema);
+                return new Dictionary<string, object> { {"data", output } };
             }
             catch (GraphQLException ex)
             {
-                if (_throwErrors)
-                {
-                    throw ex;
-                }
-
                 return new Dictionary<string, object>
                 {
                     {
@@ -80,6 +50,19 @@ namespace Graphene.Execution
                         }
                     }
                 };
+            }
+        }
+
+        private static void Validate(GraphQLSchema schema, Document document)
+        {
+            if (schema.QueryType == null)
+            {
+                throw new Exception("QueryType empty");
+            }
+
+            if (!document.Operations.Any())
+            {
+                throw new Exception("No operation");
             }
         }
     }

@@ -11,7 +11,7 @@ namespace Graphene.Test.Introspection
         [Test]
         public void QueryType()
         {
-            var sut = new ExecutionEngine(true);
+            var sut = new ExecutionEngine();
 
             var schema = TestSchemas.CreateIntrospectionSchema();
 
@@ -27,7 +27,7 @@ namespace Graphene.Test.Introspection
         [Test]
         public void QueryTypeWithFriends()
         {
-            var sut = new ExecutionEngine(true);
+            var sut = new ExecutionEngine();
 
             var schema = TestSchemas.CreateIntrospectionSchema();
 
@@ -44,7 +44,7 @@ namespace Graphene.Test.Introspection
         [Ignore("Keeps changing")]
         public void Types()
         {
-            var sut = new ExecutionEngine(true);
+            var sut = new ExecutionEngine();
 
             var schema = TestSchemas.CreateIntrospectionSchema();
 

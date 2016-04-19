@@ -72,7 +72,7 @@ namespace Graphene.Test.Execution
             var query = "{foo(Id :1) {Name}}";
             var document = new DocumentParser().Parse(query); ;
 
-            var expected = @"{""errors"":[{""message"":""Type foo not known""}]}";
+            var expected = @"{""errors"":[{""message"":""Field foo not found on QueryType OBJECT""}]}";
             var result = Execute(sut, schema, document);
             Assert.AreEqual(expected, result);
         }
