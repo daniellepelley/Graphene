@@ -15,6 +15,16 @@ namespace Graphene.Core.Types
 
         public IGraphQLType LookUpType(string typeName)
         {
+            if (typeName == "NonNull")
+            {
+                return new GraphQLNonNull();
+            }
+
+            if (typeName == "List")
+            {
+                return new GraphQLList();
+            }
+
             if (!_dictionary.ContainsKey(typeName))
             {
                 throw new GraphQLException("Typename {0} is not in the dictionary", typeName);

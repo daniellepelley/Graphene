@@ -89,7 +89,6 @@ namespace Graphene.Test.Data
             typeList.AddType("__Type", new __Type(typeList));
             typeList.AddType("GraphQLEnum", new GraphQLEnum<IGraphQLKind> { Name = "__TypeKind" });
             typeList.AddType("__TypeKind", new __TypeKind());
-            typeList.AddType("GraphQLBoolean", new GraphQLBoolean());
             typeList.AddType("__Field", new __Field(typeList));
             typeList.AddType("__InputValue", new __InputValue(typeList));
             typeList.AddType("__EnumValue", new __EnumValue(typeList));

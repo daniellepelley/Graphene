@@ -9,7 +9,7 @@ namespace Graphene.Core.Types.Scalar
 
         public string Name
         {
-            get { return null; }
+            get { return "NonNull"; }
         }
 
         public string Description

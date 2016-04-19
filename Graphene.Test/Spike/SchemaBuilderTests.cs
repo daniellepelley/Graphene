@@ -30,8 +30,26 @@ namespace Graphene.Test.Spike
         public void BuildSchemaWith2Fields()
         {
             var schema = new SchemaBuilder()
-                .WithField("user", TestSchemas.CreateUserType())
+                .RegisterTypes()
+                .WithField(x => x.Name("user").Type(TestSchemas.CreateUserType()))
                 .WithField("boss", TestSchemas.CreateBossType())
+                .Build();
+
+            Assert.AreEqual(2, schema.QueryType.Fields.Count());
+            Assert.AreEqual("user", schema.QueryType.Fields.ElementAt(0).Name);
+            Assert.AreEqual(TestSchemas.CreateUserType().Name, schema.QueryType.Fields.ElementAt(0).Type.Name);
+            Assert.AreEqual("boss", schema.QueryType.Fields.ElementAt(1).Name);
+            Assert.AreEqual(TestSchemas.CreateBossType().Name, schema.QueryType.Fields.ElementAt(1).Type.Name);
+        }
+
+        [Test]
+        public void BuildSchemaWithTypes()
+        {
+            var schema = new SchemaBuilder()
+                .RegisterTypes(TestSchemas.CreateBossType(), TestSchemas.CreateUserType())
+                .WithField(x =>
+                    x.Name("user").Type("User"))
+                .WithField("boss", x => x.Type("Boss"))
                 .Build();
 
             Assert.AreEqual(2, schema.QueryType.Fields.Count());

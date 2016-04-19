@@ -25,7 +25,7 @@ namespace Graphene.Core.Types.Scalar
 
         public string Name
         {
-            get { return null; }
+            get { return "List"; }
         }
 
         public string Description

@@ -7,7 +7,7 @@
         public static string Interface = "INTERFACE";
         public static string Union = "UNION";
         public static string List = "LIST";
-        public static string NonNull = "NON-NULL";
+        public static string NonNull = "NON_NULL";
         public static string Enum = "ENUM";
         public static string InputObject = "INPUT_OBJECT";
     }

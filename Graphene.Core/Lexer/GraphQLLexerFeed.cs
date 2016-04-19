@@ -26,11 +26,21 @@ namespace Graphene.Core.Lexer
 
         public ILexerToken Peek()
         {
+            if (_index >= _tokens.Length)
+            {
+                return new LexerToken(null, null);
+            }
+
             return _tokens[_index];
         }
 
         public ILexerToken PeekAhead(int number)
         {
+            if (_index + number >= _tokens.Length)
+            {
+                return new LexerToken(null, null);
+            }
+
             return _tokens[_index + number];
         }
 

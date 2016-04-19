@@ -5,7 +5,12 @@
       <change type="DELETED" beforePath="$PROJECT_DIR$/Graphene/.nuget/NuGet.Config" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/Graphene/.nuget/NuGet.exe" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/Graphene/.nuget/NuGet.targets" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Graphene.Owin/GraphQLComponent.cs" afterPath="$PROJECT_DIR$/Graphene.Owin/GraphQLComponent.cs" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Graphene.Spike/SchemaBuilder.cs" afterPath="$PROJECT_DIR$/Graphene.Spike/SchemaBuilder.cs" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Graphene.Test/Spike/SchemaBuilderTests.cs" afterPath="$PROJECT_DIR$/Graphene.Test/Spike/SchemaBuilderTests.cs" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Graphene.Web/App_Start/WebApiConfig.cs" afterPath="$PROJECT_DIR$/Graphene.Web/App_Start/WebApiConfig.cs" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Graphene.Web/Controllers/AccountController.cs" afterPath="$PROJECT_DIR$/Graphene.Web/Controllers/AccountController.cs" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Graphene.Web/Graphene.Web.csproj" afterPath="$PROJECT_DIR$/Graphene.Web/Graphene.Web.csproj" />
     </list>
     <ignored path="Graphene.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -226,6 +231,9 @@
     </configuration>
   </component>
   <component name="ShelveChangesManager" show_recycled="false" />
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
       <changelist id="9cd09b2f-8e67-41a0-ac7b-d404cbed1280" name="Default" comment="" />
@@ -257,6 +265,14 @@
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
+  </component>
+  <component name="Vcs.Log.UiProperties">
+    <option name="RECENTLY_FILTERED_USER_GROUPS">
+      <collection />
+    </option>
+    <option name="RECENTLY_FILTERED_BRANCH_GROUPS">
+      <collection />
+    </option>
   </component>
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />

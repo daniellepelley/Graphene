@@ -16,6 +16,11 @@ namespace Graphene.Execution
 
             Validate(operation.Selections, schema.QueryType);
 
+            if (!operation.Selections.Any())
+            {
+                return null;
+            }
+
             var executionBranch =
                 new ExecutionBranchBuilder().Build(
                     schema.QueryType.GetField(operation.Selections.First().Field.Name) as IToExecutionBranch,

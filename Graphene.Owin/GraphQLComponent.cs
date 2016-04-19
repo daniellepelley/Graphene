@@ -5,10 +5,13 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Configuration;
 using Graphene.Core;
+using Graphene.Core.FieldTypes;
 using Graphene.Core.Model;
 using Graphene.Core.Parsers;
 using Graphene.Core.Types;
 using Graphene.Core.Types.Introspection;
+using Graphene.Core.Types.Object;
+using Graphene.Core.Types.Scalar;
 using Graphene.Execution;
 using Graphene.Owin.Spike;
 using Graphene.Spike;
@@ -105,7 +108,6 @@ namespace Graphene.Owin
 
         private static GraphQLSchema CreateSchema()
         {
-
             var userType = new GraphQLObjectType
                     {
                         Name = "User",
@@ -124,76 +126,66 @@ namespace Graphene.Owin
                     }
                 };
 
-            var schema = new GraphQLSchema
-            {
-                Query = new GraphQLObjectField
-                {
-                    Name = "Query",
-                    GraphQLObjectType = () => new GraphQLObjectType
-                    {
-                        Name = "Query",
-                        Fields = new IGraphQLFieldType[]
-                        {
-                            new GraphQLObjectField<TestUser>
-                            {
-                                Name = "user",
-                                Arguments = new []
-                                {
-                                    new GraphQLArgument { Name = "id", Type = new GraphQLString() }
-                                },
-                                Resolve = _ => Data.GetData().First() ,      
-                                OfType = new[] {"user"},
-                                GraphQLObjectType = () => userType
-                            }
-                        }
-                    },
-                    Resolve = _ => string.Empty
-                }
-            };
+
+            return new SchemaBuilder()
+                .WithField(x =>
+                    x.Name("user")
+                    .Type(userType)
+                    .Arguments(new GraphQLArgument { Name = "id", Type = new GraphQLString() })
+                    .Resolve(_ => Data.GetData().First()))
+                .Build();
 
 
-           schema.Types = new IGraphQLType[]
-            {
-                schema.Query.GraphQLObjectType(),
-                new GraphQLString(),
-                userType,
-                new __Schema(), 
-                new __Type(),
-                new __TypeKind(),
-                new GraphQLBoolean(),
-                new __Field(),
-                new __InputValue(),
-                new __EnumValue(),
-                new __Directive()
-            };
+            //var schema = new GraphQLSchema
+            //{
+            //    QueryType =  new GraphQLObjectType
+            //        {
+            //            Name = "Query",
+            //            Fields = new IGraphQLFieldType[]
+            //            {
+            //                new GraphQLObjectField<TestUser>
+            //                {
+            //                    Name = "user",
+            //                    Arguments = new []
+            //                    {
+            //                        new GraphQLArgument { Name = "id", Type = new GraphQLString() }
+            //                    },
+            //                    Resolve = _ => Data.GetData().First() ,      
+            //                    Type = userType
+            //                }
+            //            }
+            //    }
+            //};
 
 
-            return schema;
+            //return schema;
         }
 
 
         private static GraphQLSchema CreateIntrospectionSchema()
         {
-            return new GraphQLSchema
-            {
-                Query = new GraphQLObjectField
-                {
-                    Name = "IntrospectionQuery",
-                    GraphQLObjectType = () => new GraphQLObjectType
-                    {
-                        Fields = new IGraphQLFieldType[]
-                        {
-                            new GraphQLObjectField<GraphQLSchema>
-                            {
-                                Name = "__schema",
-                                GraphQLObjectType = () => new __Schema(),
-                                Resolve = _ => CreateSchema()
-                            }
-                        }
-                    },
-                    Resolve = _ => CreateSchema()
-                }
-            };
+            return new SchemaBuilder()
+                .WithField(x =>
+                    x.Name("__schema")
+                    .Type("__Schema")
+                    .Resolve(context => CreateSchema()))
+                .Build();
+
+            //return new GraphQLSchema
+            //{
+            //    QueryType =  new GraphQLObjectType
+            //        {
+            //            Fields = new IGraphQLFieldType[]
+            //            {
+            //                new GraphQLObjectField<GraphQLSchema>
+            //                {
+            //                    Name = "__schema",
+            //                    Type = new ChainType() __Schema(),
+            //                    Resolve = _ => CreateSchema()
+            //                }
+            //            }   
+            //    }
+            //};
         }
 
     }

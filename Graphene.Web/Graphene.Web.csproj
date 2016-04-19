@@ -170,6 +170,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\GraphQLController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -230,6 +231,10 @@
     <ProjectReference Include="..\Graphene.Execution\Graphene.Execution.csproj">
       <Project>{0f97b45b-7646-4f7d-8a33-d197852061c5}</Project>
       <Name>Graphene.Execution</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Graphene.Spike\Graphene.Spike.csproj">
+      <Project>{14E5E4E2-3FC1-4E4B-BDB7-BA8743F78F08}</Project>
+      <Name>Graphene.Spike</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
