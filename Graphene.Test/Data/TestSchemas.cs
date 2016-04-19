@@ -41,10 +41,11 @@ namespace Graphene.Test.Data
                 _typeList.AddType("__InputValue", new __InputValue(_typeList));
                 _typeList.AddType("__EnumValue", new __EnumValue(_typeList));
                 _typeList.AddType("__Directive", new __Directive(_typeList));
-                _typeList.AddType("NonNull", new GraphQLNonNull(new ChainType(_typeList)));
-                _typeList.AddType("List", new GraphQLList(new ChainType(_typeList)));
+                _typeList.AddType("NonNull", new GraphQLNonNull());
+                _typeList.AddType("List", new GraphQLList());
                 _typeList.AddType("String", new GraphQLString());
                 _typeList.AddType("Boolean", new GraphQLBoolean());
+                _typeList.AddType("GraphQLEnum", new GraphQLEnum());
             }
             return _typeList;
         }
@@ -93,9 +94,9 @@ namespace Graphene.Test.Data
             typeList.AddType("__InputValue", new __InputValue(typeList));
             typeList.AddType("__EnumValue", new __EnumValue(typeList));
             typeList.AddType("__Directive", new __Directive(typeList));
-            typeList.AddType("NonNull", new GraphQLNonNull(new ChainType(typeList)));
-            typeList.AddType("List", new GraphQLList(new ChainType(typeList)));
-
+            typeList.AddType("NonNull", new GraphQLNonNull());
+            typeList.AddType("List", new GraphQLList());
+            typeList.AddType("GraphQLEnum", new GraphQLEnum());
             typeList.AddType("Boolean", new GraphQLBoolean());
             //schema.Types.AddType("QueryType", schema.QueryType.Type);
             //schema.Types.AddType("GraphQLString", new GraphQLString());
@@ -173,7 +174,7 @@ namespace Graphene.Test.Data
                 }
             };
 
-            _typeList.AddType("User", userType);
+            GetTypeList().AddType("User", userType);
 
             return userType;
         }
@@ -208,7 +209,7 @@ namespace Graphene.Test.Data
             return CreateIntrospectionSchema(new GraphQLObjectField<GraphQLSchema>
             {
                 Name = "__schema",
-                Type = new __Schema(GetTypeList()),
+                Type = new ChainType(GetTypeList(), "__Schema"),
                 Resolve = _ => UserSchema()
             });
 

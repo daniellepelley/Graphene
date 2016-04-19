@@ -1,3 +1,6 @@
+using System.Collections.Generic;
+using Graphene.Core.FieldTypes;
+
 namespace Graphene.Core.Types.Scalar
 {
     public interface IGraphQLType
@@ -5,18 +8,16 @@ namespace Graphene.Core.Types.Scalar
         string Kind { get; }
         string Name { get; }
         string Description { get; }
+    }
+
+    public interface IGraphQLChainType : IGraphQLType
+    {
         IGraphQLType OfType { get; }
+        IEnumerable<IGraphQLFieldType> Fields { get; }
     }
 
     public class GraphQLList : IGraphQLType
     {
-        private readonly IGraphQLType _graphQLType;
-
-        public GraphQLList(IGraphQLType graphQLType)
-        {
-            _graphQLType = graphQLType;
-        }
-
         public string Kind
         {
             get { return GraphQLKinds.List; }
@@ -30,11 +31,6 @@ namespace Graphene.Core.Types.Scalar
         public string Description
         {
             get { return "Describes a list"; }
-        }
-
-        public IGraphQLType OfType
-        {
-            get { return _graphQLType; }
         }
     }
 }

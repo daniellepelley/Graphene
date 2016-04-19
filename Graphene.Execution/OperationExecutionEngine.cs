@@ -40,7 +40,7 @@ namespace Graphene.Execution
 
                 if (!(typeField is IToExecutionBranch))
                 {
-                    throw new GraphQLException("Field type must inherite from IToExecutionBranch");
+                    throw new GraphQLException("Fields type must inherite from IToExecutionBranch");
                 }
 
 
@@ -53,51 +53,30 @@ namespace Graphene.Execution
 
 
 
-            //Validate(operation.Selections.First().Field.Selections, (GraphQLObjectFieldBase)baseType.Fields.First());
+            //Validate(operation.Selections.First().Fields.Selections, (GraphQLObjectFieldBase)baseType.Fields.First());
 
-            //var executionBranch = new ExecutionBranchBuilder().Build(schema.QueryType as IToExecutionBranch, operation.Selections.First().Field.Selections, argumentsDictionary);
+            //var executionBranch = new ExecutionBranchBuilder().Build(schema.QueryType as IToExecutionBranch, operation.Selections.First().Fields.Selections, argumentsDictionary);
             //return executionBranch.Execute().Name;
             return null;
         }
 
-        private void Validate(Selection[] selections, GraphQLObjectFieldBase fieldType)
+        private void Validate(Selection[] selections, IGraphQLFieldType fieldType)
         {
-            if (!(fieldType is IToExecutionBranch))
-            {
-                throw new GraphQLException("Field type must inherite from IToExecutionBranch");
-            }
+            //if (!(fieldType is IToExecutionBranch))
+            //{
+            //    throw new GraphQLException("Fields type must inherite from IToExecutionBranch");
+            //}
             
             foreach (var selection in selections)
             {
-                var graphQLObjectType = (GraphQLObjectType) fieldType.Type;
-
-                if (graphQLObjectType.Fields == null)
-                {
-                    throw new GraphQLException(string.Format("Field {0} does not exist", selection.Field.Name));
-                }
-
-                if (selection.Field.Name == null)
-                {
-
-                }
-
-                if (!graphQLObjectType.HasField(selection.Field.Name))
-                {
-
-                }
-
-
-                var field = fieldType[selection.Field.Name];
+                var field = fieldType.Type.GetField(selection.Field.Name);
 
                 if (field == null)
                 {
-                    throw new GraphQLException(string.Format("Field {0} does not exist", selection.Field.Name));
+                    throw new GraphQLException("Field {0} not found on {1} {2}", selection.Field.Name, fieldType.Type.Name, fieldType.Type.Kind);
                 }
 
-                if (field is IGraphQLObject)
-                {
-                    Validate(selection.Field.Selections, (GraphQLObjectFieldBase) field);
-                }
+                Validate(selection.Field.Selections, field);
             }
         }
 

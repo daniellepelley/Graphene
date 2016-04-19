@@ -70,7 +70,7 @@ namespace Graphene.Core.Types.Introspection
                 new GraphQLScalarField<IGraphQLType, string[]>
                 {
                     Name = "interfaces",
-                    Type = new ChainType(_typeList, "List", "NonNull", "String"),
+                    Type = new ChainType(_typeList, "List", "NonNull", "__Type"),
                     Resolve = context => context.Source.Kind != "OBJECT" ? null : new string[0]
                 },
                 new GraphQLObjectField<IGraphQLType, string>
@@ -111,7 +111,17 @@ namespace Graphene.Core.Types.Introspection
                 {
                     Name = "ofType",
                     Type = new ChainType(_typeList, "__Type"),
-                    Resolve = context => context.Source == null ? null : context.Source.OfType
+                    Resolve = context =>
+                    {
+                        var chainType = context.Source as IGraphQLChainType;
+
+                        if (chainType != null)
+                        {
+                            return chainType.OfType;
+                        }
+
+                        return null;
+                    }
                 }
             };
         }

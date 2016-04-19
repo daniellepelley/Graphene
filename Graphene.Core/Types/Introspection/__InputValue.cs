@@ -46,20 +46,4 @@ namespace Graphene.Core.Types.Introspection
             };
         }
     }
-
-    public interface IGraphQLArgument
-    {
-        string Name { get; set; }
-        string Description { get; set; }
-        IGraphQLType Type { get; set; }
-        string DefaultValue { get; set; }
-    }
-
-    public class GraphQLArgument : IGraphQLArgument
-    {
-        public string Name { get; set; }
-        public string Description { get; set; }
-        public IGraphQLType Type { get; set; }
-        public string DefaultValue { get; set; }
-    }
 }

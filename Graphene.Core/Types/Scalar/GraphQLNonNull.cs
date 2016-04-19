@@ -2,13 +2,6 @@ namespace Graphene.Core.Types.Scalar
 {
     public class GraphQLNonNull : IGraphQLType
     {
-        private readonly IGraphQLType _graphQLType;
-
-        public GraphQLNonNull(IGraphQLType graphQLType)
-        {
-            _graphQLType = graphQLType;
-        }
-
         public string Kind
         {
             get { return GraphQLKinds.NonNull; }
@@ -22,12 +15,6 @@ namespace Graphene.Core.Types.Scalar
         public string Description
         {
             get { return "This is a NonNull"; }
-        }
-
-        public IGraphQLType OfType
-        {
-            get { return _graphQLType; }
-
         }
     }
 }

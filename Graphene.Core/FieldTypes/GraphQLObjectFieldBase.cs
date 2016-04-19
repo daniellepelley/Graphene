@@ -31,8 +31,6 @@ namespace Graphene.Core.FieldTypes
                     {
                         return ((GraphQLObjectType)type).Fields.FirstOrDefault(x => x.Name == name);
                     }
-
-                    type = type.OfType;
                 }
                 throw new GraphQLException("Field {0} not found on {1} {2}", name, Type.Name, Type.Kind);
             }

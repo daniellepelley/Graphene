@@ -6,8 +6,6 @@
         {
             get { return GraphQLKinds.Scalar; }
         }
-
-        public IGraphQLType OfType { get; set; }
     }
 
     public class GraphQLEnum : IGraphQLType
@@ -26,10 +24,5 @@
     public class GraphQLEnum<T> : GraphQLEnum
     {
         public T[] Values { get; set; }
-    }
-
-    public class GraphQLScalarBase<T> : GraphQLScalarBase
-    {
-        
     }
 }

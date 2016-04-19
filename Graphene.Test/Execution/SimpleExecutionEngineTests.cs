@@ -87,7 +87,7 @@ namespace Graphene.Test.Execution
             var query = @"{user(id :""1"") {foo}}";
             var document = new DocumentParser().Parse(query); ;
 
-            var expected = @"{""errors"":[{""message"":""Field foo does not exist""}]}";
+            var expected = @"{""errors"":[{""message"":""Field foo not found on User OBJECT""}]}";
             var result = Execute(sut, schema, document);
             Assert.AreEqual(expected, result);
         }

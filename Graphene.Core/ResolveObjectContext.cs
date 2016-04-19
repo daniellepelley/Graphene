@@ -21,7 +21,7 @@ namespace Graphene.Core
     {
         public string FieldName { get; set; }
 
-        //public Field FieldAst { get; set; }
+        //public Fields FieldAst { get; set; }
 
         //public ResolveObjectContext Parent { get; set; }
 
