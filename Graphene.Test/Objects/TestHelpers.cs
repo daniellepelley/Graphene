@@ -2,8 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Graphene.Core;
+using Graphene.Core.FieldTypes;
 using Graphene.Core.Parsers;
 using Graphene.Core.Types;
+using Graphene.Core.Types.Object;
 
 namespace Graphene.Test.Objects
 {
@@ -14,7 +16,7 @@ namespace Graphene.Test.Objects
             var field = new GraphQLObjectField<T>
             {
                 Name = fieldName,
-                GraphQLObjectType = () => type,
+                Type = type,
                 Resolve = resolve
             };
 

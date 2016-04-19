@@ -1,4 +1,5 @@
 using System.Security.Cryptography.X509Certificates;
+using Graphene.Core.Types.Scalar;
 
 namespace Graphene.Core.Types.Introspection
 {

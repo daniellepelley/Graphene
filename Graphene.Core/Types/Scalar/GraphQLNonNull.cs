@@ -1,7 +1,4 @@
-using System.Collections.Generic;
-using System.Linq;
-
-namespace Graphene.Core.Types
+namespace Graphene.Core.Types.Scalar
 {
     public class GraphQLNonNull : IGraphQLType
     {

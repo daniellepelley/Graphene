@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Graphene.Core;
 using Graphene.Core.Types;
 using Graphene.Core.Types.Introspection;
+using Graphene.Core.Types.Scalar;
 using Graphene.Test.Data;
 using NUnit.Framework;
 

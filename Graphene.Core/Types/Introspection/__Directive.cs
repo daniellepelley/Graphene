@@ -1,3 +1,7 @@
+using Graphene.Core.FieldTypes;
+using Graphene.Core.Types.Object;
+using Graphene.Core.Types.Scalar;
+
 namespace Graphene.Core.Types.Introspection
 {
     public class __Directive: GraphQLObjectType
@@ -15,7 +19,7 @@ In some cases, you need to provide options to alter GraphQL’s execution behavior
                 {
                     Name = "name",
                     OfType = new[] {"GraphQLString"},
-                    Type = new GraphQLString(),
+                    Type = new GraphQLNonNull(new GraphQLString()),
                     Resolve = context => context.Source.Name
                 },
                 new GraphQLScalarField<IGraphQLFieldType, string>
@@ -28,31 +32,27 @@ In some cases, you need to provide options to alter GraphQL’s execution behavior
                 new GraphQLList<IGraphQLFieldType, IGraphQLArgument>
                 {
                     Name = "args",
-                    OfType  = new[] {"GraphQLString"},
-                    GraphQLObjectType = () => new __InputValue(),
-                    Type = new __InputValue(),
-                    Resolve = context =>
-                    {
-                        return context.Source.Arguments;
-                    }
+                    //GraphQLObjectType = () => new __InputValue(),
+                    Type = new GraphQLNonNull(new GraphQLList(new GraphQLNonNull(new __InputValue()))),
+                    Resolve = context => context.Source.Arguments
                 },
                 new GraphQLScalarField<IGraphQLFieldType, bool>
                 {
                     Name = "onOperation",
-                    Type = new GraphQLBoolean(),
+                    Type = new GraphQLNonNull(new GraphQLBoolean()),
                     OfType  = new[] {"GraphQLString"},
                     Resolve = context => false
                 },                new GraphQLScalarField<IGraphQLFieldType, bool>
                 {
                     Name = "onFragment",
-                    Type = new GraphQLBoolean(),
+                    Type = new GraphQLNonNull(new GraphQLBoolean()),
                     OfType  = new[] {"GraphQLString"},
                     Resolve = context => false
                 },
                 new GraphQLScalarField<IGraphQLFieldType, bool>
                 {
                     Name = "onField",
-                    Type = new GraphQLBoolean(),
+                    Type = new GraphQLNonNull(new GraphQLBoolean()),
                     OfType  = new[] {"GraphQLString"},
                     Resolve = context => false
                 }

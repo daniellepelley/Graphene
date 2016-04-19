@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
 using Graphene.Core;
+using Graphene.Core.FieldTypes;
 using Graphene.Core.Types;
 using Graphene.Core.Types.Introspection;
+using Graphene.Core.Types.Scalar;
 using Graphene.Test.Data;
 using NUnit.Framework;
 
@@ -47,7 +49,7 @@ namespace Graphene.Test.Objects
         {
             var field = new GraphQLObjectField
             {
-                GraphQLObjectType = () => TestSchemas.CreateBossType()
+                Type = TestSchemas.CreateBossType()
             };
 
             var actual = TestType("type", _ => field, "{name}");

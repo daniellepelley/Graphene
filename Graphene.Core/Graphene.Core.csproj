@@ -50,6 +50,7 @@
     <Compile Include="Execution\ExecutionNode.cs" />
     <Compile Include="Execution\IExecutionItem.cs" />
     <Compile Include="FieldTypes\GraphQLList.cs" />
+    <Compile Include="FieldTypes\IGraphQLScalarField.cs" />
     <Compile Include="FieldTypes\IToExecutionBranch.cs" />
     <Compile Include="IResolveContext.cs" />
     <Compile Include="Model\QueryObject.cs" />
@@ -117,6 +118,7 @@
     <Compile Include="Types\Introspection\__TypeKind.cs" />
     <Compile Include="Types\Mapper.cs" />
     <Compile Include="Types\Scalar\GraphQLNonNull.cs" />
+    <Compile Include="Types\TypeList.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

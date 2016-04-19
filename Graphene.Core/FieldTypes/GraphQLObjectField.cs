@@ -1,11 +1,8 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using Graphene.Core.Execution;
 using Graphene.Core.Model;
-using Graphene.Core.Types.Introspection;
 
-namespace Graphene.Core.Types
+namespace Graphene.Core.FieldTypes
 {
     public class GraphQLObjectField : GraphQLObjectField<object>, IGraphQLFieldType
     {
@@ -40,7 +37,6 @@ namespace Graphene.Core.Types
         }
 
         public virtual Func<ResolveObjectContext<TInput>, TOutput> Resolve { get; set; }
-        public IGraphQLType Type { get; set; }
     }
 
     public class GraphQLObjectField<TOutput> : GraphQLObjectFieldBase, IToExecutionBranch, IGraphQLFieldType
@@ -75,7 +71,5 @@ namespace Graphene.Core.Types
 
             return executionRoot;
         }
-
-        public IGraphQLType Type { get; set; }
     }
 }

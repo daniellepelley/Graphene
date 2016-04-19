@@ -38,7 +38,7 @@ namespace Graphene.Test.Introspection
             StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.AppendLine(expected.Substring(start, expected.Length - start));
             stringBuilder.AppendLine(actual.Substring(start, actual.Length - start));
-            File.WriteAllText(@"C:\Users\lepelleyd\Source\Repos\Graphene\Graphene.Test\Introspection\Actual.json", stringBuilder.ToString());
+            //File.WriteAllText(@"C:\Users\danny\Source\Repos\Graphene\Graphene.Test\Introspection\Actual.json", stringBuilder.ToString());
              
         
             Assert.AreEqual(expected, actual);

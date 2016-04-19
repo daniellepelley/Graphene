@@ -2,10 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Graphene.Core;
+using Graphene.Core.FieldTypes;
 using Graphene.Core.Model;
 using Graphene.Core.Parsers;
 using Graphene.Core.Types;
 using Graphene.Core.Types.Introspection;
+using Graphene.Core.Types.Object;
+using Graphene.Core.Types.Scalar;
 using Graphene.Execution;
 using Graphene.Test.Data;
 using Newtonsoft.Json;
@@ -90,7 +93,7 @@ namespace Graphene.Test.Execution
                     Name = "user",
                     Arguments = arguments,
                     Resolve = Resolve,
-                    GraphQLObjectType = () => new GraphQLObjectType
+                    Type = new GraphQLObjectType
                     {
                         Fields = new IGraphQLFieldType[]
                         {

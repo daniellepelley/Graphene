@@ -1,3 +1,7 @@
+using Graphene.Core.FieldTypes;
+using Graphene.Core.Types.Object;
+using Graphene.Core.Types.Scalar;
+
 namespace Graphene.Core.Types.Introspection
 {
     public class __InputValue : GraphQLObjectType
@@ -14,7 +18,7 @@ namespace Graphene.Core.Types.Introspection
                 new GraphQLScalarField<IGraphQLArgument, string>
                 {
                     Name = "name",
-                    Type = new GraphQLString(),
+                    Type = new GraphQLNonNull(new GraphQLString()),
                     OfType = new[] {"GraphQLString"},
                     Resolve = context => context.Source.Name
                 },
@@ -28,8 +32,8 @@ namespace Graphene.Core.Types.Introspection
                 new GraphQLObjectField<IGraphQLArgument, IGraphQLType>
                 {
                     Name = "type",
-                    OfType = new[] {"GraphQLString"},
-                    GraphQLObjectType = () => new __Type(),
+                    Type = new ChainType("NonNull", "__Type"),
+                    //GraphQLObjectType = () => new __Type(),
                     Resolve = context => context.Source.Type
                 },
                 new GraphQLScalarField<IGraphQLArgument, string>

@@ -2,8 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Graphene.Core;
+using Graphene.Core.FieldTypes;
 using Graphene.Core.Types;
 using Graphene.Core.Types.Introspection;
+using Graphene.Core.Types.Object;
+using Graphene.Core.Types.Scalar;
 
 namespace Graphene.Test.Data
 {
@@ -43,8 +46,19 @@ namespace Graphene.Test.Data
                 Query = new GraphQLObjectField<object>
                 {
                     Name = "Query",
-                    Type
-                    GraphQLObjectType = () => ,
+                    Type =  new GraphQLObjectType
+                    {
+                        Fields = new IGraphQLFieldType[]
+                        {
+                            new GraphQLObjectField<User>
+                            {
+                                Name = "user",
+                                Arguments = _arguments,
+                                Resolve = _resolve,
+                                Type = userType
+                            }
+                        }
+                    },
                     Resolve = _ => null
                 }
             };
@@ -77,7 +91,8 @@ namespace Graphene.Test.Data
                 Query = new GraphQLObjectField
                 {
                     Name = "Query",
-                    GraphQLObjectType = () => new GraphQLObjectType
+
+                    Type = new GraphQLObjectType
                     {
                         Name = "Query",
                         Fields = new IGraphQLFieldType[]
@@ -89,6 +104,7 @@ namespace Graphene.Test.Data
                                 {
                                     new GraphQLArgument { Name = "id", Type = new GraphQLString() }
                                 },
+                                Type = userType,
                                 Resolve =
                                     context =>
                                         Data.GetData()
@@ -96,8 +112,6 @@ namespace Graphene.Test.Data
                                         x =>
                                             context.Arguments.All(arg => arg.Name != "id") ||
                                              x.Id == Convert.ToInt32(context.Arguments.First(arg => arg.Name == "id").Value)),
-                                                OfType = new[] {"user"},
-                                GraphQLObjectType = () => userType
                             }
                         }
                     },
@@ -107,7 +121,7 @@ namespace Graphene.Test.Data
 
             schema.Types = new IGraphQLType[]
             {
-                schema.Query.GraphQLObjectType(),
+                schema.Query.Type,
                 new GraphQLString(),
                 userType,
                 new __Schema(), 
@@ -119,6 +133,20 @@ namespace Graphene.Test.Data
                 new __EnumValue(),
                 new __Directive()
             };
+
+            ChainType.TypeList.AddType("Query", schema.Query.Type);
+            ChainType.TypeList.AddType("GraphQLString", new GraphQLString());
+            ChainType.TypeList.AddType("User", userType);
+            ChainType.TypeList.AddType("__Schema", new __Schema());
+            ChainType.TypeList.AddType("__Type", new __Type());
+            ChainType.TypeList.AddType("__TypeKind", new __TypeKind());
+            ChainType.TypeList.AddType("GraphQLBoolean", new GraphQLBoolean());
+            ChainType.TypeList.AddType("__Field", new __Field());
+            ChainType.TypeList.AddType("__InputValue", new __InputValue());
+            ChainType.TypeList.AddType("__EnumValue", new __EnumValue());
+            ChainType.TypeList.AddType("__Directive", new __Directive());
+            ChainType.TypeList.AddType("NonNull", new GraphQLNonNull(new ChainType()));
+            ChainType.TypeList.AddType("List", new GraphQLList(new ChainType()));
 
             return schema;
         }
@@ -176,7 +204,7 @@ namespace Graphene.Test.Data
                     {
                         Name = "boss",
                         Resolve = context => context.Source.Boss,
-                        GraphQLObjectType = () => CreateBossType()
+                        Type =  CreateBossType()
                     }
                 }
             };
@@ -194,11 +222,13 @@ namespace Graphene.Test.Data
                     new GraphQLScalarField<Boss, int>
                     {
                         Name = "id",
+                        Type = new GraphQLInt(),
                         Resolve = context => context.Source.Id
                     },
                     new GraphQLScalarField<Boss, string>
                     {
                         Name = "name",
+                        Type= new GraphQLString(),
                         Resolve = context => context.Source.Name
                     }
                 }
@@ -211,9 +241,10 @@ namespace Graphene.Test.Data
             return CreateIntrospectionSchema(new GraphQLObjectField<GraphQLSchema>
             {
                 Name = "__schema",
-                GraphQLObjectType = () => new __Schema(),
+                Type = new __Schema(),
                 Resolve = _ => UserSchema()
             });
+
         }
 
         public static GraphQLSchema CreateIntrospectionSchema(IGraphQLFieldType type)
@@ -223,7 +254,7 @@ namespace Graphene.Test.Data
                 Query = new GraphQLObjectField<object>
                 {
                     Name = "IntrospectionQuery",
-                    GraphQLObjectType = () => new GraphQLObjectType
+                    Type = new GraphQLObjectType
                     {
                         Fields = new IGraphQLFieldType[]
                         {

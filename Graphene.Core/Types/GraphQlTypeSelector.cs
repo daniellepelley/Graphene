@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Graphene.Core.Types.Scalar;
 
 namespace Graphene.Core.Types
 {

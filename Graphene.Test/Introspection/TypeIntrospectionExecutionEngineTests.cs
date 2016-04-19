@@ -1,7 +1,9 @@
+using Graphene.Core.FieldTypes;
 using Graphene.Core.Model;
 using Graphene.Core.Parsers;
 using Graphene.Core.Types;
 using Graphene.Core.Types.Introspection;
+using Graphene.Core.Types.Scalar;
 using Graphene.Execution;
 using Graphene.Test.Data;
 using Newtonsoft.Json;
@@ -95,7 +97,7 @@ namespace Graphene.Test.Introspection
             return TestSchemas.CreateIntrospectionSchema(new GraphQLObjectField<IGraphQLType>
             {
                 Name = "__type",
-                GraphQLObjectType = () => new __Type(),
+                Type = new __Type(),
                 Resolve = _ => type
             });
         }

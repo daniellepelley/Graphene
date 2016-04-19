@@ -1,3 +1,6 @@
+using Graphene.Core.FieldTypes;
+using Graphene.Core.Types.Object;
+using Graphene.Core.Types.Scalar;
 using Newtonsoft.Json;
 
 namespace Graphene.Core.Types.Introspection
@@ -15,29 +18,25 @@ namespace Graphene.Core.Types.Introspection
                 new GraphQLScalarField<IGraphQLKind, string>
                 {
                     Name = "name",
-                    Type= new GraphQLString(),
-                    //OfType = typeof (GraphQLNonNull<GraphQLString>),
+                    Type= new GraphQLNonNull(new GraphQLString()),
                     Resolve = context => context.Source.Name
                 },
                 new GraphQLScalarField<IGraphQLKind, string>
                 {
                     Name = "description",
                     Type= new GraphQLString(),
-                    //OfType = typeof (GraphQLString),
                     Resolve = context => context.Source.Description
                 },
                 new GraphQLScalarField<IGraphQLKind, bool>
                 {
                     Name = "isDeprecated",
-                    Type= new GraphQLBoolean(),
-                    //OfType = typeof (GraphQLNonNull<GraphQLString>),
+                    Type= new GraphQLNonNull(new GraphQLBoolean()),
                     Resolve = context => false
                 },
                 new GraphQLScalarField<IGraphQLKind, string>
                 {
                     Name = "deprecationReason",
                     Type= new GraphQLString(),
-                    //OfType = typeof (GraphQLString),
                     Resolve = context => null
                 }
             };

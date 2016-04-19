@@ -1,4 +1,4 @@
-namespace Graphene.Core.Types
+namespace Graphene.Core.Types.Scalar
 {
     public class GraphQLInt : GraphQLScalarBase, IGraphQLType
     {

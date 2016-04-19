@@ -67,6 +67,7 @@
     <Compile Include="Objects\IntrospectionInputTypesTests.cs" />
     <Compile Include="Objects\IntrospectionTypeTests.cs" />
     <Compile Include="Objects\TestHelpers.cs" />
+    <Compile Include="Objects\TypeListTests.cs" />
     <Compile Include="Parser\ArgumentsParserTests.cs" />
     <Compile Include="Parser\DirectiveParserTests.cs" />
     <Compile Include="Parser\DocumentParserTests.cs" />

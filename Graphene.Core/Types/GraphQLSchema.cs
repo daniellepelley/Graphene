@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using Graphene.Core.FieldTypes;
+using Graphene.Core.Types.Scalar;
 
 namespace Graphene.Core.Types
 {
@@ -32,7 +34,7 @@ namespace Graphene.Core.Types
 
             return new IGraphQLType[]
             {
-                Query.GraphQLObjectType(),
+                //Query.GraphQLObjectType(),
                 new GraphQLString(),
                 new GraphQLBoolean()
             };

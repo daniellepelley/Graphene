@@ -1,4 +1,5 @@
 ﻿using Graphene.Core.Types;
+using Graphene.Core.Types.Scalar;
 using Newtonsoft.Json;
 using NUnit.Framework;
 

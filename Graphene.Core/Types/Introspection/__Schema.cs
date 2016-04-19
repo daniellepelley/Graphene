@@ -1,5 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
+using Graphene.Core.FieldTypes;
+using Graphene.Core.Types.Object;
+using Graphene.Core.Types.Scalar;
 
 namespace Graphene.Core.Types.Introspection
 {
@@ -28,8 +31,7 @@ namespace Graphene.Core.Types.Introspection
                     new GraphQLList<GraphQLObjectFieldBase, IGraphQLFieldType>
                     {
                         Name = "fields",
-                        OfType = new[] {"GraphQLSchemaList", "__Field"},
-                        GraphQLObjectType = () => new GraphQLObjectType
+                        Type = new GraphQLObjectType
                         {
                             Fields = new List<IGraphQLFieldType>
                             {
@@ -53,7 +55,7 @@ namespace Graphene.Core.Types.Introspection
                                 }
                             }
                         },
-                        Resolve = context => context.Source.GraphQLObjectType().Fields
+                        Resolve = context => ((GraphQLObjectType)context.Source.Type).Fields
                     }
                 }
             };
@@ -64,18 +66,16 @@ namespace Graphene.Core.Types.Introspection
                 {
                     Name = "types",
                     Description = "A list of all types supported by this server.",
-                    GraphQLObjectType = () => new __Type(),
-                    Type = new GraphQLNonNull(new GraphQLList(new GraphQLNonNull(new __Type()))),
-                    OfType = new[] {"GraphQLNonNull", "__Type"},
+                    //GraphQLObjectType = () => new __Type(),
+                    Type = new ChainType("NonNull", "List", "NonNull", "__Type"),
                     Resolve = context => context.Source.GetTypes()
                 },
                 new GraphQLObjectField<GraphQLSchema, GraphQLObjectFieldBase>
                 {
                     Name = "queryType",
                     Description = "The type that query operations will be rooted at.",
-                    OfType = new[] {"GraphQLNonNull", "__Type"},
-                    Type = new GraphQLNonNull(new __Type()),
-                    GraphQLObjectType = () => queryType,
+                    Type = new GraphQLNonNull(queryType),
+                    //GraphQLObjectType = () => queryType,
                     Resolve = context => context.Source.Query
                 },
                 new GraphQLObjectField<GraphQLSchema, GraphQLObjectFieldBase>
@@ -83,8 +83,8 @@ namespace Graphene.Core.Types.Introspection
                     Name = "mutationType",
                     Description =
                         "If this server supports mutation, the type that mutation operations will be rooted at.",
-                    OfType = new[] {"GraphQLNonNull", "__Type"},
-                    GraphQLObjectType = () => new __Type(),
+                    Type = new __Type(),
+                    //GraphQLObjectType = () => new __Type(),
                     Resolve = context => null
                 },
                 new GraphQLObjectField<GraphQLSchema, GraphQLObjectFieldBase>
@@ -92,16 +92,16 @@ namespace Graphene.Core.Types.Introspection
                     Name = "subscriptionType",
                     Description =
                         "If this server support subscription, the type that subscription operations will be rooted at.",
-                    OfType = new[] {"GraphQLNonNull", "__Type"},
-                    GraphQLObjectType = () => new __Type(),
+                    Type = new __Type(),
+                    //GraphQLObjectType = () => new __Type(),
                     Resolve = context => null
                 },
                 new GraphQLObjectField<GraphQLSchema, GraphQLObjectFieldBase>
                 {
                     Name = "directives",
                     Description = "A list of all directives supported by this server.",
-                    OfType = new[] {"GraphQLNonNull", "__Type"},
-                    GraphQLObjectType = () => new __Directive(),
+                    Type = new GraphQLNonNull(new GraphQLList(new GraphQLNonNull(new __Directive()))),
+                    //GraphQLObjectType = () => new __Directive(),
                     Resolve = context => null
                 },
             };

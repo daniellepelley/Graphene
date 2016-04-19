@@ -4,7 +4,9 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using Graphene.Core.FieldTypes;
 using Graphene.Core.Types;
+using Graphene.Core.Types.Object;
 
 namespace Graphene.TypeProvider
 {
@@ -14,7 +16,8 @@ namespace Graphene.TypeProvider
         {
             var graphQLObjectType = new GraphQLObjectField<object>
             {
-                Name = type.Name
+                Name = type.Name,
+                Type = new GraphQLObjectType()
             };
 
             var properties = type.GetProperties(BindingFlags.Public | BindingFlags.Instance);
@@ -29,9 +32,11 @@ namespace Graphene.TypeProvider
 
         private void MapField(PropertyInfo propertyInfo, GraphQLObjectField<object> graphQLObjectField)
         {
-            var list = graphQLObjectField.GraphQLObjectType().Fields.ToList();
+            var graphQLObjectType = (GraphQLObjectType) graphQLObjectField.Type;
+
+            var list = graphQLObjectType.Fields.ToList();
             list.Add(CreateField(propertyInfo));
-            graphQLObjectField.GraphQLObjectType().Fields = list;
+            graphQLObjectType.Fields = list;
         }
 
         private IGraphQLFieldType CreateField(PropertyInfo propertyInfo)
@@ -54,7 +59,7 @@ namespace Graphene.TypeProvider
             {
                 Name = propertyInfo.Name,
                 Resolve = context => propertyInfo.GetValue(context.Source),
-                GraphQLObjectType = () => new GraphQLObjectType
+                Type = new GraphQLObjectType
                 {
                     Fields = propertyInfo.PropertyType.GetProperties().Select(CreateField).ToList()
                 }

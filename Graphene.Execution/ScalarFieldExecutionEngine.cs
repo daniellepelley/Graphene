@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Graphene.Core;
 using Graphene.Core.Execution;
+using Graphene.Core.FieldTypes;
 using Graphene.Core.Model;
 using Graphene.Core.Types;
 

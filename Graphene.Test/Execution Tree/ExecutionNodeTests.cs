@@ -1,4 +1,5 @@
 ﻿using System;
+using Graphene.Core.FieldTypes;
 using Graphene.Core.Types;
 using Graphene.Test.Data;
 using NUnit.Framework;

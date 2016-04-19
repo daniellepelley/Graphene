@@ -2,7 +2,7 @@ using System;
 using Graphene.Core.Execution;
 using Graphene.Core.Model;
 
-namespace Graphene.Core.Types
+namespace Graphene.Core.FieldTypes
 {
     public interface IInputField<TInput> : IGraphQLFieldType
     {

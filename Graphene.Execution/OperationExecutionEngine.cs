@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using Graphene.Core;
 using Graphene.Core.Execution;
+using Graphene.Core.FieldTypes;
 using Graphene.Core.Model;
 using Graphene.Core.Types;
+using Graphene.Core.Types.Object;
+using Graphene.Core.Types.Scalar;
 
 namespace Graphene.Execution
 {
@@ -63,10 +66,12 @@ namespace Graphene.Execution
             {
                 throw new GraphQLException("Field type must inherite from IToExecutionBranch");
             }
-
+            
             foreach (var selection in selections)
             {
-                if (fieldType.GraphQLObjectType().Fields == null)
+                var graphQLObjectType = (GraphQLObjectType) fieldType.Type;
+
+                if (graphQLObjectType.Fields == null)
                 {
                     throw new GraphQLException(string.Format("Field {0} does not exist", selection.Field.Name));
                 }
@@ -76,7 +81,7 @@ namespace Graphene.Execution
 
                 }
 
-                if (!fieldType.GraphQLObjectType().HasField(selection.Field.Name))
+                if (!graphQLObjectType.HasField(selection.Field.Name))
                 {
 
                 }

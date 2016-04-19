@@ -2,14 +2,10 @@ using System;
 using System.Collections.Generic;
 using Graphene.Core.Execution;
 using Graphene.Core.Types.Introspection;
+using Graphene.Core.Types.Scalar;
 
-namespace Graphene.Core.Types
+namespace Graphene.Core.FieldTypes
 {
-    public interface IGraphQLScalarField
-    {
-
-    }
-
     public abstract class GraphQLScalar<TInput> : IGraphQLScalarField
     {
         public abstract ExecutionNode ToExecutionNode(Func<TInput> getInput);
@@ -28,7 +24,9 @@ namespace Graphene.Core.Types
 
         public string Description { get; set; }
         public string[] OfType { get; set; }
-        public IEnumerable<IGraphQLArgument> Arguments { get; set; } 
+        public IEnumerable<IGraphQLArgument> Arguments { get; set; }
+        public bool IsDeprecated { get; set; }
+        public string DeprecationReason { get; set; }
 
         public IGraphQLFieldType this[string name]
         {
