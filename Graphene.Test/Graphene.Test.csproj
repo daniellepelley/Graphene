@@ -80,6 +80,7 @@
     <Compile Include="Parser\SelectionParserTest.cs" />
     <Compile Include="Data\User.cs" />
     <Compile Include="Spike\ExecutionEngineTests.cs" />
+    <Compile Include="Spike\SchemaBuilderTests.cs" />
     <Compile Include="Spike\TestUserDatabase.cs" />
     <Compile Include="Execution\MappingTests.cs" />
   </ItemGroup>

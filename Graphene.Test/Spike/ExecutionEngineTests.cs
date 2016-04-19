@@ -1,13 +1,14 @@
 using System.Linq;
 using Graphene.Core.Model;
 using Graphene.Core.Parsers;
+using Graphene.Core.Types;
 using Graphene.Execution;
 using Graphene.Spike;
 using Graphene.Test.Data;
 using Newtonsoft.Json;
 using NUnit.Framework;
 using NUnit.Framework.Compatibility;
-using GraphQLSchema = Graphene.Core.Types.GraphQLSchema;
+
 
 namespace Graphene.Test.Spike
 {
