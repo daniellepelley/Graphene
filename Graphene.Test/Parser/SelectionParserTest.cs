@@ -23,7 +23,9 @@ namespace Graphene.Test.Parser
             var sut = new SelectionsParser();
             var result = sut.Parse(new GraphQLLexerFeed(@"{name,age}"));
             Assert.AreEqual("name", result.ElementAt(0).Field.Name);
+            Assert.AreEqual(null, result.ElementAt(0).Field.Alias);
             Assert.AreEqual("age", result.ElementAt(1).Field.Name);
+            Assert.AreEqual(null, result.ElementAt(1).Field.Alias);
             Assert.AreEqual(0, result.First().Field.Arguments.Length);
         }
 
@@ -33,6 +35,7 @@ namespace Graphene.Test.Parser
             var sut = new SelectionsParser();
             var result = sut.Parse(new GraphQLLexerFeed(@"{name(id: 1)}"));
             Assert.AreEqual("name", result.First().Field.Name);
+            Assert.AreEqual(null, result.First().Field.Alias);
             Assert.AreEqual(1, result.First().Field.Arguments.Length);
             Assert.AreEqual("id", result.First().Field.Arguments.First().Name);
             Assert.AreEqual(1, result.First().Field.Arguments.First().Value);
@@ -44,11 +47,34 @@ namespace Graphene.Test.Parser
             var sut = new SelectionsParser();
             var result = sut.Parse(new GraphQLLexerFeed(@"{name(  id : 1, id2:value)}"));
             Assert.AreEqual("name", result.First().Field.Name);
+            Assert.AreEqual(null, result.First().Field.Alias);
             Assert.AreEqual(2, result.First().Field.Arguments.Length);
             Assert.AreEqual("id", result.First().Field.Arguments.ElementAt(0).Name);
             Assert.AreEqual(1, result.First().Field.Arguments.ElementAt(0).Value);
             Assert.AreEqual("id2", result.First().Field.Arguments.ElementAt(1).Name);
             Assert.AreEqual("value", result.First().Field.Arguments.ElementAt(1).Value);
+        }
+
+        [Test]
+        public void WithAlias()
+        {
+            var sut = new SelectionsParser();
+            var result = sut.Parse(new GraphQLLexerFeed(@"{myName : name}"));
+            Assert.AreEqual("myName", result.First().Field.Alias);
+            Assert.AreEqual("name", result.First().Field.Name);
+            Assert.AreEqual(0, result.First().Field.Arguments.Length);
+        }
+
+        [Test]
+        public void With2Aliases()
+        {
+            var sut = new SelectionsParser();
+            var result = sut.Parse(new GraphQLLexerFeed(@"{myName : name, myAge:age}"));
+            Assert.AreEqual("name", result.ElementAt(0).Field.Name);
+            Assert.AreEqual("myName", result.ElementAt(0).Field.Alias);
+            Assert.AreEqual("age", result.ElementAt(1).Field.Name);
+            Assert.AreEqual("myAge", result.ElementAt(1).Field.Alias);
+            Assert.AreEqual(0, result.First().Field.Arguments.Length);
         }
 
         [Test]

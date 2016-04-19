@@ -13,7 +13,7 @@ namespace Graphene.Test.Objects
     {
         public object TestType(string fieldName, Func<ResolveObjectContext, IGraphQLType> resolve, string selection = null)
         {
-            var type = new __Type();
+            var type = new __Type(TestSchemas.GetTypeList());
             var query = "__Type{" + fieldName + selection + "}";
             var dictionary = TestHelpers.QueryAType(type, "__Type", query, resolve);
             return dictionary[fieldName];

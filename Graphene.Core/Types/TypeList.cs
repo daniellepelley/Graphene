@@ -1,11 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using Graphene.Core.Types.Introspection;
 using Graphene.Core.Types.Scalar;
 
 namespace Graphene.Core.Types
 {
-    public class TypeList : ITypeList
+    public class TypeList : ITypeList, IEnumerable<IGraphQLType>
     {
         private readonly Dictionary<string, IGraphQLType> _dictionary;
 
@@ -31,9 +32,19 @@ namespace Graphene.Core.Types
                 _dictionary.Add(typeName, type);
             }
         }
+
+        public IEnumerator<IGraphQLType> GetEnumerator()
+        {
+            return _dictionary.Values.GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
     }
 
-    public interface ITypeList
+    public interface ITypeList : IEnumerable<IGraphQLType>
     {
         IGraphQLType LookUpType(string typeName);
         void AddType(string typeName, IGraphQLType type);
@@ -41,21 +52,12 @@ namespace Graphene.Core.Types
 
     public class ChainType : IGraphQLType
     {
-        public static ITypeList TypeList = new TypeList();
-
         private readonly string[] _types;
+        private readonly ITypeList _typeList;
 
-        static ChainType()
+        public ChainType(ITypeList typeList, params string[] types)
         {
-            TypeList.AddType("NonNull", new GraphQLNonNull(new ChainType()));
-            TypeList.AddType("List", new GraphQLList(new ChainType()));
-            TypeList.AddType("__Type", new __Type());
-            TypeList.AddType("String", new GraphQLString());
-            TypeList.AddType("__Schema", new __Schema());
-        }
-
-        public ChainType(params string[] types)
-        {
+            _typeList = typeList;
             _types = types;
         }
 
@@ -80,7 +82,7 @@ namespace Graphene.Core.Types
             {
                 if (_types.Length >= 2)
                 {
-                    return new ChainType(_types.Skip(1).ToArray());
+                    return new ChainType(_typeList, _types.Skip(1).ToArray());
                 }
                 return null;
             }
@@ -88,7 +90,7 @@ namespace Graphene.Core.Types
 
         public IGraphQLType GetCurrentType()
         {
-            return TypeList.LookUpType(_types.First());
+            return _typeList.LookUpType(_types.First());
         }
 
     }

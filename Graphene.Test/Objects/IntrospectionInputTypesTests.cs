@@ -4,6 +4,7 @@ using Graphene.Core;
 using Graphene.Core.Types;
 using Graphene.Core.Types.Introspection;
 using Graphene.Core.Types.Scalar;
+using Graphene.Test.Data;
 using NUnit.Framework;
 
 namespace Graphene.Test.Objects
@@ -49,7 +50,7 @@ namespace Graphene.Test.Objects
 
         public object TestArgument(string fieldName, Func<ResolveObjectContext, IGraphQLArgument> resolve, string selection = null)
         {
-            var type = new __InputValue();
+            var type = new __InputValue(TestSchemas.GetTypeList());
             var query = "__InputValue{" + fieldName + selection + "}";
             var dictionary = TestHelpers.QueryAType(type, "__InputValue", query, resolve);
             return dictionary[fieldName];

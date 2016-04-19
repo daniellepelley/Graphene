@@ -21,15 +21,15 @@ namespace Graphene.Execution
 
             var directive = operation.Directives.First().Name;
 
-            if (!string.IsNullOrEmpty(directive) &&
-                schema.Query.Name != directive)
-            {
-                throw new GraphQLException(string.Format("Object {0} does not exist", directive));
-            }
+            //if (!string.IsNullOrEmpty(directive) &&
+            //    schema.QueryType.Name != directive)
+            //{
+            //    throw new GraphQLException(string.Format("Object {0} does not exist", directive));
+            //}
 
             foreach (var selection in operation.Selections)
             {
-                var typeField = schema.Query[selection.Field.Name];
+                var typeField = schema.QueryType[selection.Field.Name];
 
                 if (typeField == null)
                 {
@@ -49,13 +49,13 @@ namespace Graphene.Execution
                 return new[] {executionBranch.Execute()}.ToDictionary(x => x.Key, x => x.Value);
             }
 
-            //var baseType = schema.Query.GraphQLObjectType();
+            //var baseType = schema.QueryType.GraphQLObjectType();
 
 
 
             //Validate(operation.Selections.First().Field.Selections, (GraphQLObjectFieldBase)baseType.Fields.First());
 
-            //var executionBranch = new ExecutionBranchBuilder().Build(schema.Query as IToExecutionBranch, operation.Selections.First().Field.Selections, argumentsDictionary);
+            //var executionBranch = new ExecutionBranchBuilder().Build(schema.QueryType as IToExecutionBranch, operation.Selections.First().Field.Selections, argumentsDictionary);
             //return executionBranch.Execute().Name;
             return null;
         }
@@ -165,7 +165,7 @@ namespace Graphene.Execution
         {
             foreach (var selection in operation.Selections)
             {
-                var typeField = schema.Query[selection.Field.Name] as GraphQLObjectFieldBase;
+                var typeField = schema.QueryType[selection.Field.Name] as GraphQLObjectFieldBase;
 
                 if (typeField != null)
                 {

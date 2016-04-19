@@ -53,6 +53,7 @@
   <ItemGroup>
     <Compile Include="Data\Boss.cs" />
     <Compile Include="Data\Data.cs" />
+    <Compile Include="Data\SchemaBuilder.cs" />
     <Compile Include="Execution Tree\ExecutionBranchTests.cs" />
     <Compile Include="Execution Tree\ExecutionNodeTests.cs" />
     <Compile Include="Execution\ArgumentsExecutionEngineTests.cs" />

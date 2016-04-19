@@ -1,14 +1,21 @@
 using System.Collections.Generic;
 using Graphene.Core.FieldTypes;
+using Graphene.Core.Types.Object;
 using Graphene.Core.Types.Scalar;
 
 namespace Graphene.Core.Types
 {
     public class GraphQLSchema : IGraphQLSchema
     {
-        public IGraphQLType[] Types { get; set; }
+        public ITypeList Types { get; private set; }
 
-        public GraphQLObjectFieldBase Query { get; set; }
+        public GraphQLObjectType QueryType { get; set; }
+        public IGraphQLType MutationType { get; set; }
+
+        public GraphQLSchema(ITypeList typeList)
+        {
+            Types = typeList;
+        }
 
         public string GetMutationType()
         {
@@ -27,17 +34,7 @@ namespace Graphene.Core.Types
 
         public IEnumerable<IGraphQLType> GetTypes()
         {
-            if (Types != null)
-            {
-                return Types;
-            }
-
-            return new IGraphQLType[]
-            {
-                //Query.GraphQLObjectType(),
-                new GraphQLString(),
-                new GraphQLBoolean()
-            };
+            return Types;
         }
     }
 

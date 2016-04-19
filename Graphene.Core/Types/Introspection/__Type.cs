@@ -10,8 +10,12 @@ namespace Graphene.Core.Types.Introspection
 {
     public class __Type : GraphQLObjectType
     {
-        public __Type()
+        private readonly ITypeList _typeList;
+
+        public __Type(ITypeList typeList)
         {
+            _typeList = typeList;
+
             Name = "__Type";
             Description = @"The fundamental unit of any GraphQL Schema is the type. There are " +
                           "many kinds of types in GraphQL as represented by the `__TypeKind` enum." +
@@ -26,25 +30,25 @@ namespace Graphene.Core.Types.Introspection
                 new GraphQLScalarField<IGraphQLType, string>
                 {
                     Name = "kind",
-                    Type = new GraphQLNonNull(new GraphQLEnum { Name = "__TypeKind"}),
+                    Type = new ChainType(_typeList, "NonNull", "GraphQLEnum"),
                     Resolve = context => context.Source.Kind
                 },
                 new GraphQLScalarField<IGraphQLType, string>
                 {
                     Name = "name",
-                    Type = new GraphQLString(),
+                    Type = new ChainType(_typeList, "String"),
                     Resolve = context => context.Source.Name
                 },
                 new GraphQLScalarField<IGraphQLType, string>
                 {
                     Name = "description",
-                    Type = new GraphQLString(),
+                    Type = new ChainType(_typeList, "String"),
                     Resolve = context => context.Source.Description
                 },
                 new GraphQLList<IGraphQLType, IGraphQLFieldType>
                 {
                     Name = "fields",
-                    Type = new GraphQLList(new GraphQLNonNull(new __Field())),
+                    Type = new ChainType(_typeList, "List", "NonNull", "__Field"),
                     Arguments = new [] 
                     {
                       new GraphQLArgument
@@ -66,19 +70,19 @@ namespace Graphene.Core.Types.Introspection
                 new GraphQLScalarField<IGraphQLType, string[]>
                 {
                     Name = "interfaces",
-                    Type = new GraphQLList(new GraphQLNonNull(new GraphQLString())),
+                    Type = new ChainType(_typeList, "List", "NonNull", "String"),
                     Resolve = context => context.Source.Kind != "OBJECT" ? null : new string[0]
                 },
                 new GraphQLObjectField<IGraphQLType, string>
                 {
                     Name = "possibleTypes",
-                    Type =  new ChainType("List", "NonNull", "__Type"),
+                    Type =  new ChainType(_typeList, "List", "NonNull", "__Type"),
                     Resolve = context => null 
                 },
                 new GraphQLList<IGraphQLType, IGraphQLKind>
                 {
                     Name = "enumValues",
-                    Type = new GraphQLList(new GraphQLNonNull(new __EnumValue())),
+                    Type = new ChainType(_typeList, "List", "NonNull", "__EnumValue"),
                     Arguments = new [] 
                     {
                       new GraphQLArgument
@@ -100,13 +104,13 @@ namespace Graphene.Core.Types.Introspection
                 new GraphQLScalarField<IGraphQLType, string>
                 {
                     Name = "inputFields",
-                    Type = new GraphQLList(new GraphQLNonNull(new __InputValue())),
+                    Type = new ChainType(_typeList, "List", "NonNull", "__InputValue"),
                     Resolve = context => null
                 },
                 new GraphQLObjectField<IGraphQLType, IGraphQLType>
                 {
                     Name = "ofType",
-                    Type = new ChainType("__Type"),
+                    Type = new ChainType(_typeList, "__Type"),
                     Resolve = context => context.Source == null ? null : context.Source.OfType
                 }
             };

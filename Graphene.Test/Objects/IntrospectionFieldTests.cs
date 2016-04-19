@@ -14,7 +14,7 @@ namespace Graphene.Test.Objects
     {
         public object TestType(string fieldName, Func<ResolveObjectContext, IGraphQLFieldType> resolve, string selection = null)
         {
-            var type = new __Field();
+            var type = new __Field(TestSchemas.GetTypeList());
             var query = "__Field{" + fieldName + selection + "}";
             var dictionary = TestHelpers.QueryAType(type, "__Field", query, resolve);
             return dictionary[fieldName];

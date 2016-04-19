@@ -102,4 +102,65 @@ namespace Graphene.Test.Execution
             return TestSchemas.UserSchema();
         }
     }
+
+    public class AliasTests
+    {
+        [Test]
+        public void ScalarFields()
+        {
+            var sut = new ExecutionEngine();
+
+            var schema = CreateGraphQLSchema();
+
+            var query = "{user { aliasUserId: id, name}}";
+            var document = new DocumentParser().Parse(query); ;
+
+            var expected =
+                @"{""data"":{""user"":{""aliasUserId"":1,""name"":""Dan_Smith""}}}";
+            var result = Execute(sut, schema, document);
+            Assert.AreEqual(expected, result);
+        }
+
+        [Test]
+        public void ObjectFields()
+        {
+            var sut = new ExecutionEngine();
+
+            var schema = CreateGraphQLSchema();
+
+            var query = "{aliasUser: user { id, name}}";
+            var document = new DocumentParser().Parse(query); ;
+
+            var expected =
+                @"{""data"":{""aliasUser"":{""id"":1,""name"":""Dan_Smith""}}}";
+            var result = Execute(sut, schema, document);
+            Assert.AreEqual(expected, result);
+        }
+
+        [Test]
+        public void ObjectAndScalarFields()
+        {
+            var sut = new ExecutionEngine();
+
+            var schema = CreateGraphQLSchema();
+
+            var query = "{aliasUser: user { aliasUserId: id, name}}";
+            var document = new DocumentParser().Parse(query); ;
+
+            var expected =
+                @"{""data"":{""aliasUser"":{""aliasUserId"":1,""name"":""Dan_Smith""}}}";
+            var result = Execute(sut, schema, document);
+            Assert.AreEqual(expected, result);
+        }
+     
+        private static object Execute(ExecutionEngine sut, IGraphQLSchema schema, Document document)
+        {
+            return JsonConvert.SerializeObject(sut.Execute(schema, document));
+        }
+
+        private static IGraphQLSchema CreateGraphQLSchema()
+        {
+            return TestSchemas.UserSchema();
+        }
+    }
 }

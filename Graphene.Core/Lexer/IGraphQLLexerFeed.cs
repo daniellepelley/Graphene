@@ -9,5 +9,6 @@ namespace Graphene.Core.Lexer
         bool IsComplete();
         ILexerToken Peek();
         ILexerToken PeekAhead(int i);
+        ILexerToken[] Match(params string[] tokens);
     }
 }

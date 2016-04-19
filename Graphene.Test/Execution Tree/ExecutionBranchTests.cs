@@ -37,8 +37,8 @@ namespace Graphene.Test.Execution_Tree
                 Resolve = x => x.Source.Id
             };
 
-            var executionNode1 = scalar1.ToExecutionNode(sut.GetOutput);
-            var executionNode2 = scalar2.ToExecutionNode(sut.GetOutput);
+            var executionNode1 = scalar1.ToExecutionNode("field1", sut.GetOutput);
+            var executionNode2 = scalar2.ToExecutionNode("fieldB", sut.GetOutput);
 
             sut.AddNode(executionNode1);
             sut.AddNode(executionNode2);
@@ -47,7 +47,7 @@ namespace Graphene.Test.Execution_Tree
 
             Assert.IsNotNull( actual);
             Assert.AreEqual("Dan", actual["field1"]);
-            Assert.AreEqual(42, actual["field2"]);
+            Assert.AreEqual(42, actual["fieldB"]);
         }
 
         [Test]
@@ -87,9 +87,9 @@ namespace Graphene.Test.Execution_Tree
 
             var branch = new ExecutionBranch<User, Boss>("boss", context => context.Source.Boss, generator.GetOutput);
 
-            var executionNode1 = scalar1.ToExecutionNode(generator.GetOutput);
-            var executionNode2 = scalar2.ToExecutionNode(generator.GetOutput);
-            var executionNode3 = scalar3.ToExecutionNode(branch.GetOutput);
+            var executionNode1 = scalar1.ToExecutionNode("field1", generator.GetOutput);
+            var executionNode2 = scalar2.ToExecutionNode("fieldB", generator.GetOutput);
+            var executionNode3 = scalar3.ToExecutionNode("field3", branch.GetOutput);
 
             generator.AddNode(executionNode1);
             generator.AddNode(executionNode2);
@@ -103,7 +103,7 @@ namespace Graphene.Test.Execution_Tree
              
             var json = JsonConvert.SerializeObject(result);
 
-            Assert.AreEqual(@"{""user"":{""field1"":""Dan"",""field2"":42,""boss"":{""field3"":""Boss Man""}}}", json);
+            Assert.AreEqual(@"{""user"":{""field1"":""Dan"",""fieldB"":42,""boss"":{""field3"":""Boss Man""}}}", json);
         }
     }
 }

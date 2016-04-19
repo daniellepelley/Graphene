@@ -28,8 +28,8 @@ namespace Graphene.Test.Execution_Tree
                     Name = "Dan"
                 });
 
-            var executionNode1 = scalar1.ToExecutionNode(getter);
-            var executionNode2 = scalar2.ToExecutionNode(getter);
+            var executionNode1 = scalar1.ToExecutionNode("field1", getter);
+            var executionNode2 = scalar2.ToExecutionNode("fieldB", getter);
 
             var actual1 = executionNode1.Execute();
             var actual2 = executionNode2.Execute();
@@ -37,7 +37,7 @@ namespace Graphene.Test.Execution_Tree
             Assert.AreEqual("field1", actual1.Key);
             Assert.AreEqual("Dan", actual1.Value);
 
-            Assert.AreEqual("field2", actual2.Key);
+            Assert.AreEqual("fieldB", actual2.Key);
             Assert.AreEqual(42, actual2.Value);
         }
     }

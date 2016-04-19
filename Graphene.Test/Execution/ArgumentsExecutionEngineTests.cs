@@ -79,39 +79,10 @@ namespace Graphene.Test.Execution
 
         private static GraphQLSchema CreateGraphQLSchema(IEnumerable<IGraphQLArgument> arguments = null)
         {
-
             return new SchemaBuilder()
                 .WithArguments(arguments)
                 .WithResolve(Resolve)
                 .Build();
-
-
-            var schema = new GraphQLSchema
-            {
-                Query = new GraphQLObjectField<User>
-                {
-                    Name = "user",
-                    Arguments = arguments,
-                    Resolve = Resolve,
-                    Type = new GraphQLObjectType
-                    {
-                        Fields = new IGraphQLFieldType[]
-                        {
-                            new GraphQLScalarField<User, int>
-                            {
-                                Name = "id",
-                                Resolve = context => context.Source.Id
-                            },
-                            new GraphQLScalarField<User, string>
-                            {
-                                Name = "name",
-                                Resolve = context => context.Source.Name
-                            }
-                        }
-                    }
-                }
-            };
-            return schema;
         }
 
         private static User Resolve(ResolveObjectContext context)

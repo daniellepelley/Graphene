@@ -6,6 +6,6 @@ namespace Graphene.Core.FieldTypes
 {
     public interface IInputField<TInput> : IGraphQLFieldType
     {
-        ExecutionBranch ToExecutionBranch(Selection[] selections, Func<TInput> getInput);
+        ExecutionBranch ToExecutionBranch(Field field, Func<TInput> getInput);
     }
 }

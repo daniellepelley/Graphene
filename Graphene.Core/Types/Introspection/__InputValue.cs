@@ -6,8 +6,11 @@ namespace Graphene.Core.Types.Introspection
 {
     public class __InputValue : GraphQLObjectType
     {
-        public __InputValue()
+        private readonly ITypeList _typeList;
+
+        public __InputValue(ITypeList typeList)
         {
+            _typeList = typeList;
             Name = "__InputValue";
             Description = @"Arguments provided to Fields or Directives and the input fields of an " +
                           "InputObject are represented as Input Values which describe their type " +
@@ -18,26 +21,26 @@ namespace Graphene.Core.Types.Introspection
                 new GraphQLScalarField<IGraphQLArgument, string>
                 {
                     Name = "name",
-                    Type = new GraphQLNonNull(new GraphQLString()),
+                    Type = new ChainType(_typeList, "NonNull", "String"),
                     Resolve = context => context.Source.Name
                 },
                 new GraphQLScalarField<IGraphQLArgument, string>
                 {
                     Name = "description",
-                    Type = new GraphQLString(),
+                    Type = new ChainType(_typeList, "String"),
                     Resolve = context => context.Source.Description
                 },
                 new GraphQLObjectField<IGraphQLArgument, IGraphQLType>
                 {
                     Name = "type",
-                    Type = new ChainType("NonNull", "__Type"),
+                    Type = new ChainType(_typeList, "NonNull", "__Type"),
                     Resolve = context => context.Source.Type
                 },
                 new GraphQLScalarField<IGraphQLArgument, string>
                 {
                     Name = "defaultValue",
                     Description = "A GraphQL-formatted string representing the default value for this input value.",
-                    Type= new GraphQLString(),
+                    Type = new ChainType(_typeList, "String"),
                     Resolve = context => context.Source.DefaultValue
                 }
             };

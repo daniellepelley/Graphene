@@ -32,11 +32,6 @@ namespace Graphene.Core.FieldTypes
                         return ((GraphQLObjectType)type).Fields.FirstOrDefault(x => x.Name == name);
                     }
 
-                    //if (type is GraphQLList || type is GraphQLNonNull)
-                    //{
-                    //    type = type.OfType;
-                    //}
-
                     type = type.OfType;
                 }
                 throw new GraphQLException("Field {0} not found on {1} {2}", name, Type.Name, Type.Kind);
@@ -48,9 +43,6 @@ namespace Graphene.Core.FieldTypes
             get { return GraphQLKinds.Object; }
         }
 
-        //[Obsolete("Should move onto using Type field")]
-        //public Func<GraphQLObjectType> GraphQLObjectType { get; set; }
-
         public string Name { get; set; }
         public string Description { get; set; }
         public IEnumerable<IGraphQLArgument> Arguments { get; set; }
@@ -60,7 +52,6 @@ namespace Graphene.Core.FieldTypes
 
         public GraphQLObjectFieldBase()
         {
-            //Type = new GraphQLObjectType();
             Arguments = new IGraphQLArgument[0];
         }
     }

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Graphene.Core.Execution;
+using Graphene.Core.Model;
 using Graphene.Core.Types.Introspection;
 using Graphene.Core.Types.Scalar;
 
@@ -8,7 +9,7 @@ namespace Graphene.Core.FieldTypes
 {
     public abstract class GraphQLScalar<TInput> : IGraphQLScalarField
     {
-        public abstract ExecutionNode ToExecutionNode(Func<TInput> getInput);
+        public abstract ExecutionNode ToExecutionNode(string fieldName, Func<TInput> getInput);
         public IGraphQLType Type { get; set; }
     }
 
@@ -39,9 +40,9 @@ namespace Graphene.Core.FieldTypes
             Arguments = new IGraphQLArgument[0];
         }
 
-        public override ExecutionNode ToExecutionNode(Func<TInput> getInput)
+        public override ExecutionNode ToExecutionNode(string fieldName, Func<TInput> getInput)
         {
-            return new ExecutionNode<TInput, TOutput>(this, getInput);
+            return new ExecutionNode<TInput, TOutput>(this, fieldName, getInput);
         }
     }
 }

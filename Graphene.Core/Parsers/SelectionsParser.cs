@@ -13,6 +13,21 @@ namespace Graphene.Core.Parsers
 
             while (!feed.IsComplete())
             {
+                var fieldWithAlias = feed.Match(GraphQLTokenType.Name, GraphQLTokenType.Colon, GraphQLTokenType.Name);
+
+                if (fieldWithAlias.Length == 3)
+                {
+                    output.Add(new Selection
+                    {
+                        Field = new Field
+                        {
+                            Alias = fieldWithAlias[0].Value,
+                            Name = fieldWithAlias[2].Value
+                        }
+                    });
+                    continue;
+                }
+
                 var current = feed.Next();
 
                 if (current.Type == GraphQLTokenType.Name)

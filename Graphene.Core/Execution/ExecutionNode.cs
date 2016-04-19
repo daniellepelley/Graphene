@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Graphene.Core.FieldTypes;
+using Graphene.Core.Model;
 using Graphene.Core.Types;
 
 namespace Graphene.Core.Execution
@@ -16,9 +17,9 @@ namespace Graphene.Core.Execution
         private readonly Func<ResolveFieldContext<TInput>, TOutput> _func;
         private readonly Func<TInput> _getInput;
 
-        public ExecutionNode(GraphQLScalarField<TInput, TOutput> scalarField, Func<TInput> getInput)
+        public ExecutionNode(GraphQLScalarField<TInput, TOutput> scalarField, string fieldName, Func<TInput> getInput)
         {
-            _fieldName = scalarField.Name;
+            _fieldName = fieldName;
             _getInput = getInput;
             _func = scalarField.Resolve;
         }

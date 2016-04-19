@@ -18,7 +18,7 @@ namespace Graphene.Test.Introspection
             var query = @"{query IntrospectionQuery {__schema{queryType{name, kind}}}}";
             var document = new DocumentParser().Parse(query); ;
 
-            var expected = @"{""data"":{""__schema"":{""queryType"":{""name"":""Query"",""kind"":""OBJECT""}}}}";
+            var expected = @"{""data"":{""__schema"":{""queryType"":{""name"":""QueryType"",""kind"":""OBJECT""}}}}";
 
             var result = JsonConvert.SerializeObject(sut.Execute(schema, document));
             Assert.AreEqual(expected, result);
@@ -34,7 +34,7 @@ namespace Graphene.Test.Introspection
             var query = @"{query IntrospectionQuery {__schema{queryType{name, kind, fields{name}}}}}";
             var document = new DocumentParser().Parse(query); ;
 
-            var expected = @"{""data"":{""__schema"":{""queryType"":{""name"":""Query"",""kind"":""OBJECT"",""fields"":[{""name"":""user""}]}}}}";
+            var expected = @"{""data"":{""__schema"":{""queryType"":{""name"":""QueryType"",""kind"":""OBJECT"",""fields"":[{""name"":""user""}]}}}}";
 
             var result = JsonConvert.SerializeObject(sut.Execute(schema, document));
             Assert.AreEqual(expected, result);
@@ -66,7 +66,7 @@ namespace Graphene.Test.Introspection
         //{
         //    return new GraphQLSchema
         //    {
-        //        Query = new GraphQLObjectField<object>
+        //        QueryType = new GraphQLObjectField<object>
         //        {
         //            Name = "IntrospectionQuery",
         //            GraphQLObjectType = () => new GraphQLObjectType

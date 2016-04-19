@@ -7,6 +7,11 @@ namespace Graphene.Core.Types.Object
 {
     public class GraphQLObjectType : IGraphQLType
     {
+        public IGraphQLFieldType this[string fieldName]
+        {
+            get { return Fields.FirstOrDefault(x => x.Name == fieldName); }
+        }
+
         public string Kind
         {
             get { return "OBJECT"; }

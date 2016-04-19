@@ -32,9 +32,9 @@ namespace Graphene.Execution
 
         private object InternalExecute(GraphQLSchema schema, Document document)
         {
-            if (schema.Query == null)
+            if (schema.QueryType == null)
             {
-                throw new Exception("Query empty");
+                throw new Exception("QueryType empty");
             }
 
             if (!document.Operations.Any())

@@ -45,5 +45,23 @@ namespace Graphene.Core.Lexer
         {
             return _index >= _tokens.Length;
         }
+
+        public ILexerToken[] Match(params string[] tokens)
+        {
+            if (tokens.Length > _tokens.Length - _index)
+            {
+                return new ILexerToken[0];
+            }
+
+            if (tokens.Where((t, i) => _tokens[_index + i].Type != t).Any())
+            {
+                return new ILexerToken[0];
+            }
+
+            var output = _tokens.Skip(_index).Take(tokens.Length).ToArray();
+            _index += tokens.Length;
+
+            return output;
+        }
     }
 }

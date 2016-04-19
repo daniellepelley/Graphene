@@ -11,24 +11,24 @@ namespace Graphene.Core.FieldTypes
 
     public class GraphQLObjectField<TInput, TOutput> : GraphQLObjectFieldBase, IInputField<TInput>
     {
-        public ExecutionBranch ToExecutionBranch(Selection[] selections, Func<TInput> getter)
+        public ExecutionBranch ToExecutionBranch(Field field, Func<TInput> getter)
         {
-            var executionRoot = new ExecutionBranch<TInput, TOutput>(Name, Resolve, getter);
+            var executionRoot = new ExecutionBranch<TInput, TOutput>(field.GetFieldName(), Resolve, getter);
 
-            foreach (var selection in selections)
+            foreach (var selection in field.Selections)
             {
                 if (this[selection.Field.Name] is GraphQLScalar<TOutput>)
                 {
                     var graphQLScalar = (GraphQLScalar<TOutput>)this[selection.Field.Name];
 
-                    var node = graphQLScalar.ToExecutionNode(executionRoot.GetOutput);
+                    var node = graphQLScalar.ToExecutionNode(selection.Field.GetFieldName(), executionRoot.GetOutput);
                     executionRoot.AddNode(node);
                 }
                 else if (this[selection.Field.Name] is IInputField<TOutput>)
                 {
                     var graphQLObject = (IInputField<TOutput>)this[selection.Field.Name];
 
-                    var branch = graphQLObject.ToExecutionBranch(selection.Field.Selections, executionRoot.GetOutput);
+                    var branch = graphQLObject.ToExecutionBranch(selection.Field, executionRoot.GetOutput);
                     executionRoot.AddNode(branch);
                 }
             }
@@ -44,7 +44,7 @@ namespace Graphene.Core.FieldTypes
         public virtual Func<ResolveObjectContext, TOutput> Resolve { get; set; }
         public ExecutionBranch ToExecutionBranch(Field field)
         {
-            var executionRoot = new ExecutionBranch<TOutput>(Name, field.Arguments, Resolve);
+            var executionRoot = new ExecutionBranch<TOutput>(field.GetFieldName(), field.Arguments, Resolve);
 
             foreach (var selection in field.Selections)
             {
@@ -52,7 +52,7 @@ namespace Graphene.Core.FieldTypes
 
                 if (graphQLScalar != null)
                 {
-                    var node = graphQLScalar.ToExecutionNode(executionRoot.GetOutput);
+                    var node = graphQLScalar.ToExecutionNode(selection.Field.GetFieldName(), executionRoot.GetOutput);
                     executionRoot.AddNode(node);
                 }
                 else if (this[selection.Field.Name] is IInputField<TOutput>)
@@ -64,7 +64,7 @@ namespace Graphene.Core.FieldTypes
                         throw new GraphQLException("Selections cannot be null. This relates to not having field on an object.");
                     }
 
-                    var branch = graphQLObject.ToExecutionBranch(selection.Field.Selections, executionRoot.GetOutput);
+                    var branch = graphQLObject.ToExecutionBranch(selection.Field, executionRoot.GetOutput);
                     executionRoot.AddNode(branch);
                 }
             }

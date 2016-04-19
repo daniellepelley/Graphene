@@ -49,6 +49,7 @@
     <Compile Include="Execution\ExecutionTree.cs" />
     <Compile Include="Execution\ExecutionNode.cs" />
     <Compile Include="Execution\IExecutionItem.cs" />
+    <Compile Include="FieldTypes\FieldExtensions.cs" />
     <Compile Include="FieldTypes\GraphQLList.cs" />
     <Compile Include="FieldTypes\IGraphQLScalarField.cs" />
     <Compile Include="FieldTypes\IToExecutionBranch.cs" />
@@ -89,7 +90,6 @@
     <Compile Include="Lexer\SingleGraphQLTokenizer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Parsers\SelectionsParser.cs" />
-    <Compile Include="ResolveContextBuilder.cs" />
     <Compile Include="ResolveFieldContext.cs" />
     <Compile Include="Types\Extensions.cs" />
     <Compile Include="Types\Introspection\__Directive.cs" />

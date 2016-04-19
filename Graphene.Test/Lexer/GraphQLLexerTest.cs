@@ -64,12 +64,32 @@ namespace Graphene.Test.Lexer
         }
     }
 
-    public class LexicalTreeTests
+    public class GraphQLLexerFeedMatchTests
     {
-
-        public void TreeBuilderTest()
+        [TestCase(0, "alias")]
+        [TestCase(1, ":")]
+        [TestCase(2, "name")]
+        public void TestPass(int index, string expected)
         {
-            
+            var parserFeed = new GraphQLLexerFeed("alias : name");
+            var output = parserFeed.Match(GraphQLTokenType.Name, GraphQLTokenType.Colon, GraphQLTokenType.Name);
+            Assert.AreEqual(expected, ((LexerToken) output[index]).Value);
+        }
+
+        [Test]
+        public void TestFail()
+        {
+            var parserFeed = new GraphQLLexerFeed("alias ( name");
+            var output = parserFeed.Match(GraphQLTokenType.Name, GraphQLTokenType.Colon, GraphQLTokenType.Name);
+            Assert.AreEqual(0, output.Length);
+        }
+
+        [Test]
+        public void IfMoreThanLengthRemaining()
+        {
+            var parserFeed = new GraphQLLexerFeed("alias :");
+            var output = parserFeed.Match(GraphQLTokenType.Name, GraphQLTokenType.Colon, GraphQLTokenType.Name);
+            Assert.AreEqual(0, output.Length);
         }
     }
 }

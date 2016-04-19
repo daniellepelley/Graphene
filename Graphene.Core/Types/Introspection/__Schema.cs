@@ -8,8 +8,11 @@ namespace Graphene.Core.Types.Introspection
 {
     public class __Schema : GraphQLObjectType
     {
-        public __Schema()
+        private readonly ITypeList _typeList;
+
+        public __Schema(ITypeList typeList)
         {
+            _typeList = typeList;
             var queryType = new GraphQLObjectType
             {
                 Name = "__Type",
@@ -61,37 +64,37 @@ namespace Graphene.Core.Types.Introspection
                 {
                     Name = "types",
                     Description = "A list of all types supported by this server.",
-                    Type = new ChainType("NonNull", "List", "NonNull", "__Type"),
+                    Type = new ChainType(_typeList, "NonNull", "List", "NonNull", "__Type"),
                     Resolve = context => context.Source.GetTypes()
                 },
-                new GraphQLObjectField<GraphQLSchema, GraphQLObjectFieldBase>
+                new GraphQLObjectField<GraphQLSchema, IGraphQLType>
                 {
                     Name = "queryType",
                     Description = "The type that query operations will be rooted at.",
-                    Type = new GraphQLNonNull(queryType),
-                    Resolve = context => context.Source.Query
+                    Type = new ChainType(_typeList, "__Type"),
+                    Resolve = context => context.Source.QueryType
                 },
-                new GraphQLObjectField<GraphQLSchema, GraphQLObjectFieldBase>
+                new GraphQLObjectField<GraphQLSchema, IGraphQLType>
                 {
                     Name = "mutationType",
                     Description =
                         "If this server supports mutation, the type that mutation operations will be rooted at.",
-                    Type = new __Type(),
-                    Resolve = context => null
+                    Type = new ChainType(_typeList, "__Type"),
+                    Resolve = context => context.Source.MutationType
                 },
                 new GraphQLObjectField<GraphQLSchema, GraphQLObjectFieldBase>
                 {
                     Name = "subscriptionType",
                     Description =
                         "If this server support subscription, the type that subscription operations will be rooted at.",
-                    Type = new __Type(),
+                    Type = new ChainType(_typeList, "__Type"),
                     Resolve = context => null
                 },
                 new GraphQLObjectField<GraphQLSchema, GraphQLObjectFieldBase>
                 {
                     Name = "directives",
                     Description = "A list of all directives supported by this server.",
-                    Type = new GraphQLNonNull(new GraphQLList(new GraphQLNonNull(new __Directive()))),
+                    Type = new ChainType(_typeList, "NonNull", "List", "NonNull", "__Directive"),
                     Resolve = context => null
                 },
             };
