@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Graphene.Core.Types.Scalar;
 
 namespace Graphene.Core.Types
@@ -35,10 +36,11 @@ namespace Graphene.Core.Types
 
         public void AddType(string typeName, IGraphQLType type)
         {
-            if (!_dictionary.ContainsKey(typeName))
+            if (_dictionary.ContainsKey(typeName))
             {
-                _dictionary.Add(typeName, type);
+                throw new GraphQLException("A type named '{0}' has already been registered.", typeName);
             }
+            _dictionary.Add(typeName, type);
         }
 
         public IEnumerator<IGraphQLType> GetEnumerator()
@@ -49,6 +51,17 @@ namespace Graphene.Core.Types
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
+        }
+
+        public TypeList Clone()
+        {
+            var output = new TypeList();
+
+            foreach (var type in _dictionary)
+            {
+                output.AddType(type.Key, type.Value);
+            }
+            return output;
         }
     }
 }

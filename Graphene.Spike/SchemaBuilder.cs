@@ -11,7 +11,6 @@ namespace Graphene.Spike
 {
     public class SchemaBuilder
     {
-        private readonly GraphQLSchema _schema;
         private readonly List<IGraphQLFieldType> _fields;
         private readonly TypeList _typeList;
 
@@ -22,24 +21,25 @@ namespace Graphene.Spike
         public SchemaBuilder(TypeList typeList)
         {
             _typeList = typeList;
-            _schema = new GraphQLSchema(_typeList)
-            {
-                QueryType = new GraphQLObjectType
-                {
-                    Name = "Root"
-                }
-            };
+            RegisterTypes();
             _fields = new List<IGraphQLFieldType>();
-
         }
-
 
         public GraphQLSchema Build()
         {
-            _schema.QueryType.Fields = _fields;
-            _typeList.AddType(_schema.QueryType.Name, _schema.QueryType);
-            RegisterTypes();
-            return _schema;
+            var typeList = _typeList.Clone();
+
+            var output = new GraphQLSchema(typeList)
+            {
+                QueryType = new GraphQLObjectType
+                {
+                    Name = "Root",
+                    Fields = _fields
+                }
+            };
+
+            typeList.AddType(output.QueryType.Name, output.QueryType);
+            return output;
         }
 
         public SchemaBuilder WithField(string name, GraphQLObjectType createUserType)
@@ -121,7 +121,7 @@ namespace Graphene.Spike
             _typeList.AddType("__Directive", new __Directive(_typeList));
             //_typeList.AddType("NonNull", new GraphQLNonNull());
             //_typeList.AddType("List", new GraphQLList());
-            _typeList.AddType("GraphQLEnum", new GraphQLEnum());
+            //_typeList.AddType("Enum", new GraphQLEnum());
             _typeList.AddType("Boolean", new GraphQLBoolean());
             _typeList.AddType("String", new GraphQLString());
             _typeList.AddType("Int", new GraphQLInt());

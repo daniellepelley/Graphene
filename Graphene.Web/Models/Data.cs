@@ -1,6 +1,6 @@
 using System.Linq;
 
-namespace Graphene.Owin.Spike
+namespace Graphene.Web.Models
 {
     public static class Data
     {

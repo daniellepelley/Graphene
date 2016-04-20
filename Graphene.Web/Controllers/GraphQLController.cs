@@ -1,16 +1,13 @@
 using System.Linq;
 using System.Web.Http;
-using Graphene.Core.FieldTypes;
 using Graphene.Core.Parsers;
 using Graphene.Core.Types;
-using Graphene.Core.Types.Object;
 using Graphene.Core.Types.Scalar;
 using Graphene.Execution;
-using Graphene.Owin.Spike;
 using Graphene.Spike;
-using Newtonsoft.Json;
+using Graphene.Web.Models;
 
-namespace GraphQL.GraphiQL.Controllers
+namespace Graphene.Web.Controllers
 {
     public class GraphQLController : ApiController
     {
@@ -67,7 +64,7 @@ namespace GraphQL.GraphiQL.Controllers
                         .Resolve(context => context.Source.Boss)))
 
                 .WithType<TestUser>(type => type
-                    .Name("User")
+                    .Name("Customer")
                     .Description("This is a Cusomter, which also has an age and a friend")
                     .WithScalarField<TestUser, int>(field => field
                         .Name("id")
@@ -100,7 +97,6 @@ namespace GraphQL.GraphiQL.Controllers
                 .Build();
         }
 
-
         private static GraphQLSchema CreateIntrospectionSchema()
         {
             return new SchemaBuilder()
@@ -110,6 +106,5 @@ namespace GraphQL.GraphiQL.Controllers
                         .Resolve(context => CreateSchema()))
                 .Build();
         }
-
     }
 }

@@ -1,6 +1,6 @@
-﻿namespace Graphene.Web.Controllers
+namespace Owin.Graphene
 {
-    public class GraphQLQuery
+    public class QueryObject
     {
         public string Query { get; set; }
         public string Variables { get; set; }

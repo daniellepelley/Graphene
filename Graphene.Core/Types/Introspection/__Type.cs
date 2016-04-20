@@ -56,11 +56,8 @@ namespace Graphene.Core.Types.Introspection
                     },
                     Resolve = context =>
                     {
-                        if (context.Source is GraphQLObjectType)
-                        {
-                            return ((GraphQLObjectType) context.Source).Fields;
-                        }
-                        return null;
+                        var type = context.Source as GraphQLObjectType;
+                        return type != null ? type.Fields : null;
                     }
                 },
                 new GraphQLScalarField<IGraphQLType, string[]>
@@ -90,7 +87,7 @@ namespace Graphene.Core.Types.Introspection
                     },
                     Resolve = context =>
                     {
-                        if (context.Source is GraphQLEnum)
+                        if (context.Source is GraphQLEnum<IGraphQLKind>)
                         {
                             return ((GraphQLEnum<IGraphQLKind>)context.Source).Values;
                         }

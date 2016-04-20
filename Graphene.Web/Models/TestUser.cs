@@ -1,4 +1,4 @@
-﻿namespace Graphene.Owin.Spike
+﻿namespace Graphene.Web.Models
 {
     public class TestUser
     {

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Graphene.Core;
 using Graphene.Core.Types;
 using Graphene.Core.Types.Scalar;
 using NUnit.Framework;
@@ -32,6 +33,12 @@ namespace Graphene.Test.Objects
         {
             var type = _typeProvider.LookUpType("Boolean");
             Assert.AreEqual("Boolean", type.Name);
+        }
+
+        [Test]
+        public void ThrowsExceptionOnDuplicateTypeNames()
+        {
+            Assert.Throws<GraphQLException>(() => _typeProvider.AddType("String", new GraphQLString()));
         }
     }
 

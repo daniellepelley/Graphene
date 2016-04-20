@@ -21,9 +21,11 @@ namespace Graphene.Test.Spike
             var builder = new SchemaBuilder();
             builder.WithField("user", TestSchemas.CreateUserType());
 
-            Assert.AreEqual(1, builder.Build().QueryType.Fields.Count());
-            Assert.AreEqual("user", builder.Build().QueryType.Fields.First().Name);
-            Assert.AreEqual(TestSchemas.CreateUserType().Name, builder.Build().QueryType.Fields.First().Type.Name);
+            var schema = builder.Build();
+
+            Assert.AreEqual(1, schema.QueryType.Fields.Count());
+            Assert.AreEqual("user", schema.QueryType.Fields.First().Name);
+            Assert.AreEqual(TestSchemas.CreateUserType().Name, schema.QueryType.Fields.First().Type.Name);
         }
 
         [Test]
@@ -57,6 +59,20 @@ namespace Graphene.Test.Spike
             Assert.AreEqual(TestSchemas.CreateUserType().Name, schema.QueryType.Fields.ElementAt(0).Type.Name);
             Assert.AreEqual("boss", schema.QueryType.Fields.ElementAt(1).Name);
             Assert.AreEqual(TestSchemas.CreateBossType().Name, schema.QueryType.Fields.ElementAt(1).Type.Name);
+        }
+
+        [Test]
+        public void CanBeBuiltMultipleTimes()
+        {
+            var schemaBuilder = new SchemaBuilder()
+                .RegisterTypes(TestSchemas.CreateBossType(), TestSchemas.CreateUserType())
+                .WithField(x =>
+                    x.Name("user").Type("User"))
+                .WithField("boss", x => x.Type("Boss"));
+
+            schemaBuilder.Build();
+
+            Assert.DoesNotThrow(() => schemaBuilder.Build());
         }
     }
 }

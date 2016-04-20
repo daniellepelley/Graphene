@@ -87,7 +87,7 @@ namespace Graphene.Test.Data
             typeList.AddType("User", userType);
             typeList.AddType("__Schema", new __Schema(typeList));
             typeList.AddType("__Type", new __Type(typeList));
-            typeList.AddType("GraphQLEnum", new GraphQLEnum<IGraphQLKind> { Name = "__TypeKind" });
+            typeList.AddType("Enum", new GraphQLEnum<IGraphQLKind> { Name = "__TypeKind" });
             typeList.AddType("__TypeKind", new __TypeKind());
             typeList.AddType("__Field", new __Field(typeList));
             typeList.AddType("__InputValue", new __InputValue(typeList));
@@ -173,7 +173,7 @@ namespace Graphene.Test.Data
                 }
             };
 
-            GetTypeList().AddType("User", userType);
+            //GetTypeList().AddType("User", userType);
 
             return userType;
         }
