@@ -1,5 +1,7 @@
-﻿using Microsoft.Owin;
+﻿using Graphene.Web.Models;
+using Microsoft.Owin;
 using Owin;
+using Owin.Graphene;
 
 [assembly: OwinStartupAttribute(typeof(Graphene.Web.Startup))]
 namespace Graphene.Web
@@ -8,7 +10,7 @@ namespace Graphene.Web
     {
         public void Configuration(IAppBuilder app)
         {
-
+            app.UseGraphQL(ExampleSchemas.CreateSchema(), ExampleSchemas.CreateIntrospectionSchema());
         }
     }
 }
