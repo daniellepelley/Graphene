@@ -14,8 +14,6 @@ namespace GraphQL.GraphiQL.Controllers
 {
     public class GraphQLController : ApiController
     {
-        private static TypeList _typeList = new TypeList();
-
         [HttpGet]
         public object Get(string query)
         {
@@ -51,65 +49,52 @@ namespace GraphQL.GraphiQL.Controllers
 
         private static GraphQLSchema CreateSchema()
         {
-
-
-            var userType = new GraphQLObjectType
-            {
-                Name = "User",
-                Description = "This is GraphQL and it is very cool, when you get the damn thing working",
-                Fields = new IGraphQLFieldType[]
-                {
-                    new GraphQLScalarField<TestUser, int>
-                    {
-                        Name = "id",
-                        Type = new ChainType(_typeList, "Int"),
-                        Resolve = context => context.Source.Id
-                    },
-                    new GraphQLScalarField<TestUser, string>
-                    {
-                        Name = "Name",
-                        Type = new ChainType(_typeList, "String"),
-                        Resolve = context => context.Source.Name
-                    }
-                }
-            };
-
-            var customerType = new GraphQLObjectType
-            {
-                Name = "Customer",
-                Description = "This is a customer type",
-                Fields = new IGraphQLFieldType[]
-                {
-                    new GraphQLScalarField<TestUser, int>
-                    {
-                        Name = "id",
-                        Type = new ChainType(_typeList, "Int"),
-                        Resolve = context => context.Source.Id
-                    },
-                    new GraphQLScalarField<TestUser, string>
-                    {
-                        Name = "name",
-                        Type = new ChainType(_typeList, "String"),
-                        Resolve = context => context.Source.Name
-                    },
-                    new GraphQLScalarField<TestUser, int>
-                    {
-                        Name = "age",
-                        Type = new ChainType(_typeList, "Int"),
-                        Resolve = context => context.Source.Age
-                    }
-                }
-            };
-
             return new SchemaBuilder()
+                .WithType<TestUser>(type => type
+                    .Name("User")
+                    .Description("This is a User, which has a Boss")
+                    .WithScalarField<TestUser, int>(field => field
+                        .Name("id")
+                        .Type("Int")
+                        .Resolve(context => context.Source.Id))
+                    .WithScalarField<TestUser, string>(field => field
+                        .Name("name")
+                        .Type("String")
+                        .Resolve(context => context.Source.Name))
+                    .WithObjectField<TestUser, TestUser>(field => field
+                        .Name("boss")
+                        .Type("User")
+                        .Resolve(context => context.Source.Boss)))
+
+                .WithType<TestUser>(type => type
+                    .Name("User")
+                    .Description("This is a Cusomter, which also has an age and a friend")
+                    .WithScalarField<TestUser, int>(field => field
+                        .Name("id")
+                        .Type("Int")
+                        .Resolve(context => context.Source.Id))
+                    .WithScalarField<TestUser, string>(field => field
+                        .Name("name")
+                        .Type("String")
+                        .Resolve(context => context.Source.Name))
+                    .WithObjectField<TestUser, int>(field => field
+                        .Name("age")
+                        .Type("User")
+                        .Resolve(context => context.Source.Age))
+                    .WithObjectField<TestUser, TestUser>(field => field
+                        .Name("friend")
+                        .Type("User")
+                        .Resolve(context => context.Source.Boss)))
+
                 .WithField<TestUser>(x =>
                     x.Name("user")
-                        .Type(userType)
+                        .Type("User")
                         .Arguments(new GraphQLArgument { Name = "id", Type = new GraphQLString() })
                         .Resolve(_ => Data.GetData().First()))
-                .WithField<TestUser>(x =>
+                
+                 .WithField<TestUser>(x =>
                     x.Name("customer")
-                        .Type(customerType)
+                        .Type("Customer")
                         .Arguments(new GraphQLArgument { Name = "id", Type = new GraphQLString() })
                         .Resolve(_ => Data.GetData().First()))
                 .Build();
@@ -118,33 +103,12 @@ namespace GraphQL.GraphiQL.Controllers
 
         private static GraphQLSchema CreateIntrospectionSchema()
         {
-            return new SchemaBuilder(_typeList)
+            return new SchemaBuilder()
                 .WithField<GraphQLSchema>(x =>
                     x.Name("__schema")
                         .Type("__Schema")
                         .Resolve(context => CreateSchema()))
                 .Build();
-
-            //return new GraphQLSchema
-            //{
-            //    Query = new GraphQLObjectField
-            //    {
-            //        Name = "IntrospectionQuery",
-            //        GraphQLObjectType = () => new GraphQLObjectType
-            //        {
-            //            Fields = new IGraphQLFieldType[]
-            //            {
-            //                new GraphQLObjectField<GraphQLSchema>
-            //                {
-            //                    Name = "__schema",
-            //                    GraphQLObjectType = () => new __Schema(),
-            //                    Resolve = _ => CreateSchema()
-            //                }
-            //            }
-            //        },
-            //        Resolve = _ => CreateSchema()
-            //    }
-            //};
         }
 
     }

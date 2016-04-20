@@ -84,7 +84,7 @@
             onEditQuery: onEditQuery,
             onEditVariables: onEditVariables,
             onEditOperationName: onEditOperationName,
-            query: "{species{id}}",
+            query: "{user{name,id}}",
             response: "{\n  \"data\": {\n    \"species\": null\n  },\n  \"errors\": [\n    {\n      \"message\": \"must provide id or speciesID\",\n      \"locations\": [\n        {\n          \"line\": 1,\n          \"column\": 2\n        }\n      ]\n    }\n  ]\n}",
             variables: null,
             operationName: null,

@@ -82,6 +82,24 @@ namespace Graphene.Spike
             return this;
         }
 
+        public SchemaBuilder WithType(Action<ObjectTypeBuilder> action)
+        {
+            var builder = new ObjectTypeBuilder(_typeList);
+            action(builder);
+            var type = builder.Build();
+            _typeList.AddType(type.Name, type);
+            return this;
+        }
+
+        public SchemaBuilder WithType<T>(Action<ObjectTypeBuilder> action)
+        {
+            var builder = new ObjectTypeBuilder(_typeList);
+            action(builder);
+            var type = builder.Build();
+            _typeList.AddType(type.Name, type);
+            return this;
+        }
+
         public SchemaBuilder RegisterTypes(params IGraphQLType[] types)
         {
             foreach (var type in types)
@@ -156,6 +174,151 @@ namespace Graphene.Spike
         {
             _graphQLObjectField.Type = new ChainType(_typeList, types);
             return this;
+        }
+    }
+
+    public class ObjectFieldBuilder<TInput, TOutput>
+    {
+        private readonly GraphQLObjectField<TInput, TOutput> _graphQLObjectField;
+        private readonly TypeList _typeList;
+
+        public ObjectFieldBuilder(TypeList typeList)
+        {
+            _typeList = typeList;
+            _graphQLObjectField = new GraphQLObjectField<TInput, TOutput>();
+        }
+
+        public IGraphQLFieldType Build()
+        {
+            return _graphQLObjectField;
+        }
+
+        public ObjectFieldBuilder<TInput, TOutput> Name(string name)
+        {
+            _graphQLObjectField.Name = name;
+            return this;
+        }
+
+        public ObjectFieldBuilder<TInput, TOutput> Type(GraphQLObjectType type)
+        {
+            _typeList.AddType(type.Name, type);
+            _graphQLObjectField.Type = new ChainType(_typeList, type.Name);
+            return this;
+        }
+
+        public ObjectFieldBuilder<TInput, TOutput> Arguments(params IGraphQLArgument[] arguments)
+        {
+            _graphQLObjectField.Arguments = arguments;
+            return this;
+        }
+
+
+        public ObjectFieldBuilder<TInput, TOutput> Resolve(Func<ResolveObjectContext<TInput>, TOutput> resolve)
+        {
+            _graphQLObjectField.Resolve = resolve;
+            return this;
+        }
+
+        public ObjectFieldBuilder<TInput, TOutput> Type(params string[] types)
+        {
+            _graphQLObjectField.Type = new ChainType(_typeList, types);
+            return this;
+        }
+    }
+
+    public class ScalarFieldBuilder<TInput, TOutput>
+    {
+        private readonly GraphQLScalarField<TInput, TOutput> _graphQLScalarField;
+        private readonly TypeList _typeList;
+
+        public ScalarFieldBuilder(TypeList typeList)
+        {
+            _typeList = typeList;
+            _graphQLScalarField = new GraphQLScalarField<TInput, TOutput>();
+        }
+
+        public IGraphQLFieldType Build()
+        {
+            return _graphQLScalarField;
+        }
+
+        public ScalarFieldBuilder<TInput, TOutput> Name(string name)
+        {
+            _graphQLScalarField.Name = name;
+            return this;
+        }
+
+        public ScalarFieldBuilder<TInput, TOutput> Type(GraphQLObjectType type)
+        {
+            _typeList.AddType(type.Name, type);
+            _graphQLScalarField.Type = new ChainType(_typeList, type.Name);
+            return this;
+        }
+
+        public ScalarFieldBuilder<TInput, TOutput> Arguments(params IGraphQLArgument[] arguments)
+        {
+            _graphQLScalarField.Arguments = arguments;
+            return this;
+        }
+
+        public ScalarFieldBuilder<TInput, TOutput> Resolve(Func<ResolveFieldContext<TInput>, TOutput> resolve)
+        {
+            _graphQLScalarField.Resolve = resolve;
+            return this;
+        }
+
+        public ScalarFieldBuilder<TInput, TOutput> Type(params string[] types)
+        {
+            _graphQLScalarField.Type = new ChainType(_typeList, types);
+            return this;
+        }
+    }
+
+    public class ObjectTypeBuilder
+    {
+        private readonly GraphQLObjectType _graphQLObjectType;
+        private readonly TypeList _typeList;
+        private readonly List<IGraphQLFieldType> _fields; 
+
+        public ObjectTypeBuilder(TypeList typeList)
+        {
+            _typeList = typeList;
+            _graphQLObjectType = new GraphQLObjectType();
+            _fields = new List<IGraphQLFieldType>();
+        }
+
+        public ObjectTypeBuilder Name(string name)
+        {
+            _graphQLObjectType.Name = name;
+            return this;
+        }
+
+        public ObjectTypeBuilder Description(string description)
+        {
+            _graphQLObjectType.Description = description;
+            return this;
+        }
+
+        public ObjectTypeBuilder WithObjectField<TInput, TOutput>(Action<ObjectFieldBuilder<TInput, TOutput>> action)
+        {
+            var builder = new ObjectFieldBuilder<TInput, TOutput>(_typeList);
+            action(builder);
+            _fields.Add(builder.Build());
+            return this;
+        }
+
+        public ObjectTypeBuilder WithScalarField<TInput, TOutput>(Action<ScalarFieldBuilder<TInput, TOutput>> action)
+        {
+            var builder = new ScalarFieldBuilder<TInput, TOutput>(_typeList);
+            action(builder);
+            _fields.Add(builder.Build());
+            return this;
+        }
+
+        public GraphQLObjectType Build()
+        {
+            _graphQLObjectType.Fields = _fields;
+            return _graphQLObjectType;
         }
     }
 } 
