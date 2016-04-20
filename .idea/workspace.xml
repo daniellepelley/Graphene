@@ -5,12 +5,6 @@
       <change type="DELETED" beforePath="$PROJECT_DIR$/Graphene/.nuget/NuGet.Config" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/Graphene/.nuget/NuGet.exe" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/Graphene/.nuget/NuGet.targets" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Graphene.Owin/GraphQLComponent.cs" afterPath="$PROJECT_DIR$/Graphene.Owin/GraphQLComponent.cs" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Graphene.Spike/SchemaBuilder.cs" afterPath="$PROJECT_DIR$/Graphene.Spike/SchemaBuilder.cs" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Graphene.Test/Spike/SchemaBuilderTests.cs" afterPath="$PROJECT_DIR$/Graphene.Test/Spike/SchemaBuilderTests.cs" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Graphene.Web/App_Start/WebApiConfig.cs" afterPath="$PROJECT_DIR$/Graphene.Web/App_Start/WebApiConfig.cs" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Graphene.Web/Controllers/AccountController.cs" afterPath="$PROJECT_DIR$/Graphene.Web/Controllers/AccountController.cs" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Graphene.Web/Graphene.Web.csproj" afterPath="$PROJECT_DIR$/Graphene.Web/Graphene.Web.csproj" />
     </list>
     <ignored path="Graphene.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -244,7 +238,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="169" y="101" width="3489" height="1735" extended-state="1" />
+    <frame x="169" y="101" width="3489" height="1735" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.26873535" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />

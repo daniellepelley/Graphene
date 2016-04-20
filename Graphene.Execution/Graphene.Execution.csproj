@@ -45,6 +45,7 @@
     <Compile Include="IExecutionEngine.cs" />
     <Compile Include="IOperationExecutionEngine.cs" />
     <Compile Include="OperationExecutionEngine.cs" />
+    <Compile Include="OperationValidator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ScalarFieldExecutionEngine.cs" />
   </ItemGroup>

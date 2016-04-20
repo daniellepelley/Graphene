@@ -72,7 +72,7 @@ namespace Graphene.Test.Execution
             var query = "{foo(Id :1) {Name}}";
             var document = new DocumentParser().Parse(query); ;
 
-            var expected = @"{""errors"":[{""message"":""Field foo not found on Root OBJECT""}]}";
+            var expected = @"{""errors"":[{""message"":""Cannot query field 'foo' on type 'Root'.""}]}";
             var result = Execute(sut, schema, document);
             Assert.AreEqual(expected, result);
         }
@@ -87,7 +87,7 @@ namespace Graphene.Test.Execution
             var query = @"{user(id :""1"") {foo}}";
             var document = new DocumentParser().Parse(query); ;
 
-            var expected = @"{""errors"":[{""message"":""Field foo not found on User OBJECT""}]}";
+            var expected = @"{""errors"":[{""message"":""Cannot query field 'foo' on type 'User'.""}]}";
             var result = Execute(sut, schema, document);
             Assert.AreEqual(expected, result);
         }
