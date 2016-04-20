@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Graphene.Core;
+﻿using Graphene.Core.Exceptions;
 using Graphene.Core.Types;
 using Graphene.Core.Types.Scalar;
 using NUnit.Framework;
@@ -41,6 +36,4 @@ namespace Graphene.Test.Objects
             Assert.Throws<GraphQLException>(() => _typeProvider.AddType("String", new GraphQLString()));
         }
     }
-
-
 }

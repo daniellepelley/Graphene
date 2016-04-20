@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Graphene.Core.Exceptions;
 using Graphene.Core.Types.Scalar;
 
 namespace Graphene.Core.Types

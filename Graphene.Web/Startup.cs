@@ -10,7 +10,7 @@ namespace Graphene.Web
     {
         public void Configuration(IAppBuilder app)
         {
-            app.UseGraphQL(ExampleSchemas.CreateSchema(), ExampleSchemas.CreateIntrospectionSchema());
+            app.UseGraphQL(ExampleSchemas.CreateSchema());
         }
     }
 }

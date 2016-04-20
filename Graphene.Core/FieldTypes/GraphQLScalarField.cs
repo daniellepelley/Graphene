@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Graphene.Core.Exceptions;
 using Graphene.Core.Execution;
 using Graphene.Core.Types;
 using Graphene.Core.Types.Scalar;

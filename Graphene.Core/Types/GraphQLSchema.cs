@@ -1,4 +1,7 @@
 using System.Collections.Generic;
+using System.Linq;
+using Graphene.Core.FieldTypes;
+using Graphene.Core.Types.Introspection;
 using Graphene.Core.Types.Object;
 using Graphene.Core.Types.Scalar;
 
@@ -11,9 +14,46 @@ namespace Graphene.Core.Types
         public GraphQLObjectType QueryType { get; set; }
         public IGraphQLType MutationType { get; set; }
 
+        public GraphQLObjectType IntrospectionType { get; set; }
+
         public GraphQLSchema(ITypeList typeList)
         {
             Types = typeList;
+            IntrospectionType = new GraphQLObjectType
+            {
+                Fields = new IGraphQLFieldType[]
+                {
+                    new GraphQLObjectField<GraphQLSchema>
+                    {
+                        Name = "__schema",
+                        Type = new ChainType(Types, "__Schema"),
+                        Resolve = _ => this
+                    },
+                    new GraphQLObjectField<IGraphQLType>
+                    {
+                        Name = "__type",
+                        Type = new __Type(Types),
+                        Arguments = new IGraphQLArgument[]
+                        {
+                            new GraphQLArgument
+                            {
+                                Name = "name",
+                                Type = new ChainType(Types, "String")
+                            }
+                        },
+                        Resolve = context => Types.LookUpType(context.GetArgument<string>("name"))
+                    }
+                }
+            };
+        }
+
+        public GraphQLObjectType GetMergedRoot()
+        {
+            return new GraphQLObjectType
+            {
+                Name = QueryType.Name,
+                Fields = QueryType.Fields.Concat(IntrospectionType.Fields)
+            };
         }
 
         public string GetMutationType()

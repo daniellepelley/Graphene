@@ -14,15 +14,13 @@ namespace Owin.Graphene
     {
         private readonly Func<IDictionary<string, object>, Task> _appFunc;
         private readonly GraphQLSchema _schema;
-        private readonly GraphQLSchema _introspectionSchema;
 
         private readonly IExecutionEngine _executionEngine;
 
-        public GraphQLComponent(Func<IDictionary<string, object>, Task> appFunc, GraphQLSchema schema, GraphQLSchema introspectionSchema)
+        public GraphQLComponent(Func<IDictionary<string, object>, Task> appFunc, GraphQLSchema schema)
         {
             _appFunc = appFunc;
             _schema = schema;
-            _introspectionSchema = introspectionSchema;
             _executionEngine = new ExecutionEngine();
         }
 
@@ -77,11 +75,7 @@ namespace Owin.Graphene
 
             var document = new DocumentParser().Parse(query);
 
-            var schema = query.Contains("IntrospectionQuery")
-                ? _introspectionSchema
-                : _schema;
-
-            var result = _executionEngine.Execute(schema, document);
+            var result = _executionEngine.Execute(_schema, document);
 
             var json = JsonConvert.SerializeObject(result);
 

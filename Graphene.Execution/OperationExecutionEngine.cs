@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Graphene.Core;
+using Graphene.Core.Exceptions;
 using Graphene.Core.FieldTypes;
 using Graphene.Core.Model;
 using Graphene.Core.Types;
@@ -14,7 +15,7 @@ namespace Graphene.Execution
         {
             ValidateArguments(schema, operation);
 
-            Validate(operation.Selections, schema.QueryType);
+            Validate(operation.Selections, schema.GetMergedRoot());
 
             if (!operation.Selections.Any())
             {
@@ -23,7 +24,7 @@ namespace Graphene.Execution
 
             var executionBranch =
                 new ExecutionBranchBuilder().Build(
-                    schema.QueryType.GetField(operation.Selections.First().Field.Name) as IToExecutionBranch,
+                    schema.GetMergedRoot().GetField(operation.Selections.First().Field.Name) as IToExecutionBranch,
                     operation.Selections.First().Field);
 
             return new[] {executionBranch.Execute()}.ToDictionary(x => x.Key, x => x.Value);

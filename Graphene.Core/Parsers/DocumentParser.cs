@@ -1,4 +1,7 @@
+using System.Collections.Generic;
 using System.Linq;
+using Graphene.Core.Exceptions;
+using Graphene.Core.FieldTypes;
 using Graphene.Core.Lexer;
 using Graphene.Core.Model;
 
@@ -41,6 +44,14 @@ namespace Graphene.Core.Parsers
             {
                 throw new GraphQLException("Missing Brace");
             }
+        }
+    }
+
+    public class DocumentValidator
+    {
+        public string[] Validate(Document document)
+        {
+            return new string[0];
         }
     }
 }

@@ -1,4 +1,5 @@
 using System;
+using Graphene.Core.Exceptions;
 using Graphene.Core.Execution;
 using Graphene.Core.Model;
 
@@ -13,7 +14,7 @@ namespace Graphene.Core.FieldTypes
     {
         public ExecutionBranch ToExecutionBranch(Field field, Func<TInput> getter)
         {
-            var executionRoot = new ExecutionBranch<TInput, TOutput>(field.GetFieldName(), Resolve, getter);
+            var executionRoot = new ExecutionBranch<TInput, TOutput>(field.GetFieldOrAliasName(), Resolve, getter);
 
             foreach (var selection in field.Selections)
             {
@@ -21,7 +22,7 @@ namespace Graphene.Core.FieldTypes
                 {
                     var graphQLScalar = (GraphQLScalar<TOutput>)this[selection.Field.Name];
 
-                    var node = graphQLScalar.ToExecutionNode(selection.Field.GetFieldName(), executionRoot.GetOutput);
+                    var node = graphQLScalar.ToExecutionNode(selection.Field.GetFieldOrAliasName(), executionRoot.GetOutput);
                     executionRoot.AddNode(node);
                 }
                 else if (this[selection.Field.Name] is IInputField<TOutput>)
@@ -44,7 +45,7 @@ namespace Graphene.Core.FieldTypes
         public virtual Func<ResolveObjectContext, TOutput> Resolve { get; set; }
         public ExecutionBranch ToExecutionBranch(Field field)
         {
-            var executionRoot = new ExecutionBranch<TOutput>(field.GetFieldName(), field.Arguments, Resolve);
+            var executionRoot = new ExecutionBranch<TOutput>(field.GetFieldOrAliasName(), field.Arguments, Resolve);
 
             foreach (var selection in field.Selections)
             {
@@ -52,7 +53,7 @@ namespace Graphene.Core.FieldTypes
 
                 if (graphQLScalar != null)
                 {
-                    var node = graphQLScalar.ToExecutionNode(selection.Field.GetFieldName(), executionRoot.GetOutput);
+                    var node = graphQLScalar.ToExecutionNode(selection.Field.GetFieldOrAliasName(), executionRoot.GetOutput);
                     executionRoot.AddNode(node);
                 }
                 else if (this[selection.Field.Name] is IInputField<TOutput>)

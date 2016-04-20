@@ -20,7 +20,7 @@ namespace Graphene.Test.Schema
 
             var schema = CreateIntrospectionSchema(new GraphQLString());
 
-            var query = @"{__type{kind,name,description,fields,inputFields,interfaces,enumValues,possibleTypes}}";
+            var query = @"{__type(name :""String""){kind,name,description,fields,inputFields,interfaces,enumValues,possibleTypes}}";
             var document = new DocumentParser().Parse(query); ;
 
             var expected =
@@ -67,12 +67,14 @@ namespace Graphene.Test.Schema
 
         private static GraphQLSchema CreateIntrospectionSchema(IGraphQLType type)
         {
-            return TestSchemas.CreateIntrospectionSchema(new GraphQLObjectField<IGraphQLType>
-            {
-                Name = "__type",
-                Type = new __Type(TestSchemas.GetTypeList()),
-                Resolve = _ => type
-            });
+            return TestSchemas.UserSchema();
+
+            //return TestSchemas.CreateIntrospectionSchema(new GraphQLObjectField<IGraphQLType>
+            //{
+            //    Name = "__type",
+            //    Type = new __Type(TestSchemas.GetTypeList()),
+            //    Resolve = _ => type
+            //});
         }
     }
 }

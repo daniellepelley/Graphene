@@ -17,7 +17,7 @@ namespace Graphene.Core.FieldTypes
                 {
                     var graphQLScalar = (GraphQLScalar<TOutput>)this[selection.Field.Name];
 
-                    var node = graphQLScalar.ToExecutionNode(selection.Field.GetFieldName(), executionRoot.GetOutput);
+                    var node = graphQLScalar.ToExecutionNode(selection.Field.GetFieldOrAliasName(), executionRoot.GetOutput);
                     executionRoot.AddNode(node);
                 }
                 else if (this[selection.Field.Name] is IInputField<TOutput>)

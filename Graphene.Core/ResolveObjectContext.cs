@@ -1,3 +1,5 @@
+using System;
+using System.Linq;
 using Graphene.Core.FieldTypes;
 using Graphene.Core.Model;
 
@@ -18,31 +20,21 @@ namespace Graphene.Core
     {
         public string FieldName { get; set; }
 
-        //public Fields FieldAst { get; set; }
-
-        //public ResolveObjectContext Parent { get; set; }
-
         public GraphQLObjectField ObjectFieldType { get; set; }
-
-        //public Selection[] Selections { get; set; }
 
         public Argument[] Arguments { get; set; }
 
-        
+        public T GetArgument<T>(string name)
+        {
+            var value = Arguments.FirstOrDefault(x => x.Name == name);
 
-        //public GraphQLSchema Schema { get; set; }
+            if (value == null)
+            {
+                return default(T);
+            }
 
-        //public Operation Operation { get; set; }
-        //public Selection Selection { get; set; }
+            return (T)value.Value;
+        }
 
-        //public TType Argument<TType>(string name)
-        //{
-        //    if (Arguments.ContainsKey(name))
-        //    {
-        //        return (TType)Arguments[name];
-        //    }
-
-        //    return default(TType);
-        //}
     }
 }

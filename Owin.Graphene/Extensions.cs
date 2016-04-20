@@ -4,9 +4,9 @@ namespace Owin.Graphene
 {
     public static class Extensions
     {
-        public static void UseGraphQL(this IAppBuilder app, GraphQLSchema schema, GraphQLSchema introspectionSchema)
+        public static void UseGraphQL(this IAppBuilder app, GraphQLSchema schema)
         {
-            app.Use<GraphQLComponent>(schema, introspectionSchema);
+            app.Use<GraphQLComponent>(schema);
         }
     }
 }

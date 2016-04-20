@@ -60,7 +60,7 @@
     <Compile Include="FieldTypes\GraphQLObjectFieldBase.cs" />
     <Compile Include="FieldTypes\GraphQLScalarField.cs" />
     <Compile Include="FieldTypes\IGraphQLFieldType.cs" />
-    <Compile Include="GraphQLException.cs" />
+    <Compile Include="Exceptions\GraphQLException.cs" />
     <Compile Include="Lexer\GraphQLLexerFeed.cs" />
     <Compile Include="Lexer\IGraphQLLexerFeed.cs" />
     <Compile Include="Model\Argument.cs" />

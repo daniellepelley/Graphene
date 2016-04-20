@@ -4,7 +4,7 @@ namespace Graphene.Core.FieldTypes
 {
     public static class FieldExtensions
     {
-        public static string GetFieldName(this Field source)
+        public static string GetFieldOrAliasName(this Field source)
         {
             return  string.IsNullOrEmpty(source.Alias)  
                 ? source.Name

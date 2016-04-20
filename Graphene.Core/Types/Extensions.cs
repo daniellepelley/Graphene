@@ -35,5 +35,10 @@ namespace Graphene.Core.Types
             return source.GetFields().FirstOrDefault(x => x.Name == fieldName);
         }
 
+        public static IGraphQLFieldType GetRootField(this IGraphQLType source, string fieldName)
+        {
+            return source.GetFields().FirstOrDefault(x => x.Name == fieldName);
+        }
+
     }
 }

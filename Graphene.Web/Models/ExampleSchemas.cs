@@ -39,7 +39,7 @@ namespace Graphene.Web.Models
                         .Resolve(context => context.Source.Name))
                     .WithObjectField<TestUser, int>(field => field
                         .Name("age")
-                        .Type("User")
+                        .Type("Int")
                         .Resolve(context => context.Source.Age))
                     .WithObjectField<TestUser, TestUser>(field => field
                         .Name("friend")
@@ -60,14 +60,14 @@ namespace Graphene.Web.Models
                 .Build();
         }
 
-        public static GraphQLSchema CreateIntrospectionSchema()
-        {
-            return new SchemaBuilder()
-                .WithField<GraphQLSchema>(x =>
-                    x.Name("__schema")
-                        .Type("__Schema")
-                        .Resolve(context => CreateSchema()))
-                .Build();
-        }
+        //public static GraphQLSchema CreateIntrospectionSchema()
+        //{
+        //    return new SchemaBuilder()
+        //        .WithField<GraphQLSchema>(x =>
+        //            x.Name("__schema")
+        //                .Type("__Schema")
+        //                .Resolve(context => CreateSchema()))
+        //        .Build();
+        //}
     }
 }

@@ -74,11 +74,13 @@
     <Compile Include="Parser\DocumentParserTests.cs" />
     <Compile Include="Lexer\GraphQLLexerTest.cs" />
     <Compile Include="Parser\FragmentParserTests.cs" />
+    <Compile Include="Parser\InValidParserTests.cs" />
     <Compile Include="Parser\OperationParserTests.cs" />
     <Compile Include="Schema\TypeSerializationTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Parser\SelectionParserTest.cs" />
     <Compile Include="Data\User.cs" />
+    <Compile Include="Spec\SpecRules.cs" />
     <Compile Include="Spike\ExecutionEngineTests.cs" />
     <Compile Include="Spike\SchemaBuilderTests.cs" />
     <Compile Include="Spike\TestUserDatabase.cs" />

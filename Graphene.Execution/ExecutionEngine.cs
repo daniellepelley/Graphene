@@ -1,7 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using Graphene.Core;
+using Graphene.Core.Exceptions;
 using Graphene.Core.Model;
 using Graphene.Core.Parsers;
 using Graphene.Core.Types;
@@ -11,21 +10,28 @@ namespace Graphene.Execution
     public class ExecutionEngine : IExecutionEngine
     {
         private readonly IOperationExecutionEngine _operationExecutionEngine;
+        private readonly ExecutionValidator _executionValidator;
 
         public ExecutionEngine()
         {
             _operationExecutionEngine = new OperationExecutionEngine();
+            _executionValidator = new ExecutionValidator();
         }
 
-        public object Execute(IGraphQLSchema iGraphQLSchema, Document document)
+        public object Execute(IGraphQLSchema schema, Document document)
         {
-            var schema = (GraphQLSchema)iGraphQLSchema;
-            return InternalExecute(schema, document);
+            return InternalExecute((GraphQLSchema)schema, document);
         }
 
         private object InternalExecute(GraphQLSchema schema, Document document)
         {
-            Validate(schema, document);
+            var errors = _executionValidator.Validate(schema, document);
+
+            if (errors.Any())
+            {
+                return errors;
+            }
+
 
             new FragmentProcessor().Process(document, true);
 
@@ -53,17 +59,27 @@ namespace Graphene.Execution
             }
         }
 
-        private static void Validate(GraphQLSchema schema, Document document)
+
+    }
+
+    public class ExecutionValidator
+    {
+        public string[] Validate(GraphQLSchema schema, Document document)
         {
+            var output = new List<string>();
+
             if (schema.QueryType == null)
             {
-                throw new Exception("QueryType empty");
+                throw new GraphQLException("QueryType empty");
             }
 
             if (!document.Operations.Any())
             {
-                throw new Exception("No operation");
+                throw new GraphQLException("No operation");
             }
+
+            return output.ToArray();
         }
+
     }
 }

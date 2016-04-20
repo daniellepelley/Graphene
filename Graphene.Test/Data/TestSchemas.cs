@@ -10,12 +10,6 @@ namespace Graphene.Test.Data
 {
     public static class TestSchemas
     {
-
-        private static GraphQLObjectType GetUserType()
-        {
-            return CreateUserType();
-        }
-
         public static GraphQLSchema UserSchema()
         {
             return UserSchema(CreateUserType());
@@ -46,6 +40,7 @@ namespace Graphene.Test.Data
                 _typeList.AddType("String", new GraphQLString());
                 _typeList.AddType("Boolean", new GraphQLBoolean());
                 _typeList.AddType("GraphQLEnum", new GraphQLEnum());
+                _typeList.AddType("Int", new GraphQLInt());
             }
             return _typeList;
         }
@@ -58,7 +53,7 @@ namespace Graphene.Test.Data
             {
                 QueryType = new GraphQLObjectType
                 {
-                    Name = "QueryType",
+                    Name = "Root",
                     Fields = new IGraphQLFieldType[]
                     {
                         new GraphQLObjectField<User>
@@ -82,7 +77,7 @@ namespace Graphene.Test.Data
                 }
             };
 
-            typeList.AddType("QueryType", schema.QueryType);
+            typeList.AddType("Root", schema.QueryType);
             typeList.AddType("String", new GraphQLString());
             typeList.AddType("User", userType);
             typeList.AddType("__Schema", new __Schema(typeList));
@@ -97,6 +92,7 @@ namespace Graphene.Test.Data
             typeList.AddType("List", new GraphQLList());
             typeList.AddType("GraphQLEnum", new GraphQLEnum());
             typeList.AddType("Boolean", new GraphQLBoolean());
+            typeList.AddType("Int", new GraphQLInt());
             //schema.Types.AddType("QueryType", schema.QueryType.Type);
             //schema.Types.AddType("GraphQLString", new GraphQLString());
             //schema.Types.AddType("User", userType);
@@ -173,8 +169,6 @@ namespace Graphene.Test.Data
                 }
             };
 
-            //GetTypeList().AddType("User", userType);
-
             return userType;
         }
 
@@ -205,28 +199,30 @@ namespace Graphene.Test.Data
 
         public static GraphQLSchema CreateIntrospectionSchema()
         {
-            return CreateIntrospectionSchema(new GraphQLObjectField<GraphQLSchema>
-            {
-                Name = "__schema",
-                Type = new ChainType(GetTypeList(), "__Schema"),
-                Resolve = _ => UserSchema()
-            });
+            return UserSchema();
+
+            //return CreateIntrospectionSchema(new GraphQLObjectField<GraphQLSchema>
+            //{
+            //    Name = "__schema",
+            //    Type = new ChainType(GetTypeList(), "__Schema"),
+            //    Resolve = _ => UserSchema()
+            //});
 
         }
 
-        public static GraphQLSchema CreateIntrospectionSchema(IGraphQLFieldType type)
-        {
-            return new GraphQLSchema(GetTypeList())
-            {
-                QueryType = new GraphQLObjectType
-                {
-                    Fields = new IGraphQLFieldType[]
-                    {
-                        type
-                    }
-                }
-            };
-        }
+        //public static GraphQLSchema CreateIntrospectionSchema(IGraphQLFieldType type)
+        //{
+        //    return new GraphQLSchema(GetTypeList())
+        //    {
+        //        QueryType = new GraphQLObjectType
+        //        {
+        //            Fields = new IGraphQLFieldType[]
+        //            {
+        //                type
+        //            }
+        //        }
+        //    };
+        //}
 
         public static string GraphiQlQueryWithFragments
         {
