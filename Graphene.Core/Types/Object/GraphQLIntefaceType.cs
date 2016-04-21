@@ -1,10 +1,10 @@
 namespace Graphene.Core.Types.Object
 {
-    public class GraphQLObjectType : GraphQLObjectTypeBase
+    public class GraphQLIntefaceType : GraphQLObjectTypeBase
     {
         public override string Kind
         {
-            get { return "OBJECT"; }
+            get { return "INTERFACE"; }
         }
     }
 }
