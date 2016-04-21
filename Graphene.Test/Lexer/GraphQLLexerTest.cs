@@ -91,5 +91,40 @@ namespace Graphene.Test.Lexer
             var output = parserFeed.Match(GraphQLTokenType.Name, GraphQLTokenType.Colon, GraphQLTokenType.Name);
             Assert.AreEqual(0, output.Length);
         }
+
+        [TestCase(0, "person", GraphQLTokenType.Name)]
+        [TestCase(1, "(", GraphQLTokenType.ParenL)]
+        [TestCase(2, "id", GraphQLTokenType.Name)]
+        [TestCase(3, ":", GraphQLTokenType.Colon)]
+        [TestCase(4, "1", GraphQLTokenType.Name)]
+        [TestCase(5, ")", GraphQLTokenType.ParenR)]
+        [TestCase(6, "{", GraphQLTokenType.BraceL)]
+        [TestCase(7, "name", GraphQLTokenType.Name)]
+        [TestCase(8, "address", GraphQLTokenType.Name)]
+        [TestCase(9, "{", GraphQLTokenType.BraceL)]
+        [TestCase(10, "street", GraphQLTokenType.Name)]
+        [TestCase(11, "town", GraphQLTokenType.Name)]
+        [TestCase(12, "}", GraphQLTokenType.BraceR)]
+        [TestCase(13, "}", GraphQLTokenType.BraceR)]
+        public void IgnoresComments(int index, string expectedValue, string expectedType)
+        {
+            var query = @"
+#Comment
+  person(id :  1)#Comment
+  {#Comment
+    name#Comment
+    address #Comment { ignore }
+    {#Comment
+      street #Comment
+      town     #Comment
+    }#Comment
+  }#Comment
+";
+
+            var parserFeed = new GraphQLLexer(query);
+            var output = parserFeed.All().ToArray();
+            Assert.AreEqual(expectedValue, ((LexerToken)output[index]).Value);
+            Assert.AreEqual(expectedType, ((LexerToken)output[index]).Type);
+        }
     }
 }

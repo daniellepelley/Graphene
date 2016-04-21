@@ -73,7 +73,7 @@
     <Compile Include="Parsers\FragmentParser.cs" />
     <Compile Include="Parsers\IDocumentParser.cs" />
     <Compile Include="Lexer\IgnoreGraphQLTokenizer.cs" />
-    <Compile Include="Lexer\IgnoreLeverToken.cs" />
+    <Compile Include="Lexer\IgnoreLexerToken.cs" />
     <Compile Include="Lexer\IGraphQLTokenizer.cs" />
     <Compile Include="Lexer\ILexerToken.cs" />
     <Compile Include="Lexer\LexerToken.cs" />

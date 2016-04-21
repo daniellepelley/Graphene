@@ -18,6 +18,8 @@ namespace Graphene.Core.Lexer
                 Characters = " " + (char)13
             });
 
+            _tokenizers.Add(new CommentGraphQLTokenizer());
+
             _cursor.Text = text;
         }
 

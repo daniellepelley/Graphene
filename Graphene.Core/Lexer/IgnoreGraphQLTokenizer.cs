@@ -12,7 +12,7 @@ namespace Graphene.Core.Lexer
 
             while (Characters.Contains(current))
             {
-                token = new IgnoreLeverToken();
+                token = new IgnoreLexerToken();
                 cursor.Index++;
 
                 if (cursor.Index >= cursor.Text.Length)

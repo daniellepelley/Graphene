@@ -1,15 +1,8 @@
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using Graphene.Core;
-using Graphene.Core.Lexer;
 using Graphene.Core.Model;
-using Graphene.Core.Parsers;
 using Graphene.Core.Types;
 using Graphene.Core.Types.Scalar;
 using Graphene.Execution;
-using Graphene.Test.Data;
-using Newtonsoft.Json;
 using NUnit.Framework;
 
 namespace Graphene.Test.Execution.Validation

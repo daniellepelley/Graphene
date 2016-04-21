@@ -41,6 +41,30 @@ namespace Graphene.Test.Parser
             Assert.AreEqual("age", operation.Selections.First().Field.Selections.ElementAt(1).Field.Name);
         }
 
+
+        [Test]
+        public void IgnoreComment()
+        {
+            var sut = new DocumentParser();
+
+            var query = @"
+#Comment
+{ #Comment
+  user(id:1) #Comment
+  { #Comment
+    name #Comment
+    age #Comment
+  } #Comment
+} #Comment";
+
+            var result = sut.Parse(query);
+            var operation = result.Operations.First();
+
+            Assert.AreEqual("user", operation.Selections.First().Field.Name);
+            Assert.AreEqual("name", operation.Selections.First().Field.Selections.ElementAt(0).Field.Name);
+            Assert.AreEqual("age", operation.Selections.First().Field.Selections.ElementAt(1).Field.Name);
+        }
+
         [Test]
         public void WithFragments()
         {

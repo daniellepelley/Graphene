@@ -1,11 +1,11 @@
 namespace Graphene.Core.Lexer
 {
-    public class IgnoreLeverToken : ILexerToken
+    public class IgnoreLexerToken : ILexerToken
     {
         public string Type { get; private set; }
         public string Value { get; private set; }
 
-        public IgnoreLeverToken()
+        public IgnoreLexerToken()
         {
             Type = "Ignore";
             Value = null;
