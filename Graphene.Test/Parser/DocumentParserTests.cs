@@ -150,6 +150,13 @@ namespace Graphene.Test.Parser
                         }";
 
             var result = sut.Parse(query);
+
+
+            for (int i = 0; i < 100; i++)
+            {
+                sut.Parse(query);
+            }
+            
             var operation = result.Operations.First();
 
             Assert.AreEqual("IntrospectionQuery", operation.Directives.First().Name);

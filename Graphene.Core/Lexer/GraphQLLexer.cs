@@ -12,12 +12,6 @@ namespace Graphene.Core.Lexer
         public GraphQLLexer(string text)
         {
             _tokenizers = new GraphQLTokenizerBuilder().Build();
-
-            _tokenizers.Add(new IgnoreGraphQLTokenizer
-            {
-                Characters = " " + (char)13
-            });
-
             _tokenizers.Add(new CommentGraphQLTokenizer());
 
             _cursor.Text = text;
