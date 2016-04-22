@@ -1,44 +1,36 @@
+using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Graphene.Core.Lexer
 {
     public class GraphQLLexerCursor
     {
-        private string _text;
+        private readonly string _text;
         private int _index;
-        private char[] _charArray;
+        private readonly byte[] _byteArray;
 
         public GraphQLLexerCursor(string text)
         {
             _text = text;
-            _charArray = text.ToCharArray();
+            _byteArray = Encoding.ASCII.GetBytes(text);
         }
 
-        private string GetCurrent()
+        public string MatchByBytes(byte[] characters)
         {
-            return _text[_index].ToString();
-        }
-
-        public string Match(string characters)
-        {
-            if (_text.Length < _index + characters.Length)
+            if (_byteArray.Length < _index + characters.Length)
             {
                 return null;
             }
 
-            var current = _text.Substring(_index, characters.Length);
-
-            if (!characters.Contains(current))
-            {
-                return null;
-            }
-
-            return current;
+            return characters.Where((t, i) => t != _byteArray[_index + i]).Any()
+                ? null
+                : _text.Substring(_index, characters.Length);
         }
 
         public bool IsComplete()
         {
-            return _index >= _text.Length;
+            return _index >= _byteArray.Length;
         }
 
         public void Advance()
@@ -46,11 +38,14 @@ namespace Graphene.Core.Lexer
             _index++;
         }
 
-        public void WhileDoesNotContain(string lineReturns)
+        public void Advance(int number)
         {
-            var current = GetCurrent();
+            _index += number;
+        }
 
-            while (!lineReturns.Contains(current))
+        public void WhileDoesNotContain(byte[] lineReturns)
+        {
+            while (!lineReturns.Contains(_byteArray[_index]))
             {
                 Advance();
 
@@ -58,29 +53,23 @@ namespace Graphene.Core.Lexer
                 {
                     break;
                 }
-
-                current = GetCurrent();
             }
         }
 
-        public string TakeWhile(string characters)
+        public string TakeWhile(byte[] characters)
         {
-            var current = GetCurrent();
-            var stringBuilder = new StringBuilder();
-            while (characters.Contains(current))
+            var start = _index;
+            while (characters.Contains(_byteArray[_index]))
             {
-                stringBuilder.Append(current);
                 Advance();
 
                 if (IsComplete())
                 {
                     break;
                 }
-
-                current = GetCurrent();
             }
 
-            return stringBuilder.ToString();
+            return _text.Substring(start, _index - start);
         }
     }
 }

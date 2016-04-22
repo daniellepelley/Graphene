@@ -1,8 +1,10 @@
+using System;
+
 namespace Graphene.Core.Lexer
 {
     public class IgnoreGraphQLTokenizer : IGraphQLTokenizer
     {
-        public string Characters { get; set; }
+        public byte[] Characters { get; set; }
 
         public ILexerToken Handle(GraphQLLexerCursor cursor)
         {

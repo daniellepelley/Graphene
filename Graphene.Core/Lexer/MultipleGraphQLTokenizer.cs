@@ -5,7 +5,7 @@ namespace Graphene.Core.Lexer
 {
     public class MultipleGraphQLTokenizer : IGraphQLTokenizer
     {
-        public string Characters { get; set; }
+        public byte[] Characters { get; set; }
 
         public string TokenType { get; set; }
 
@@ -24,11 +24,20 @@ namespace Graphene.Core.Lexer
 
     public class CommentGraphQLTokenizer : IGraphQLTokenizer
     {
+        private readonly byte[] _characters;
+        private readonly byte[] _lineReturns;
+
+        public CommentGraphQLTokenizer()
+        {
+            _characters = Encoding.ASCII.GetBytes("#");
+            _lineReturns = Encoding.ASCII.GetBytes(string.Concat((char) 9, (char) 10, (char) 13));
+        }
+
         public ILexerToken Handle(GraphQLLexerCursor cursor)
         {
-            while (!string.IsNullOrEmpty(cursor.Match("#")))
+            while (!string.IsNullOrEmpty(cursor.MatchByBytes(_characters)))
             {
-                cursor.WhileDoesNotContain(string.Concat((char) 9, (char) 10, (char) 13));
+                cursor.WhileDoesNotContain(_lineReturns);
                 return new IgnoreLexerToken();
             }
             return null;

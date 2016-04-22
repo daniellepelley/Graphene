@@ -1,6 +1,7 @@
 using System.Linq;
 using Graphene.Core.Parsers;
 using NUnit.Framework;
+using NUnit.Framework.Compatibility;
 
 namespace Graphene.Test.Parser
 {
@@ -70,7 +71,9 @@ namespace Graphene.Test.Parser
         {
             var sut = new DocumentParser();
 
-            var query = @"{query IntrospectionQuery {
+            var query = @"
+# This the query GraphiQL uses
+{query IntrospectionQuery {
                             __schema {
                               queryType { name }
                               mutationType { name }
@@ -150,13 +153,18 @@ namespace Graphene.Test.Parser
                         }";
 
             var result = sut.Parse(query);
-
-
-            for (int i = 0; i < 1000; i++)
+            sut.Parse(query);
+            sut.Parse(query);
+            
+            Stopwatch stopwatch = new Stopwatch();
+            stopwatch.Start();
+            for (int i = 0; i < 100; i++)
             {
                 sut.Parse(query);
             }
-
+            var time=  stopwatch.ElapsedMilliseconds;
+             
+            //Assert.AreEqual(1, time);
 
             var operation = result.Operations.First();
 

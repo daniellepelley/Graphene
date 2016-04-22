@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Text;
 
 namespace Graphene.Core.Lexer
 {
@@ -12,27 +13,27 @@ namespace Graphene.Core.Lexer
 
             _tokenizers.Add(new IgnoreGraphQLTokenizer
             {
-                Characters = " " + (char)13
+                Characters = Encoding.ASCII.GetBytes(" " + (char)13 + (char)10)
             });
+
             AddToken("{", GraphQLTokenType.BraceL);
             AddToken("}", GraphQLTokenType.BraceR);
             AddToken("(", GraphQLTokenType.ParenL);
             AddToken(")", GraphQLTokenType.ParenR);
-            AddToken("," + (char)10 + (char)13, GraphQLTokenType.Seperator);
             AddMultipleToken(@"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_""", GraphQLTokenType.Name);
-            AddToken("!", GraphQLTokenType.Bang);
-            AddToken("$", GraphQLTokenType.Dollar);
             AddToken("...", GraphQLTokenType.Spread);
             AddToken(":", GraphQLTokenType.Colon);
+            AddToken("Int", GraphQLTokenType.Int);
+            AddToken("Float", GraphQLTokenType.Float);
+            AddToken("String", GraphQLTokenType.String);
+
+            AddToken("!", GraphQLTokenType.Bang);
+            AddToken("$", GraphQLTokenType.Dollar);
             AddToken("=", GraphQLTokenType.Eq);
             AddToken("@", GraphQLTokenType.At);
             AddToken("[", GraphQLTokenType.BracketL);
             AddToken("]", GraphQLTokenType.BracketR);;
             AddToken("|", GraphQLTokenType.Pipe);
-            AddToken("Int", GraphQLTokenType.Int);
-            AddToken("Float", GraphQLTokenType.Float);
-            AddToken("String", GraphQLTokenType.String);
-            AddToken("," + (char)10 + (char)13, GraphQLTokenType.Seperator);
             _tokenizers.Add(new CommentGraphQLTokenizer());
 
             return _tokenizers;
@@ -42,7 +43,7 @@ namespace Graphene.Core.Lexer
         {
             _tokenizers.Add(new SingleGraphQLTokenizer
             {
-                Characters = characters,
+                Characters = Encoding.ASCII.GetBytes(characters),
                 TokenType = tokenType
             });
         }
@@ -51,7 +52,7 @@ namespace Graphene.Core.Lexer
         {
             _tokenizers.Add(new MultipleGraphQLTokenizer
             {
-                Characters = characters,
+                Characters = Encoding.ASCII.GetBytes(characters),
                 TokenType = tokenType
             });
         }
