@@ -5,9 +5,9 @@ namespace Graphene.Core.Lexer
 {
     public class GraphQLLexerFeed : IGraphQLLexerFeed
     {
-        private readonly ILexerToken[] _tokens;
-
-        private int _index;
+        private ILexerToken[] _tokens;
+        
+        //private int _index;
 
         public GraphQLLexerFeed(IEnumerable<ILexerToken> tokens)
         {
@@ -26,50 +26,51 @@ namespace Graphene.Core.Lexer
 
         public ILexerToken Peek()
         {
-            if (_index >= _tokens.Length)
+            if (!_tokens.Any())
             {
                 return new LexerToken(null, null);
             }
 
-            return _tokens[_index];
+            return _tokens.First();
         }
 
         public ILexerToken PeekAhead(int number)
         {
-            if (_index + number >= _tokens.Length)
+            if (number >= _tokens.Length)
             {
                 return new LexerToken(null, null);
             }
 
-            return _tokens[_index + number];
+            return _tokens[number];
         }
 
         public ILexerToken Next()
         {
-            var current = _tokens[_index];
-            _index++;
+            var current = _tokens.First();
+            _tokens = _tokens.Skip(1).ToArray();
             return current;
         }
 
         public bool IsComplete()
         {
-            return _index >= _tokens.Length;
+            return !_tokens.Any();
         }
 
         public ILexerToken[] Match(params string[] tokens)
         {
-            if (tokens.Length > _tokens.Length - _index)
+            if (tokens.Length > _tokens.Length)
             {
                 return new ILexerToken[0];
             }
 
-            if (tokens.Where((t, i) => _tokens[_index + i].Type != t).Any())
+            if (tokens.Where((t, i) => _tokens[i].Type != t).Any())
             {
                 return new ILexerToken[0];
             }
+            
+            var output = _tokens.Take(tokens.Length).ToArray();
 
-            var output = _tokens.Skip(_index).Take(tokens.Length).ToArray();
-            _index += tokens.Length;
+            _tokens = _tokens.Skip(tokens.Length).ToArray();
 
             return output;
         }
