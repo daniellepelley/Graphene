@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Graphene.Core.FieldTypes;
+using Graphene.Core.Types.Introspection;
 using Graphene.Core.Types.Object;
 using Graphene.Core.Types.Scalar;
 
@@ -39,6 +40,5 @@ namespace Graphene.Core.Types
         {
             return source.GetFields().FirstOrDefault(x => x.Name == fieldName);
         }
-
     }
 }

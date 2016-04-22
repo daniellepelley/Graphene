@@ -9,17 +9,16 @@ namespace Graphene.Core.Types
 {
     public class GraphQLSchema : IGraphQLSchema
     {
-        public ITypeList Types { get; private set; }
+        private readonly GraphQLObjectType _introspectionType;
+        private ITypeList Types { get; set; }
 
         public GraphQLObjectType QueryType { get; set; }
         public IGraphQLType MutationType { get; set; }
 
-        public GraphQLObjectType IntrospectionType { get; set; }
-
         public GraphQLSchema(ITypeList typeList)
         {
             Types = typeList;
-            IntrospectionType = new GraphQLObjectType
+            _introspectionType = new GraphQLObjectType
             {
                 Fields = new IGraphQLFieldType[]
                 {
@@ -52,7 +51,7 @@ namespace Graphene.Core.Types
             return new GraphQLObjectType
             {
                 Name = QueryType.Name,
-                Fields = QueryType.Fields.Concat(IntrospectionType.Fields)
+                Fields = QueryType.Fields.Concat(_introspectionType.Fields)
             };
         }
 

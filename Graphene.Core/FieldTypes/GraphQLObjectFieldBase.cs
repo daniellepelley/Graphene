@@ -48,7 +48,7 @@ namespace Graphene.Core.FieldTypes
         public bool IsDeprecated { get; set; }
         public string DeprecationReason { get; set; }
 
-        public GraphQLObjectFieldBase()
+        protected GraphQLObjectFieldBase()
         {
             Arguments = new IGraphQLArgument[0];
         }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Graphene.Core.Types;
 using NUnit.Framework;
 
 namespace Graphene.TypeProvider.Test

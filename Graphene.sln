@@ -29,6 +29,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{4EBBD81D
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Graphene.TypeProvider.Test", "Graphene.TypeProvider.Test\Graphene.TypeProvider.Test.csproj", "{78D1F6E9-4915-4A57-A387-7688588A0864}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Graphene.GraphQL.Spec", "Graphene.GraphQL.Spec\Graphene.GraphQL.Spec.csproj", "{B28A269C-D883-4E02-81BD-BDC47A10FC58}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -59,6 +61,10 @@ Global
 		{78D1F6E9-4915-4A57-A387-7688588A0864}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{78D1F6E9-4915-4A57-A387-7688588A0864}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{78D1F6E9-4915-4A57-A387-7688588A0864}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B28A269C-D883-4E02-81BD-BDC47A10FC58}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B28A269C-D883-4E02-81BD-BDC47A10FC58}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B28A269C-D883-4E02-81BD-BDC47A10FC58}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B28A269C-D883-4E02-81BD-BDC47A10FC58}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -66,5 +72,6 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{E7E2E036-A9E3-47C2-BA27-525CC15F1570} = {4EBBD81D-403E-42A5-93B8-B13AFF894B6A}
 		{78D1F6E9-4915-4A57-A387-7688588A0864} = {4EBBD81D-403E-42A5-93B8-B13AFF894B6A}
+		{B28A269C-D883-4E02-81BD-BDC47A10FC58} = {4EBBD81D-403E-42A5-93B8-B13AFF894B6A}
 	EndGlobalSection
 EndGlobal
