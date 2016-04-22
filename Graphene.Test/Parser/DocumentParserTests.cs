@@ -152,7 +152,7 @@ namespace Graphene.Test.Parser
             var result = sut.Parse(query);
 
 
-            for (int i = 0; i < 100; i++)
+            for (int i = 0; i < 1000; i++)
             {
                 sut.Parse(query);
             }

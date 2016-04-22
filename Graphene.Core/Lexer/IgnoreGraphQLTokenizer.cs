@@ -6,24 +6,14 @@ namespace Graphene.Core.Lexer
 
         public ILexerToken Handle(GraphQLLexerCursor cursor)
         {
-            var current = cursor.Text[cursor.Index].ToString();
+            var result = cursor.TakeWhile(Characters);
 
-            ILexerToken token = null;
-
-            while (Characters.Contains(current))
+            if (string.IsNullOrEmpty(result))
             {
-                token = new IgnoreLexerToken();
-                cursor.Index++;
-
-                if (cursor.Index >= cursor.Text.Length)
-                {
-                    break;
-                }
-
-                current = cursor.Text[cursor.Index].ToString();
+                return null;
             }
 
-            return token;
+            return new IgnoreLexerToken();
         }
     }
 }

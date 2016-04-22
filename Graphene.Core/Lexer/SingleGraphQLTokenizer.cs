@@ -8,18 +8,15 @@ namespace Graphene.Core.Lexer
 
         public ILexerToken Handle(GraphQLLexerCursor cursor)
         {
-            if (cursor.Text.Length < cursor.Index + Characters.Length)
+
+
+            var current = cursor.Match(Characters);
+
+            if (string.IsNullOrEmpty(current))
             {
                 return null;
             }
-
-            var current = cursor.Text.Substring(cursor.Index, Characters.Length);
-
-            if (!Characters.Contains(current))
-            {
-                return null;
-            }
-            cursor.Index++;
+            cursor.Advance();
             return new LexerToken(TokenType, current);
         }
     }

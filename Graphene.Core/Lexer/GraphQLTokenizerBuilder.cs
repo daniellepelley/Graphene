@@ -33,10 +33,8 @@ namespace Graphene.Core.Lexer
             AddToken("Float", GraphQLTokenType.Float);
             AddToken("String", GraphQLTokenType.String);
             AddToken("," + (char)10 + (char)13, GraphQLTokenType.Seperator);
-            _tokenizers.Add(new IgnoreGraphQLTokenizer
-            {
-                Characters = " " + (char)13
-            });
+            _tokenizers.Add(new CommentGraphQLTokenizer());
+
             return _tokenizers;
         }
 

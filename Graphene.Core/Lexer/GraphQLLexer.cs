@@ -5,20 +5,20 @@ namespace Graphene.Core.Lexer
 {
     public class GraphQLLexer
     {
-        private readonly GraphQLLexerCursor _cursor = new GraphQLLexerCursor();
+        private readonly GraphQLLexerCursor _cursor;
 
         private readonly List<IGraphQLTokenizer> _tokenizers;
 
         public GraphQLLexer(string text)
         {
             _tokenizers = new GraphQLTokenizerBuilder().Build();
-            _cursor.Text = text;
+            _cursor = new GraphQLLexerCursor(text);
         }
 
         public IEnumerable<ILexerToken> All()
         {
             var output = new List<ILexerToken>();
-            while (_cursor.Index < _cursor.Text.Length)
+            while (!_cursor.IsComplete())
             {
                 var next = GetLexerToken();
 
@@ -31,7 +31,7 @@ namespace Graphene.Core.Lexer
                 }
                 else
                 {
-                    _cursor.Index++;
+                    _cursor.Advance();
                 }
             }
             return output;

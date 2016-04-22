@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using System.Linq;
 using Graphene.Core.Lexer;
 using NUnit.Framework;
@@ -125,6 +126,145 @@ namespace Graphene.Test.Lexer
             var output = parserFeed.All().ToArray();
             Assert.AreEqual(expectedValue, ((LexerToken)output[index]).Value);
             Assert.AreEqual(expectedType, ((LexerToken)output[index]).Type);
+        }
+
+        [Test]
+        public void CanParseBasicQueryInUnderOneMicrosecond()
+        { 
+            var parserFeed = new GraphQLLexer("person(id :  1)   {name, address { street, town }}");
+
+            var stopWatch = new Stopwatch();
+            stopWatch.Start();
+            for (var i = 0; i < 100000; i++)
+            {
+                parserFeed.All().ToArray();
+            }
+
+            var ticksPerLex = stopWatch.ElapsedTicks / 100000;
+            Assert.IsTrue(ticksPerLex < 10);
+        }
+
+        [Test]
+        public void CanParseBasicQueryInUnderOneMicrosecond2()
+        {
+            var query = @"
+#Comment
+  person(id :  1)#Comment
+  {#Comment
+    name#Comment
+    address #Comment { ignore }
+    {#Comment
+      street #Comment
+      town     #Comment
+    }#Comment
+  }#Comment
+";
+
+            var parserFeed = new GraphQLLexer(query);
+
+            var stopWatch = new Stopwatch();
+            stopWatch.Start();
+            for (var i = 0; i < 100000; i++)
+            {
+                parserFeed.All().ToArray();
+            }
+
+            var ticksPerLex = stopWatch.ElapsedTicks / 100000;
+            Assert.IsTrue(ticksPerLex < 10);
+        }
+
+        [Test]
+        public void CanParseBasicQueryInUnderOneMicrosecond3()
+        {
+            var query = @"{query IntrospectionQuery {
+                            __schema {
+                              queryType { name }
+                              mutationType { name }
+                              subscriptionType { name }
+                              types {
+                                ...FullType
+                              }
+                              directives {
+                                name
+                                description
+                                args {
+                                  ...InputValue
+                                }
+                                onOperation
+                                onFragment
+                                onField
+                              }
+                            }
+                          }
+
+                          fragment FullType on __Type {
+                            kind
+                            name
+                            description
+                            fields(includeDeprecated: true) {
+                              name
+                              description
+                              args {
+                                ...InputValue
+                              }
+                              type {
+                                ...TypeRef
+                              }
+                              isDeprecated
+                              deprecationReason
+                            }
+                            inputFields {
+                              ...InputValue
+                            }
+                            interfaces {
+                              ...TypeRef
+                            }
+                            enumValues(includeDeprecated: true) {
+                              name
+                              description
+                              isDeprecated
+                              deprecationReason
+                            }
+                            possibleTypes {
+                              ...TypeRef
+                            }
+                          }
+
+                          fragment InputValue on __InputValue {
+                            name
+                            description
+                            type { ...TypeRef }
+                            defaultValue
+                          }
+
+                          fragment TypeRef on __Type {
+                            kind
+                            name
+                            ofType {
+                              kind
+                              name
+                              ofType {
+                                kind
+                                name
+                                ofType {
+                                  kind
+                                  name
+                                }
+                              }
+                            }
+                          }
+                        }";
+            var parserFeed = new GraphQLLexer(query);
+
+            var stopWatch = new Stopwatch();
+            stopWatch.Start();
+            for (var i = 0; i < 100000; i++)
+            {
+                parserFeed.All().ToArray();
+            }
+
+            var ticksPerLex = stopWatch.ElapsedTicks / 100000;
+            Assert.IsTrue(ticksPerLex < 10);
         }
     }
 }

@@ -6,8 +6,6 @@ namespace Graphene.Core.Lexer
     public class GraphQLLexerFeed : IGraphQLLexerFeed
     {
         private ILexerToken[] _tokens;
-        
-        //private int _index;
 
         public GraphQLLexerFeed(IEnumerable<ILexerToken> tokens)
         {

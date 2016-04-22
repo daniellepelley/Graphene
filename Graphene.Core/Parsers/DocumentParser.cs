@@ -13,7 +13,9 @@ namespace Graphene.Core.Parsers
         {
             var graphQLLexer = new GraphQLLexer(query);
 
-            var feed = new GraphQLLexerFeed(graphQLLexer.All());
+            var tokens = graphQLLexer.All();
+
+            var feed = new GraphQLLexerFeed(tokens);
 
             Validate(feed);
 
