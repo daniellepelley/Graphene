@@ -32,10 +32,17 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
     <Reference Include="nunit.framework">
       <HintPath>..\packages\NUnit.3.2.0\lib\net45\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -44,16 +51,22 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EntityFrameworkTests.cs" />
     <Compile Include="TypeBuilderTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Graphene.Core\Graphene.Core.csproj">
       <Project>{7f25ecd1-89ca-4d83-93ef-8b53ab5595d2}</Project>
       <Name>Graphene.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Graphene.Example.Data.EntityFramework\Graphene.Example.Data.EntityFramework.csproj">
+      <Project>{A7CC2429-00AA-40F5-991F-B89DF9443AAA}</Project>
+      <Name>Graphene.Example.Data.EntityFramework</Name>
     </ProjectReference>
     <ProjectReference Include="..\Graphene.TypeProvider\Graphene.TypeProvider.csproj">
       <Project>{145b1ccf-e038-4df8-9f9b-56700fc5a3d6}</Project>

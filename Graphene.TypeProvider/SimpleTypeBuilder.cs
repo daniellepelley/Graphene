@@ -1,6 +1,8 @@
 ﻿using System;
+using System.CodeDom;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
@@ -66,6 +68,70 @@ namespace Graphene.TypeProvider
             };
         }
     }
+
+    public static class ExpressionTree
+    {
+        private static MemberExpression CreateMemberExpression<T>(string propertyName)
+        {
+            var pe = Expression.Parameter(typeof(T), "source");
+            return Expression.Property(pe, "Name");
+        }
+
+        private static Expression CreateAggregateRoot<T>(string propertyName)
+        {
+            var pe = Expression.Parameter(typeof(T), "source");
+            MemberExpression me = Expression.Property(pe, "Name");
+
+
+
+
+            return Expression.Lambda<Func<T, string>>(me, pe);
+        }
+
+        private static Func<TEntity, object> GetPropGetter<TEntity>(string propertyName)
+        {
+            var parameterExpression = Expression.Parameter(typeof(TEntity), "x");
+
+            var body = propertyName.Split('.')
+                .Aggregate<string, Expression>(parameterExpression, (current, property) =>
+                    Expression.Condition(
+                    Expression.Equal(current, Expression.Default(current.Type)),
+                    Expression.Default(Expression.PropertyOrField(current, property).Type),
+                    Expression.PropertyOrField(current, property)));
+
+            return Expression.Lambda<Func<TEntity, object>>(body, parameterExpression).Compile();
+        }
+
+
+    }
+
+
+    public class FieldBuilder
+    {
+        public IGraphQLFieldType BuildGraphQLFieldType(Type inputType, Type outputType, string name)
+        {
+            var method = this.GetType().GetMethod("BuildFieldType");
+
+            var genericMethod = method.MakeGenericMethod(inputType, outputType);
+            return (IGraphQLFieldType)genericMethod.Invoke(null, new object[] { name });
+        }
+
+        private IGraphQLFieldType BuildFieldType<TInput, TTOutput>(string name)
+        {
+            var graphQLFieldType = new GraphQLObjectField<TInput, TTOutput>();
+
+            var parameterExpression = Expression.Parameter(typeof(TInput), "source");
+            var propertyExpression = Expression.Property(parameterExpression, name);
+
+            var lambda = Expression.Lambda<Func<TInput, TTOutput>>(propertyExpression, parameterExpression).Compile();
+
+            graphQLFieldType.Resolve = context => lambda(context.Source);
+
+            return graphQLFieldType;
+        }
+
+    }
+
 
     //public class GenericTypeBuilder
     //{

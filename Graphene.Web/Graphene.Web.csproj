@@ -172,7 +172,9 @@
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\_references.js" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
@@ -197,6 +199,10 @@
     <ProjectReference Include="..\Graphene.Core\Graphene.Core.csproj">
       <Project>{7f25ecd1-89ca-4d83-93ef-8b53ab5595d2}</Project>
       <Name>Graphene.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Graphene.Example.Data.EntityFramework\Graphene.Example.Data.EntityFramework.csproj">
+      <Project>{A7CC2429-00AA-40F5-991F-B89DF9443AAA}</Project>
+      <Name>Graphene.Example.Data.EntityFramework</Name>
     </ProjectReference>
     <ProjectReference Include="..\Graphene.Execution\Graphene.Execution.csproj">
       <Project>{0f97b45b-7646-4f7d-8a33-d197852061c5}</Project>

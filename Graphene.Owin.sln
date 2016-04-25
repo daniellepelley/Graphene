@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Graphene.Web", "Graphene.We
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Owin.Graphene", "Owin.Graphene\Owin.Graphene.csproj", "{02AE03AC-423C-42B9-9DB4-4D58BE0F56B3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Graphene.Example.Data.EntityFramework", "Graphene.Example.Data.EntityFramework\Graphene.Example.Data.EntityFramework.csproj", "{A7CC2429-00AA-40F5-991F-B89DF9443AAA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +47,10 @@ Global
 		{02AE03AC-423C-42B9-9DB4-4D58BE0F56B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{02AE03AC-423C-42B9-9DB4-4D58BE0F56B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{02AE03AC-423C-42B9-9DB4-4D58BE0F56B3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A7CC2429-00AA-40F5-991F-B89DF9443AAA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A7CC2429-00AA-40F5-991F-B89DF9443AAA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A7CC2429-00AA-40F5-991F-B89DF9443AAA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A7CC2429-00AA-40F5-991F-B89DF9443AAA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
