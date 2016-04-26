@@ -7,5 +7,6 @@ namespace Graphene.Core.Types
     {
         IGraphQLType LookUpType(string typeName);
         void AddType(string typeName, IGraphQLType type);
+        bool HasType(string name);
     }
 }

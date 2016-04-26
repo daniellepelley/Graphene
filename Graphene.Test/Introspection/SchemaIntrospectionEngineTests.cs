@@ -13,7 +13,7 @@ namespace Graphene.Test.Introspection
         {
             var sut = new ExecutionEngine();
 
-            var schema = TestSchemas.CreateIntrospectionSchema();
+            var schema = TestSchemas.UserSchema();
 
             var query = @"{query IntrospectionQuery {__schema{queryType{name, kind}}}}";
             var document = new DocumentParser().Parse(query); ;
@@ -25,11 +25,11 @@ namespace Graphene.Test.Introspection
         }
 
         [Test]
-        public void QueryTypeWithFriends()
+        public void QueryTypeWithFields()
         {
             var sut = new ExecutionEngine();
 
-            var schema = TestSchemas.CreateIntrospectionSchema();
+            var schema = TestSchemas.UserSchema();
 
             var query = @"{query IntrospectionQuery {__schema{queryType{name, kind, fields{name}}}}}";
             var document = new DocumentParser().Parse(query); ;
@@ -41,12 +41,28 @@ namespace Graphene.Test.Introspection
         }
 
         [Test]
+        public void QueryTypeWithFieldsUsingEntityFramework()
+        {
+            var sut = new ExecutionEngine();
+
+            var schema = TestSchemas.EntityFrameworkSchema();
+
+            var query = @"{query IntrospectionQuery {__schema{queryType{name, kind, fields{name, type}}}}}";
+            var document = new DocumentParser().Parse(query); ;
+
+            var expected = @"{""data"":{""__schema"":{""queryType"":{""name"":""Root"",""kind"":""OBJECT"",""fields"":[{""name"":""companies"",""type"":null}]}}}}";
+
+            var result = JsonConvert.SerializeObject(sut.Execute(schema, document));
+            Assert.AreEqual(expected, result);
+        }
+
+        [Test]
         [Ignore("Keeps changing")]
         public void Types()
         {
             var sut = new ExecutionEngine();
 
-            var schema = TestSchemas.CreateIntrospectionSchema();
+            var schema = TestSchemas.UserSchema();
 
             var query = @"{query IntrospectionQuery {__schema{types{name, kind, fields{name, kind, fields{name}}}}}}";
             var document = new DocumentParser().Parse(query); ;

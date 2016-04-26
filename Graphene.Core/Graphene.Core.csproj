@@ -46,6 +46,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Execution\ExecutionBranch.cs" />
+    <Compile Include="Execution\ExecutionBranchList.cs" />
     <Compile Include="Execution\ExecutionTree.cs" />
     <Compile Include="Execution\ExecutionNode.cs" />
     <Compile Include="Execution\IExecutionItem.cs" />

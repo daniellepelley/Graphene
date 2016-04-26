@@ -59,6 +59,10 @@
       <Project>{0f97b45b-7646-4f7d-8a33-d197852061c5}</Project>
       <Name>Graphene.Execution</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Graphene.TypeProvider\Graphene.TypeProvider.csproj">
+      <Project>{145B1CCF-E038-4DF8-9F9B-56700FC5A3D6}</Project>
+      <Name>Graphene.TypeProvider</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

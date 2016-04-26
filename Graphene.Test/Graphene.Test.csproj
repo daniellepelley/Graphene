@@ -32,6 +32,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
     <Reference Include="Moq">
       <HintPath>..\packages\Moq.4.2.1510.2205\lib\net40\Moq.dll</HintPath>
     </Reference>
@@ -43,6 +49,7 @@
       <HintPath>..\packages\NUnit.3.2.0\lib\net45\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -88,6 +95,7 @@
     <Compile Include="Execution\MappingTests.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="App.config" />
     <None Include="Introspection\Actual.json" />
     <None Include="Introspection\ResponseWithTypeOf.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -122,6 +130,10 @@
     <ProjectReference Include="..\Graphene.Core\Graphene.Core.csproj">
       <Project>{7F25ECD1-89CA-4D83-93EF-8B53AB5595D2}</Project>
       <Name>Graphene.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Graphene.Example.Data.EntityFramework\Graphene.Example.Data.EntityFramework.csproj">
+      <Project>{A7CC2429-00AA-40F5-991F-B89DF9443AAA}</Project>
+      <Name>Graphene.Example.Data.EntityFramework</Name>
     </ProjectReference>
     <ProjectReference Include="..\Graphene.Execution\Graphene.Execution.csproj">
       <Project>{0F97B45B-7646-4F7D-8A33-D197852061C5}</Project>

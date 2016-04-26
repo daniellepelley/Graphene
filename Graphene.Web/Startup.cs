@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using Graphene.Example.Data.EntityFramework;
+using Graphene.Spike;
 using Graphene.Web.Models;
 using Microsoft.Owin;
 using Owin;
@@ -12,13 +13,12 @@ namespace Graphene.Web
     {
         public void Configuration(IAppBuilder app)
         {
-            app.UseGraphQL(ExampleSchemas.CreateSchema());
-            var context = new GraphQLDemoDataContext();
+            //app.UseGraphQL(new SchemaBuilder().Build());
 
-            var seeder = new Seeder();
-            seeder.Seed(context);
+            //app.UseGraphQL(ExampleSchemas.CreateSchema2());
 
-            var people = context.Persons.ToArray();
+            app.UseGraphQL(ExampleSchemas.CreateGraphQLDemoDataContextSchema());
+            
         }
     }
 }

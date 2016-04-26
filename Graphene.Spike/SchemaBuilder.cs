@@ -1,11 +1,13 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Graphene.Core;
 using Graphene.Core.FieldTypes;
 using Graphene.Core.Types;
 using Graphene.Core.Types.Introspection;
 using Graphene.Core.Types.Object;
 using Graphene.Core.Types.Scalar;
+using Graphene.TypeProvider;
 
 namespace Graphene.Spike
 {
@@ -25,6 +27,11 @@ namespace Graphene.Spike
             _fields = new List<IGraphQLFieldType>();
         }
 
+        public TypeList TypeList
+        {
+            get { return _typeList; }
+        }
+
         public GraphQLSchema Build()
         {
             var typeList = _typeList.Clone();
@@ -40,6 +47,12 @@ namespace Graphene.Spike
 
             typeList.AddType(output.QueryType.Name, output.QueryType);
             return output;
+        }
+
+        public SchemaBuilder WithField(IGraphQLFieldType graphQLFieldType)
+        {
+            _fields.Add(graphQLFieldType);
+            return this;
         }
 
         public SchemaBuilder WithField(string name, GraphQLObjectType createUserType)
@@ -319,6 +332,15 @@ namespace Graphene.Spike
         {
             _graphQLObjectType.Fields = _fields;
             return _graphQLObjectType;
+        }
+    }
+
+    public static class Extensions
+    {
+        public static SchemaBuilder AsAggregateRoot<T>(this SchemaBuilder source, IQueryable<T>  queryable, string name)
+        {
+            source.WithField(new FieldBuilder().CreateAggregateRoot(queryable, name, source.TypeList));
+            return source;
         }
     }
 } 

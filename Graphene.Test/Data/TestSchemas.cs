@@ -5,6 +5,9 @@ using Graphene.Core.Types;
 using Graphene.Core.Types.Introspection;
 using Graphene.Core.Types.Object;
 using Graphene.Core.Types.Scalar;
+using Graphene.Example.Data.EntityFramework;
+using Graphene.Spike;
+using Graphene.TypeProvider;
 
 namespace Graphene.Test.Data
 {
@@ -18,6 +21,16 @@ namespace Graphene.Test.Data
         public static GraphQLSchema UserSchemaWithBoss()
         {
             return UserSchema(CreateUserTypeWithBoss());
+        }
+
+        public static GraphQLSchema EntityFrameworkSchema()
+        {
+            var builder = new SchemaBuilder();
+
+            var context = new GraphQLDemoDataContext();
+            var field = new FieldBuilder().CreateAggregateRoot(context.Companies, "companies", builder.TypeList);
+
+            return builder.WithField(field).Build();
         }
 
         private static ITypeList _typeList;
@@ -45,7 +58,7 @@ namespace Graphene.Test.Data
             return _typeList;
         }
 
-        public static GraphQLSchema UserSchema(GraphQLObjectType userType)
+        private static GraphQLSchema UserSchema(GraphQLObjectType userType)
         {
             var typeList = new TypeList();
 
@@ -141,7 +154,7 @@ namespace Graphene.Test.Data
             return userType;
         }
 
-        public static GraphQLObjectType CreateUserTypeWithBoss()
+        private static GraphQLObjectType CreateUserTypeWithBoss()
         {
             var userType = new GraphQLObjectType
             {
@@ -197,31 +210,9 @@ namespace Graphene.Test.Data
             return bossType;
         }
 
-        public static GraphQLSchema CreateIntrospectionSchema()
-        {
-            return UserSchema();
-
-            //return CreateIntrospectionSchema(new GraphQLObjectField<GraphQLSchema>
-            //{
-            //    Name = "__schema",
-            //    Type = new ChainType(GetTypeList(), "__Schema"),
-            //    Resolve = _ => UserSchema()
-            //});
-
-        }
-
-        //public static GraphQLSchema CreateIntrospectionSchema(IGraphQLFieldType type)
+        //public static GraphQLSchema CreateIntrospectionSchema()
         //{
-        //    return new GraphQLSchema(GetTypeList())
-        //    {
-        //        QueryType = new GraphQLObjectType
-        //        {
-        //            Fields = new IGraphQLFieldType[]
-        //            {
-        //                type
-        //            }
-        //        }
-        //    };
+        //    return UserSchema();
         //}
 
         public static string GraphiQlQueryWithFragments

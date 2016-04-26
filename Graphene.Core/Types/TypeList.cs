@@ -44,6 +44,11 @@ namespace Graphene.Core.Types
             _dictionary.Add(typeName, type);
         }
 
+        public bool HasType(string typeName)
+        {
+            return _dictionary.ContainsKey(typeName);
+        }
+
         public IEnumerator<IGraphQLType> GetEnumerator()
         {
             return _dictionary.Values.GetEnumerator();

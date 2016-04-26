@@ -77,7 +77,7 @@ namespace Graphene.Test.Introspection
         {
             var document = CreateDocument(query);
 
-            var result = new ExecutionEngine().Execute(TestSchemas.CreateIntrospectionSchema(), document);
+            var result = new ExecutionEngine().Execute(TestSchemas.UserSchema(), document);
 
             var json = JsonConvert.SerializeObject(result);
 
