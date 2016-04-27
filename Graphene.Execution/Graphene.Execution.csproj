@@ -47,7 +47,7 @@
     <Compile Include="OperationExecutionEngine.cs" />
     <Compile Include="OperationValidator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ScalarFieldExecutionEngine.cs" />
+    <Compile Include="ExecutionBranchBuilder.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Graphene.Core\Graphene.Core.csproj">

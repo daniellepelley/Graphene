@@ -47,13 +47,13 @@ namespace Graphene.Test.Introspection
 
             var schema = TestSchemas.EntityFrameworkSchema();
 
-            var query = @"{query IntrospectionQuery {__schema{queryType{name, kind, fields{name, type}}}}}";
+            var query = @"{query IntrospectionQuery {__schema{types{name, kind, fields{name, type}}}}}";
             var document = new DocumentParser().Parse(query); ;
 
-            var expected = @"{""data"":{""__schema"":{""queryType"":{""name"":""Root"",""kind"":""OBJECT"",""fields"":[{""name"":""companies"",""type"":null}]}}}}";
+            var expected = @"{""name"":""companies"",""type"":""Company""}";
 
-            var result = JsonConvert.SerializeObject(sut.Execute(schema, document));
-            Assert.AreEqual(expected, result);
+            var result = JsonConvert.SerializeObject(sut.Execute(schema, document)).Substring(300,100);
+            StringAssert.Contains(expected, result);
         }
 
         [Test]
