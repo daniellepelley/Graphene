@@ -68,6 +68,10 @@
       <Project>{0F97B45B-7646-4F7D-8A33-D197852061C5}</Project>
       <Name>Graphene.Execution</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Graphene.Spike\Graphene.Spike.csproj">
+      <Project>{14E5E4E2-3FC1-4E4B-BDB7-BA8743F78F08}</Project>
+      <Name>Graphene.Spike</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
