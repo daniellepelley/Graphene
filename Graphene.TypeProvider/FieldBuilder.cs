@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -31,7 +32,10 @@ namespace Graphene.TypeProvider
                 var field = BuildGraphQLFieldType(type, propertyInfo.PropertyType, propertyInfo.Name);
                 field.Name = propertyInfo.Name;
 
-                field.Type = GetType(propertyInfo.PropertyType, typeList);
+                var fieldType = GetType(propertyInfo.PropertyType, typeList);                    
+
+
+                    field.Type = fieldType;
 
                 list.Add(field);
             }
@@ -59,6 +63,12 @@ namespace Graphene.TypeProvider
                 return new ChainType(typeList, "Int");
             }
             Create(type, typeList);
+
+            if (typeof(IEnumerable).IsAssignableFrom(type))
+            {
+                return new ChainType(typeList, "List", type.Name);
+            }
+
             return new ChainType(typeList, type.Name);
         }
 

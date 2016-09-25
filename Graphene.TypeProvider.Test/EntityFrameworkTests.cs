@@ -18,16 +18,39 @@ namespace Graphene.TypeProvider.Test
         {
             var sut = new FieldBuilder();
 
-            var typeList = new TypeList();
+            var typeList = TypeList.Create();
 
             sut.Create(typeof(Company), typeList);
 
             var result = typeList.LookUpType("Company") as GraphQLObjectType;
 
-            Assert.AreEqual("Id", result.Fields.ElementAt(0).Name);
-            Assert.AreEqual("Name", result.Fields.ElementAt(1).Name);
-            Assert.AreEqual("CatchPhrase", result.Fields.ElementAt(2).Name);
-            Assert.AreEqual("Address", result.Fields.ElementAt(3).Name);
+            var id = result.Fields.ElementAt(0);
+            Assert.AreEqual("Id", id.Name);
+            Assert.AreEqual("Int", id.Type.Name);
+
+            var name = result.Fields.ElementAt(1);
+            Assert.AreEqual("Name", name.Name);
+            Assert.AreEqual("String", name.Type.Name);
+
+            var catchPhrase = result.Fields.ElementAt(2);
+            Assert.AreEqual("CatchPhrase", catchPhrase.Name);
+            Assert.AreEqual("String", catchPhrase.Type.Name);
+
+            var address = result.Fields.ElementAt(3);
+            Assert.AreEqual("Address", address.Name);
+            Assert.AreEqual("Address", address.Type.Name);
+
+            var addressId = address.Type.GetFields().ElementAt(0);
+            Assert.AreEqual("Id", addressId.Name);
+            Assert.AreEqual("Int", addressId.Type.Name);
+
+            var addressStreetAddress = address.Type.GetFields().ElementAt(1);
+            Assert.AreEqual("StreetAddress", addressStreetAddress.Name);
+            Assert.AreEqual("String", addressStreetAddress.Type.Name);
+
+            var customers = result.Fields.ElementAt(4);
+            Assert.AreEqual("Customers", customers.Name);
+            Assert.AreEqual("List", customers.Type.Name);
         }
 
         [Test]
@@ -35,7 +58,7 @@ namespace Graphene.TypeProvider.Test
         {
             var sut = new FieldBuilder();
 
-            var typeList = new TypeList();
+            var typeList = TypeList.Create();
             sut.Create(typeof(Company), typeList);
             var result = typeList.LookUpType("Company") as GraphQLObjectType;
 
@@ -61,9 +84,6 @@ namespace Graphene.TypeProvider.Test
             var typeList = new TypeList();
             sut.Create(typeof(Company), typeList);
             var result = typeList.LookUpType("Company") as GraphQLObjectType;
-
-
-          
         }
 
         private static void AssertResolve<TInput, TOutput>(GraphQLObjectType result, int elementAt, TInput input, TOutput expected)

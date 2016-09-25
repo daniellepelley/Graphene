@@ -12,50 +12,50 @@ namespace Graphene.Core.Types.Introspection
         public __Schema(ITypeList typeList)
         {
             _typeList = typeList;
-            var queryType = new GraphQLObjectType
-            {
-                Name = "__Type",
-                Fields = new IGraphQLFieldType[]
-                {
-                    new GraphQLScalarField<GraphQLObjectFieldBase, string>
-                    {
-                        Name = "kind",
-                        Description = "The type that query operations will be rooted at.",
-                        Resolve = context => context.Source.Kind
-                    },
-                    new GraphQLScalarField<GraphQLObjectFieldBase, string>
-                    {
-                        Name = "name",
-                        Resolve = context => context.Source.Name
-                    },
-                    new GraphQLList<GraphQLObjectFieldBase, IGraphQLFieldType>
-                    {
-                        Name = "fields",
-                        Type = new GraphQLObjectType
-                        {
-                            Fields = new List<IGraphQLFieldType>
-                            {
-                                new GraphQLScalarField<IGraphQLFieldType, string>
-                                {
-                                    Name = "name",
-                                    Resolve = context => context.Source.Name
-                                },
-                                new GraphQLScalarField<IGraphQLFieldType, string>
-                                {
-                                    Name = "description",
-                                    Resolve = context => context.Source.Description
-                                },
-                                new GraphQLScalarField<IGraphQLFieldType, string>
-                                {
-                                    Name = "kind",
-                                    Resolve = context => context.Source.Kind
-                                }
-                            }
-                        },
-                        Resolve = context => ((GraphQLObjectType)context.Source.Type).Fields
-                    }
-                }
-            };
+//            var queryType = new GraphQLObjectType
+//            {
+//                Name = "__Type",
+//                Fields = new IGraphQLFieldType[]
+//                {
+//                    new GraphQLScalarField<GraphQLObjectFieldBase, string>
+//                    {
+//                        Name = "kind",
+//                        Description = "The type that query operations will be rooted at.",
+//                        Resolve = context => context.Source.Kind
+//                    },
+//                    new GraphQLScalarField<GraphQLObjectFieldBase, string>
+//                    {
+//                        Name = "name",
+//                        Resolve = context => context.Source.Name
+//                    },
+//                    new GraphQLList<GraphQLObjectFieldBase, IGraphQLFieldType>
+//                    {
+//                        Name = "fields",
+//                        Type = new GraphQLObjectType
+//                        {
+//                            Fields = new List<IGraphQLFieldType>
+//                            {
+//                                new GraphQLScalarField<IGraphQLFieldType, string>
+//                                {
+//                                    Name = "name",
+//                                    Resolve = context => context.Source.Name
+//                                },
+//                                new GraphQLScalarField<IGraphQLFieldType, string>
+//                                {
+//                                    Name = "description",
+//                                    Resolve = context => context.Source.Description
+//                                },
+//                                new GraphQLScalarField<IGraphQLFieldType, string>
+//                                {
+//                                    Name = "kind",
+//                                    Resolve = context => context.Source.Kind
+//                                }
+//                            }
+//                        },
+//                        Resolve = context => ((GraphQLObjectType)context.Source.Type).Fields
+//                    }
+//                }
+//            };
 
             Fields = new IGraphQLFieldType[]
             {

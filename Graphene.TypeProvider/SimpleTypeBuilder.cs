@@ -1,15 +1,9 @@
 ﻿using System;
-using System.CodeDom;
-using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using Graphene.Core.FieldTypes;
-using Graphene.Core.Types;
 using Graphene.Core.Types.Object;
-using Graphene.Core.Types.Scalar;
 
 namespace Graphene.TypeProvider
 {
@@ -53,10 +47,9 @@ namespace Graphene.TypeProvider
                 return new GraphQLScalarField<object, object>
                 {
                     Name = propertyInfo.Name,
-                    Resolve = context => propertyInfo.GetValue(context.Source)
+                    Resolve = context => propertyInfo.GetValue(context.Source),
                 };
             }
-
 
             return new GraphQLObjectField<object, object>
             {
@@ -81,11 +74,7 @@ namespace Graphene.TypeProvider
         private static Expression CreateAggregateRoot<T>(string propertyName)
         {
             var pe = Expression.Parameter(typeof(T), "source");
-            MemberExpression me = Expression.Property(pe, "Name");
-
-
-
-
+            var me = Expression.Property(pe, "Name");
             return Expression.Lambda<Func<T, string>>(me, pe);
         }
 

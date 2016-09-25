@@ -32,7 +32,7 @@ namespace Graphene.Execution
                 return errors;
             }
 
-
+            
             new FragmentProcessor().Process(document, true);
 
             var operation = document.Operations.First();

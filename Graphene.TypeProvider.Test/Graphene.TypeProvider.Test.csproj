@@ -51,7 +51,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AnotherType.cs" />
     <Compile Include="EntityFrameworkTests.cs" />
+    <Compile Include="SimpleType.cs" />
     <Compile Include="TypeBuilderTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

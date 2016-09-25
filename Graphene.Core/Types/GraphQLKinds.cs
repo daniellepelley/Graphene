@@ -2,13 +2,13 @@
 {
     public static class GraphQLKinds
     {
-        public static string Scalar = "SCALAR";
-        public static string Object = "OBJECT";
-        public static string Interface = "INTERFACE";
-        public static string Union = "UNION";
-        public static string List = "LIST";
-        public static string NonNull = "NON_NULL";
-        public static string Enum = "ENUM";
-        public static string InputObject = "INPUT_OBJECT";
+        public const string Scalar = "SCALAR";
+        public const string Object = "OBJECT";
+        public const string Interface = "INTERFACE";
+        public const string Union = "UNION";
+        public const string List = "LIST";
+        public const string NonNull = "NON_NULL";
+        public const string Enum = "ENUM";
+        public const string InputObject = "INPUT_OBJECT";
     }
 }

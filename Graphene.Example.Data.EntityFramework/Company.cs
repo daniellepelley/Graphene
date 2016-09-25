@@ -1,3 +1,6 @@
+using System.Collections;
+using System.Collections.Generic;
+
 namespace Graphene.Example.Data.EntityFramework
 {
     public class Company
@@ -6,5 +9,11 @@ namespace Graphene.Example.Data.EntityFramework
         public string Name { get; set; }
         public string CatchPhrase { get; set; }
         public Address Address { get; set; }
+        public ICollection<Customer> Customers { get; set; }
+    }
+
+    public class Customer
+    {
+        public string Name { get; set; }
     }
 }

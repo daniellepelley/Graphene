@@ -130,6 +130,7 @@ namespace Graphene.Test.Lexer
         }
 
         [Test]
+        [Ignore("Timeing test")]
         public void CanParseBasicQueryInUnderOneMicrosecond()
         { 
             var parserFeed = new GraphQLLexer("person(id :  1)   {name, address { street, town }}");

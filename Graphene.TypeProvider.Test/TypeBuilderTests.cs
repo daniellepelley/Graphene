@@ -25,16 +25,4 @@ namespace Graphene.TypeProvider.Test
             Assert.IsNotNull(graphQlType["AnotherType"]["Name"]);
         }
     }
-
-    public class SimpleType
-    {
-        public string Name { get; set; }
-        public int Amount { get; set; }
-        public AnotherType AnotherType { get; set; }
-    }
-
-    public class AnotherType
-    {
-        public string Name { get; set; }
-    }
 }

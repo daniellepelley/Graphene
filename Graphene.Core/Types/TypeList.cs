@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Graphene.Core.Exceptions;
+using Graphene.Core.Types.Introspection;
 using Graphene.Core.Types.Scalar;
 
 namespace Graphene.Core.Types
@@ -13,6 +14,26 @@ namespace Graphene.Core.Types
         public TypeList()
         {
             _dictionary = new Dictionary<string, IGraphQLType>();
+        }
+
+        public static ITypeList Create()
+        {
+            var typeList = new TypeList();
+            typeList.AddType("__Schema", new __Schema(typeList));
+            typeList.AddType("__Type", new __Type(typeList));
+            typeList.AddType("__TypeKind", new __TypeKind());
+            typeList.AddType("GraphQLBoolean", new GraphQLBoolean());
+            typeList.AddType("__Field", new __Field(typeList));
+            typeList.AddType("__InputValue", new __InputValue(typeList));
+            typeList.AddType("__EnumValue", new __EnumValue(typeList));
+            typeList.AddType("__Directive", new __Directive(typeList));
+            typeList.AddType("NonNull", new GraphQLNonNull());
+            typeList.AddType("List", new GraphQLList());
+            typeList.AddType("String", new GraphQLString());
+            typeList.AddType("Boolean", new GraphQLBoolean());
+            typeList.AddType("GraphQLEnum", new GraphQLEnum());
+            typeList.AddType("Int", new GraphQLInt());
+            return typeList;
         }
 
         public IGraphQLType LookUpType(string typeName)
