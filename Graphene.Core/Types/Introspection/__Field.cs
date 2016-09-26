@@ -1,3 +1,4 @@
+using Graphene.Core.Constants;
 using Graphene.Core.FieldTypes;
 using Graphene.Core.Types.Object;
 using Graphene.Core.Types.Scalar;
@@ -20,37 +21,37 @@ namespace Graphene.Core.Types.Introspection
                 new GraphQLScalarField<IGraphQLFieldType, string>
                 {
                     Name = "name",
-                    Type = new[] {"NonNull", "String"},
+                    Type = new[] {GraphQLTypes.NonNull, GraphQLTypes.String},
                     Resolve = context => context.Source.Name
                 },
                 new GraphQLScalarField<IGraphQLFieldType, string>
                 {
                     Name = "description",
-                    Type = new[] {"String"},
+                    Type = new[] {GraphQLTypes.String},
                     Resolve = context => context.Source.Description
                 },
                 new GraphQLList<IGraphQLFieldType, IGraphQLArgument>
                 {
                     Name = "args",
-                    Type = new[] {"NonNull", "List", "NonNull", "__InputValue"},
+                    Type = new[] {GraphQLTypes.NonNull, GraphQLTypes.List, GraphQLTypes.NonNull, "__InputValue"},
                     Resolve = context => context.Source.Arguments
                 },
                 new GraphQLObjectField<IGraphQLFieldType, IGraphQLType>
                 {
                     Name = "type",
-                    Type = new[] {"NonNull", "__Type"},
+                    Type = new[] {GraphQLTypes.NonNull, "__Type"},
                     Resolve = context => new ChainType(typeList, context.Source.Type)
                 },
                 new GraphQLScalarField<IGraphQLFieldType, bool>
                 {
                     Name = "isDeprecated",
-                    Type = new[] {"NonNull", "Boolean"},
+                    Type = new[] {GraphQLTypes.NonNull, GraphQLTypes.Boolean},
                     Resolve = context => context.Source.IsDeprecated
                 },
                 new GraphQLScalarField<IGraphQLFieldType, string>
                 {
                     Name = "deprecationReason",
-                    Type = new[] {"String"},
+                    Type = new[] {GraphQLTypes.String},
                     Resolve = context => context.Source.DeprecationReason
                 }
             };

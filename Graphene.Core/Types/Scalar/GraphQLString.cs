@@ -1,10 +1,12 @@
+using Graphene.Core.Constants;
+
 namespace Graphene.Core.Types.Scalar
 {
     public class GraphQLString : GraphQLScalarBase, IGraphQLType
     {
         public string Name
         {
-            get { return "String"; }
+            get { return GraphQLTypes.String; }
         }
 
         public string Description

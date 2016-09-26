@@ -136,7 +136,7 @@ namespace Graphene.TypeProvider
     //    {
     //        if (type == typeof(string))
     //        {
-    //            return new ChainType(typeList, "String");
+    //            return new ChainType(typeList, GraphQLTypes.String);
     //        }
     //        if (type == typeof(int))
     //        {

@@ -1,3 +1,4 @@
+using Graphene.Core.Constants;
 using Graphene.Core.Types.Scalar;
 
 namespace Graphene.Core.Types.Introspection

@@ -1,3 +1,5 @@
+using Graphene.Core.Constants;
+
 namespace Graphene.Core.Types.Scalar
 {
     public class GraphQLNonNull : IGraphQLType
@@ -9,7 +11,7 @@ namespace Graphene.Core.Types.Scalar
 
         public string Name
         {
-            get { return "NonNull"; }
+            get { return GraphQLTypes.NonNull; }
         }
 
         public string Description

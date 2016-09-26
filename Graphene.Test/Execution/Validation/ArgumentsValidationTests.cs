@@ -13,7 +13,7 @@ namespace Graphene.Test.Execution.Validation
         public void WhenArgumentIsMatches()
         {
             var arguments = Arguments("id", 1);
-            var graphQLArguments = GraphQLArguments("id", new GraphQLInt());
+            var graphQLArguments = GraphQLArguments("id", new [] { "Int" });
 
             var result = new OperationValidator(TypeList.Create()).Validate(arguments, graphQLArguments, "bar", "baz");
 
@@ -24,7 +24,7 @@ namespace Graphene.Test.Execution.Validation
         public void WhenArgumentValueIdWrongType()
         {
             var arguments = Arguments("id", "42");
-            var graphQLArguments = GraphQLArguments("id", new GraphQLInt());
+            var graphQLArguments = GraphQLArguments("id", new[] { "Int" });
 
             var result = new OperationValidator(TypeList.Create()).Validate(arguments, graphQLArguments, "bar", "baz");
 
@@ -35,7 +35,7 @@ namespace Graphene.Test.Execution.Validation
         public void WhenArgumentIsNotKnown1()
         {
             var arguments = Arguments("foo", 42);
-            var graphQLArguments = GraphQLArguments("bar", new GraphQLInt());
+            var graphQLArguments = GraphQLArguments("bar", new[] { "Int" });
 
             var result = new OperationValidator(TypeList.Create()).Validate(arguments, graphQLArguments, "bar", "baz");
 
@@ -46,7 +46,7 @@ namespace Graphene.Test.Execution.Validation
         public void WhenArgumentIsNotKnown2()
         {
             var arguments = Arguments("foo", 42);
-            var graphQLArguments = GraphQLArguments("bar", new GraphQLInt());
+            var graphQLArguments = GraphQLArguments("bar", new[] { "Int" });
 
             var result = new OperationValidator(TypeList.Create()).Validate(arguments, graphQLArguments, null, "baz");
 
@@ -57,7 +57,7 @@ namespace Graphene.Test.Execution.Validation
         public void WhenArgumentIsNotKnown3()
         {
             var arguments = Arguments("foo", 42);
-            var graphQLArguments = GraphQLArguments("bar", new GraphQLInt());
+            var graphQLArguments = GraphQLArguments("bar", new[] { "Int" });
 
             var result = new OperationValidator(TypeList.Create()).Validate(arguments, graphQLArguments, "bar", null);
 
@@ -78,7 +78,7 @@ namespace Graphene.Test.Execution.Validation
         public void WhenArgumentIsNotKnown5()
         {
             var arguments = Arguments("foo", 42);
-            var graphQLArguments = GraphQLArguments("bar", new GraphQLInt());
+            var graphQLArguments = GraphQLArguments("bar", new[] { "Int" });
 
             var result = new OperationValidator(TypeList.Create()).Validate(arguments, graphQLArguments, null, null);
 
@@ -97,7 +97,7 @@ namespace Graphene.Test.Execution.Validation
         public void WhenArgumentIsRepeated()
         {
             var arguments = Arguments("id", 42).Concat(Arguments("id", 42)).ToArray();
-            var graphQLArguments = GraphQLArguments("id", new GraphQLInt());
+            var graphQLArguments = GraphQLArguments("id", new[] { "Int" });
 
             var result = new OperationValidator(TypeList.Create()).Validate(arguments, graphQLArguments, "bar", "baz");
 
@@ -118,7 +118,7 @@ namespace Graphene.Test.Execution.Validation
             return arguments;
         }
 
-        private static IGraphQLArgument[] GraphQLArguments(string name, IGraphQLType type)
+        private static IGraphQLArgument[] GraphQLArguments(string name, string[] type)
         {
             var arguments = new IGraphQLArgument[]
             {

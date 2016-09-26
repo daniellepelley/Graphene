@@ -1,3 +1,4 @@
+using Graphene.Core.Constants;
 using Graphene.Core.FieldTypes;
 using Graphene.Core.Types.Object;
 using Graphene.Core.Types.Scalar;
@@ -26,31 +27,31 @@ namespace Graphene.Core.Types.Introspection
                 new GraphQLScalarField<IGraphQLType, string>
                 {
                     Name = "kind",
-                    Type = new [] {"NonNull", "GraphQLEnum"},
+                    Type = new [] {GraphQLTypes.NonNull, "GraphQLEnum"},
                     Resolve = context => context.Source.Kind
                 },
                 new GraphQLScalarField<IGraphQLType, string>
                 {
                     Name = "name",
-                    Type = new [] {"String"},
+                    Type = new [] {GraphQLTypes.String},
                     Resolve = context => context.Source.Name
                 },
                 new GraphQLScalarField<IGraphQLType, string>
                 {
                     Name = "description",
-                    Type = new [] {"String"},
+                    Type = new [] {GraphQLTypes.String},
                     Resolve = context => context.Source.Description
                 },
                 new GraphQLList<IGraphQLType, IGraphQLFieldType>
                 {
                     Name = "fields",
-                    Type = new [] {"List", "NonNull", "__Field"},
+                    Type = new [] {GraphQLTypes.List, GraphQLTypes.NonNull, "__Field"},
                     Arguments = new [] 
                     {
                       new GraphQLArgument
                       {
                           Name = "includeDeprecated",
-                          Type = new GraphQLBoolean(),
+                          Type = new [] { GraphQLTypes.Boolean },
                           DefaultValue = "false"
                       }                        
                     },
@@ -63,25 +64,25 @@ namespace Graphene.Core.Types.Introspection
                 new GraphQLScalarField<IGraphQLType, string[]>
                 {
                     Name = "interfaces",
-                    Type = new [] {"List", "NonNull", "__Type"},
+                    Type = new [] {GraphQLTypes.List, GraphQLTypes.NonNull, GraphQLTypes.__Type},
                     Resolve = context => context.Source.Kind != "OBJECT" ? null : new string[0]
                 },
                 new GraphQLObjectField<IGraphQLType, string>
                 {
                     Name = "possibleTypes",
-                    Type =  new [] {"List", "NonNull", "__Type"},
+                    Type =  new [] {GraphQLTypes.List, GraphQLTypes.NonNull, "__Type"},
                     Resolve = context => null 
                 },
                 new GraphQLList<IGraphQLType, IGraphQLKind>
                 {
                     Name = "enumValues",
-                    Type = new [] {"List", "NonNull", "__EnumValue"},
+                    Type = new [] {GraphQLTypes.List, GraphQLTypes.NonNull, "__EnumValue"},
                     Arguments = new [] 
                     {
                       new GraphQLArgument
                       {
                           Name = "includeDeprecated",
-                          Type = new GraphQLBoolean(),
+                          Type = new [] { GraphQLTypes.Boolean },
                           DefaultValue = "false"
                       }                        
                     },
@@ -97,7 +98,7 @@ namespace Graphene.Core.Types.Introspection
                 new GraphQLScalarField<IGraphQLType, string>
                 {
                     Name = "inputFields",
-                    Type = new [] {"List", "NonNull", "__InputValue"},
+                    Type = new [] {GraphQLTypes.List, GraphQLTypes.NonNull, "__InputValue"},
                     Resolve = context => null
                 },
                 new GraphQLObjectField<IGraphQLType, IGraphQLType>

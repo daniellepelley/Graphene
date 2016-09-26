@@ -1,10 +1,12 @@
+using Graphene.Core.Constants;
+
 namespace Graphene.Core.Types.Scalar
 {
     public class GraphQLFloat : GraphQLScalarBase, IGraphQLType
     {
         public string Name
         {
-            get { return "Float"; }
+            get { return GraphQLTypes.Float; }
         }
 
         public string Description

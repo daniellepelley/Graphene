@@ -6,7 +6,7 @@ namespace Graphene.Core.Types
     {
         string Name { get; set; }
         string Description { get; set; }
-        IGraphQLType Type { get; set; }
+        string[] Type { get; set; }
         string DefaultValue { get; set; }
     }
 }

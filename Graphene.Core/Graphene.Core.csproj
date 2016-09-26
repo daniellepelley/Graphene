@@ -106,7 +106,7 @@
     <Compile Include="Types\Scalar\GraphQLFloat.cs" />
     <Compile Include="Types\Scalar\GraphQLId.cs" />
     <Compile Include="Types\Scalar\GraphQLInt.cs" />
-    <Compile Include="Types\GraphQLKinds.cs" />
+    <Compile Include="Constants\GraphQLKinds.cs" />
     <Compile Include="FieldTypes\GraphQLObjectField.cs" />
     <Compile Include="Types\Scalar\GraphQLScalarBase.cs" />
     <Compile Include="Schema\GraphQLSchema.cs" />

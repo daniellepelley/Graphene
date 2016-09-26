@@ -1,3 +1,4 @@
+using Graphene.Core.Constants;
 using Graphene.Core.FieldTypes;
 using Graphene.Core.Types.Object;
 
@@ -19,25 +20,25 @@ namespace Graphene.Core.Types.Introspection
                 new GraphQLScalarField<IGraphQLKind, string>
                 {
                     Name = "name",
-                    Type= new [] { "NonNull", "String"},
+                    Type= new [] { GraphQLTypes.NonNull, GraphQLTypes.String},
                     Resolve = context => context.Source.Name
                 },
                 new GraphQLScalarField<IGraphQLKind, string>
                 {
                     Name = "description",
-                    Type= new [] {  "String"},
+                    Type= new [] {GraphQLTypes.String},
                     Resolve = context => context.Source.Description
                 },
                 new GraphQLScalarField<IGraphQLKind, bool>
                 {
                     Name = "isDeprecated",
-                    Type= new [] { "NonNull", "Boolean"},
+                    Type= new [] {GraphQLTypes.NonNull, GraphQLTypes.Boolean},
                     Resolve = context => false
                 },
                 new GraphQLScalarField<IGraphQLKind, string>
                 {
                     Name = "deprecationReason",
-                    Type= new [] { "String"},
+                    Type= new [] { GraphQLTypes.String},
                     Resolve = context => null
                 }
             };

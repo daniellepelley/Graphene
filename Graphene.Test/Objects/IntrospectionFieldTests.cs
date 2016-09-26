@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Graphene.Core;
+using Graphene.Core.Constants;
 using Graphene.Core.FieldTypes;
 using Graphene.Core.Types;
 using Graphene.Core.Types.Introspection;
@@ -75,14 +76,14 @@ namespace Graphene.Test.Objects
                         Name = "argument1",
                         Description = "This is argument1",
                         DefaultValue = "foo 1",
-                        Type = new GraphQLId()
+                        Type = new [] { GraphQLTypes.Int }
                     },
                     new GraphQLArgument
                     {
                         Name = "argument2",
                         Description = "This is argument2",
                         DefaultValue = "foo 2",
-                        Type = new GraphQLFloat()
+                        Type = new [] { GraphQLTypes.Float }
                     }
                 }
             };
@@ -95,12 +96,12 @@ namespace Graphene.Test.Objects
             Assert.AreEqual("argument1", field1["name"]);
             Assert.AreEqual("This is argument1", field1["description"]);
             Assert.AreEqual("foo 1", field1["defaultValue"]);
-            Assert.AreEqual("ID", ((IDictionary<string, object>)field1["type"])["name"]);
+            Assert.AreEqual(GraphQLTypes.Int, ((IDictionary<string, object>)field1["type"])["name"]);
 
             Assert.AreEqual("argument2", field2["name"]);
             Assert.AreEqual("This is argument2", field2["description"]);
             Assert.AreEqual("foo 2", field2["defaultValue"]);
-            Assert.AreEqual("Float", ((IDictionary<string, object>)field2["type"])["name"]);
+            Assert.AreEqual(GraphQLTypes.Float, ((IDictionary<string, object>)field2["type"])["name"]);
         }
     }
 }

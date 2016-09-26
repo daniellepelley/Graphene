@@ -1,10 +1,12 @@
+using Graphene.Core.Constants;
+
 namespace Graphene.Core.Types.Scalar
 {
     public class GraphQLBoolean : GraphQLScalarBase, IGraphQLType
     {
         public string Name
         {
-            get { return "Boolean"; }
+            get { return GraphQLTypes.Boolean; }
         }
 
         public string Description

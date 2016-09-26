@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Graphene.Core;
+using Graphene.Core.Constants;
 using Graphene.Core.Types;
 using Graphene.Core.Types.Introspection;
 using Graphene.Core.Types.Scalar;
@@ -22,7 +23,7 @@ namespace Graphene.Test.Objects
         [Test]
         public void GraphQLString()
         {
-            var expected = "String";
+            var expected = GraphQLTypes.String;
             var actual = TestType("name", _ => new GraphQLString());
             Assert.AreEqual(expected, actual);
         }
@@ -30,7 +31,7 @@ namespace Graphene.Test.Objects
         [Test]
         public void GraphQLBoolean()
         {
-            var expected = "Boolean";
+            var expected = GraphQLTypes.Boolean;
             var actual = TestType("name", _ => new GraphQLBoolean());
             Assert.AreEqual(expected, actual);
         }

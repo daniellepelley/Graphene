@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Graphene.Core.Constants;
 using Graphene.Core.Exceptions;
 using Graphene.Core.FieldTypes;
 using Graphene.Core.Model;
@@ -103,7 +104,7 @@ namespace Graphene.Execution
 
                     output.Add(stringBuilder.ToString());
                 }
-                else if (graphQLArgument.Type is GraphQLString)
+                else if (graphQLArgument.Type.Last() == GraphQLTypes.String)
                 {
                     var str = argument.Value as string;
                     if (string.IsNullOrEmpty(str))
@@ -112,7 +113,7 @@ namespace Graphene.Execution
                                 argument.Value));
                     }
                 }
-                else if (graphQLArgument.Type is GraphQLInt)
+                else if (graphQLArgument.Type.Last() == GraphQLTypes.Int)
                 {
                     if (!(argument.Value is int))
                     {

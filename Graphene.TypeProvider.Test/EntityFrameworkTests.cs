@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using Graphene.Core;
+using Graphene.Core.Constants;
 using Graphene.Core.FieldTypes;
 using Graphene.Core.Types;
 using Graphene.Core.Types.Object;
@@ -11,6 +12,22 @@ using NUnit.Framework;
 
 namespace Graphene.TypeProvider.Test
 {
+    public class Company
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public bool IsTrue { get; set; }
+        public float Number { get; set; }
+        public Address Address { get; set; }
+        public ICollection<Example.Data.EntityFramework.Customer> Customers { get; set; }
+    }
+
+    public class Customer
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+    }
+
     public class EntityFrameworkTests
     {
         [Test]
@@ -30,13 +47,17 @@ namespace Graphene.TypeProvider.Test
 
             var name = result.Fields.ElementAt(1);
             Assert.AreEqual("Name", name.Name);
-            Assert.AreEqual("String", name.Type.Last());
+            Assert.AreEqual(GraphQLTypes.String, name.Type.Last());
 
-            var catchPhrase = result.Fields.ElementAt(2);
-            Assert.AreEqual("CatchPhrase", catchPhrase.Name);
-            Assert.AreEqual("String", catchPhrase.Type.Last());
+            var isTrue = result.Fields.ElementAt(2);
+            Assert.AreEqual("IsTrue", isTrue.Name);
+            Assert.AreEqual(GraphQLTypes.Boolean, isTrue.Type.Last());
 
-            var address = result.Fields.ElementAt(3);
+            var number = result.Fields.ElementAt(3);
+            Assert.AreEqual("Number", number.Name);
+            Assert.AreEqual(GraphQLTypes.Float, number.Type.Last());
+
+            var address = result.Fields.ElementAt(4);
             Assert.AreEqual("Address", address.Name);
             Assert.AreEqual("Address", address.Type.Last());
 
@@ -48,11 +69,11 @@ namespace Graphene.TypeProvider.Test
 
             var addressStreetAddress = addressType.GetFields().ElementAt(1);
             Assert.AreEqual("StreetAddress", addressStreetAddress.Name);
-            Assert.AreEqual("String", addressStreetAddress.Type.Last());
+            Assert.AreEqual(GraphQLTypes.String, addressStreetAddress.Type.Last());
 
-            var customers = result.Fields.ElementAt(4);
+            var customers = result.Fields.ElementAt(5);
             Assert.AreEqual("Customers", customers.Name);
-            Assert.AreEqual("List", customers.Type.First());
+            Assert.AreEqual(GraphQLTypes.List, customers.Type.First());
             Assert.AreEqual("Customer", customers.Type.Last());
 
             var customerType = typeList.LookUpType(customers.Type.Last());
@@ -72,12 +93,14 @@ namespace Graphene.TypeProvider.Test
             {
                 Id = 42,
                 Name = "foo",
-                CatchPhrase = "foo forever"
+                IsTrue = true,
+                Number = 5.434F
             };
 
             AssertResolve(result, 0, company, 42);
             AssertResolve(result, 1, company, "foo");
-            AssertResolve(result, 2, company, "foo forever");
+            AssertResolve(result, 2, company, true);
+            AssertResolve(result, 3, company, 5.434F);
         }
 
 

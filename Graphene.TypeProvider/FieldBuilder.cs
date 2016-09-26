@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using Graphene.Core.Constants;
 using Graphene.Core.FieldTypes;
 using Graphene.Core.Types;
 using Graphene.Core.Types.Object;
@@ -68,7 +69,7 @@ namespace Graphene.TypeProvider
         {
             if (type == typeof(string))
             {
-                return new[] {"String"};
+                return new[] {GraphQLTypes.String};
             }
             if (type == typeof(int))
             {
@@ -76,11 +77,11 @@ namespace Graphene.TypeProvider
             }
             if (type == typeof(float))
             {
-                return new[] { "Float" };
+                return new[] { GraphQLTypes.Float };
             }
             if (type == typeof(bool))
             {
-                return new[] { "Boolean" };
+                return new[] { GraphQLTypes.Boolean };
             }
             if (!typeList.HasType(type.Name))
             {
@@ -88,7 +89,7 @@ namespace Graphene.TypeProvider
             }
             if (typeof(IEnumerable).IsAssignableFrom(type))
             {
-                return new[] {"List", type.GetGenericArguments().First().Name};
+                return new[] {GraphQLTypes.List, type.GetGenericArguments().First().Name};
             }
 
             return new[] {type.Name};
@@ -113,7 +114,9 @@ namespace Graphene.TypeProvider
         public IGraphQLFieldType BuildFieldType<TInput, TOutput>(string name)
         {
             if (typeof(TOutput) == typeof(string) ||
-                typeof(TOutput) == typeof(int))
+                typeof(TOutput) == typeof(int) ||
+                typeof(TOutput) == typeof(bool) ||
+                typeof(TOutput) == typeof(float))
             {
                 var graphQLFieldType = new GraphQLScalarField<TInput, TOutput>();
 

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using Graphene.Core.Constants;
 using Graphene.Core.Exceptions;
 using Graphene.Core.Types;
 using Graphene.Core.Types.Object;
@@ -9,33 +10,6 @@ namespace Graphene.Core.FieldTypes
 {
     public class GraphQLObjectFieldBase : IGraphQLFieldType
     {
-        //public IGraphQLFieldType this[string name]
-        //{
-        //    get
-        //    {
-        //        //TODO: Seperate out this into different class
-
-        //        var type = Type;
-
-        //        var chainType = type as ChainType;
-
-        //        while (type != null)
-        //        {
-        //            if (chainType != null)
-        //            {
-        //                type = chainType.GetCurrentType();
-        //                chainType = (ChainType)chainType.OfType;
-        //            }
-
-        //            if (type is GraphQLObjectType)
-        //            {
-        //                return ((GraphQLObjectType)type).Fields.FirstOrDefault(x => x.Name == name);
-        //            }
-        //        }
-        //        throw new GraphQLException("Field {0} not found on {1} {2}", name, Type.Name, Type.Kind);
-        //    }
-        //}
-
         public string Kind
         {
             get { return GraphQLKinds.Object; }

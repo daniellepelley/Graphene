@@ -1,3 +1,4 @@
+using Graphene.Core.Constants;
 using Graphene.Core.FieldTypes;
 using Graphene.Core.Types.Object;
 
@@ -20,37 +21,37 @@ namespace Graphene.Core.Types.Introspection
                 new GraphQLScalarField<GraphQLDirective, string>
                 {
                     Name = "name",
-                    Type = new[] {"NonNull", "String"},
+                    Type = new[] {GraphQLTypes.NonNull, GraphQLTypes.String},
                     Resolve = context => context.Source.Name
                 },
                 new GraphQLScalarField<GraphQLDirective, string>
                 {
                     Name = "description",
-                    Type = new[] {"String"},
+                    Type = new[] {GraphQLTypes.String},
                     Resolve = context => context.Source.Description
                 },
                 new GraphQLList<GraphQLDirective, IGraphQLArgument>
                 {
                     Name = "args",
-                    Type = new[] {"NonNull", "List", "NonNull", "__InputValue"},
+                    Type = new[] {GraphQLTypes.NonNull, GraphQLTypes.List, GraphQLTypes.NonNull, "__InputValue"},
                     Resolve = context => context.Source.Arguments
                 },
                 new GraphQLScalarField<GraphQLDirective, bool>
                 {
                     Name = "onOperation",
-                    Type = new[] {"NonNull", "Boolean"},
+                    Type = new[] {GraphQLTypes.NonNull, GraphQLTypes.Boolean},
                     Resolve = context => context.Source.OnOperation
                 },
                 new GraphQLScalarField<GraphQLDirective, bool>
                 {
                     Name = "onFragment",
-                    Type = new[] {"NonNull", "Boolean"},
+                    Type = new[] {GraphQLTypes.NonNull, GraphQLTypes.Boolean},
                     Resolve = context => context.Source.OnFragment
                 },
                 new GraphQLScalarField<GraphQLDirective, bool>
                 {
                     Name = "onField",
-                    Type = new[] {"NonNull", "Boolean"},
+                    Type = new[] {GraphQLTypes.NonNull, GraphQLTypes.Boolean},
                     Resolve = context => context.Source.OnField
                 }
             };

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Graphene.Core;
+using Graphene.Core.Constants;
 using Graphene.Core.FieldTypes;
 using Graphene.Core.Types;
 using Graphene.Core.Types.Introspection;
@@ -132,11 +133,11 @@ namespace Graphene.Spike
             _typeList.AddType("__InputValue", new __InputValue(_typeList));
             _typeList.AddType("__EnumValue", new __EnumValue(_typeList));
             _typeList.AddType("__Directive", new __Directive(_typeList));
-            //_typeList.AddType("NonNull", new GraphQLNonNull());
-            //_typeList.AddType("List", new GraphQLList());
+            //_typeList.AddType(GraphQLTypes.NonNull, new GraphQLNonNull());
+            //_typeList.AddType(GraphQLTypes.List, new GraphQLList());
             //_typeList.AddType("Enum", new GraphQLEnum());
-            _typeList.AddType("Boolean", new GraphQLBoolean());
-            _typeList.AddType("String", new GraphQLString());
+            _typeList.AddType(GraphQLTypes.Boolean, new GraphQLBoolean());
+            _typeList.AddType(GraphQLTypes.String, new GraphQLString());
             _typeList.AddType("Int", new GraphQLInt());
         }
     }

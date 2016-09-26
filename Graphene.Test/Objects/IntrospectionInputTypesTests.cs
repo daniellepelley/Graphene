@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Graphene.Core;
+using Graphene.Core.Constants;
 using Graphene.Core.Types;
 using Graphene.Core.Types.Introspection;
 using Graphene.Core.Types.Scalar;
@@ -43,14 +44,14 @@ namespace Graphene.Test.Objects
         {
             var argument = GetGraphQLArgument();
             var actual = (IDictionary<string, object>)TestArgument("type", _ => argument, "{name,kind,description}");
-            Assert.AreEqual("String", actual["name"]);
+            Assert.AreEqual(GraphQLTypes.String, actual["name"]);
             Assert.AreEqual("SCALAR", actual["kind"]);
             Assert.IsTrue(actual["description"].ToString().Length > 100);
         }
 
         public object TestArgument(string fieldName, Func<ResolveObjectContext, IGraphQLArgument> resolve, string selection = null)
         {
-            var type = new __InputValue(TestSchemas.GetTypeList());
+            var type = new __InputValue(TypeList.Create());
             var query = "__InputValue{" + fieldName + selection + "}";
             var dictionary = TestHelpers.QueryAType(type, "__InputValue", query, resolve);
             return dictionary[fieldName];
@@ -63,7 +64,7 @@ namespace Graphene.Test.Objects
                 Name = "id",
                 Description = "This is a test argument",
                 DefaultValue = "foo",
-                Type = new GraphQLString()
+                Type = new [] { "String" }
             };
             return argument;
         }

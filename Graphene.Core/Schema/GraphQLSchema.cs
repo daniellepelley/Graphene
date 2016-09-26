@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using Graphene.Core.Constants;
 using Graphene.Core.FieldTypes;
 using Graphene.Core.Types.Introspection;
 using Graphene.Core.Types.Object;
@@ -37,7 +38,7 @@ namespace Graphene.Core.Types
                             new GraphQLArgument
                             {
                                 Name = "name",
-                                Type = new ChainType(Types, "String")
+                                Type = new [] { GraphQLTypes.String }
                             }
                         },
                         Resolve = context => Types.LookUpType(context.GetArgument<string>("name"))
@@ -79,7 +80,7 @@ namespace Graphene.Core.Types
                         {
                           Name = "if",
                           Description = "Included when true.",
-                          Type = new ChainType(Types, "NonNull", "Boolean"),
+                          Type = new [] { GraphQLTypes.NonNull, GraphQLTypes.Boolean },
                           DefaultValue = null      
                         }
                     },
@@ -97,7 +98,7 @@ namespace Graphene.Core.Types
                         {
                           Name = "if",
                           Description = "Skipped when true.",
-                          Type = new ChainType(Types, "NonNull", "Boolean"),
+                          Type = new [] { GraphQLTypes.NonNull, GraphQLTypes.Boolean },
                           DefaultValue = null      
                         }
                     },

@@ -1,4 +1,6 @@
-﻿namespace Graphene.Core.Types.Scalar
+﻿using Graphene.Core.Constants;
+
+namespace Graphene.Core.Types.Scalar
 {
     public abstract class GraphQLScalarBase
     {

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Graphene.Core.Constants;
 using Graphene.Core.FieldTypes;
 
 namespace Graphene.Core.Types.Scalar
@@ -25,7 +26,7 @@ namespace Graphene.Core.Types.Scalar
 
         public string Name
         {
-            get { return "List"; }
+            get { return GraphQLTypes.List; }
         }
 
         public string Description

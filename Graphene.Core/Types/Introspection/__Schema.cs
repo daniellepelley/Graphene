@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Graphene.Core.Constants;
 using Graphene.Core.FieldTypes;
 using Graphene.Core.Types.Object;
 using Graphene.Core.Types.Scalar;
@@ -63,7 +64,7 @@ namespace Graphene.Core.Types.Introspection
                 {
                     Name = "types",
                     Description = "A list of all types supported by this server.",
-                    Type = new [] { "NonNull", "List", "NonNull", "__Type"},
+                    Type = new [] { GraphQLTypes.NonNull, GraphQLTypes.List, GraphQLTypes.NonNull, "__Type"},
                     Resolve = context => context.Source.GetTypes()
                 },
                 new GraphQLObjectField<GraphQLSchema, IGraphQLType>
@@ -93,7 +94,7 @@ namespace Graphene.Core.Types.Introspection
                 {
                     Name = "directives",
                     Description = "A list of all directives supported by this server.",
-                    Type = new [] {"NonNull", "List", "NonNull", "__Directive"},
+                    Type = new [] {GraphQLTypes.NonNull, GraphQLTypes.List, GraphQLTypes.NonNull, "__Directive"},
                     Resolve = context => context.Source.GetDirectives()
                 }
             };
