@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection;
 using Graphene.Core.FieldTypes;
 using Graphene.Core.Types;
 using Graphene.Core.Types.Object;
@@ -33,24 +34,8 @@ namespace Graphene.TypeProvider
                 return;
             }
 
-            var list = new List<IGraphQLFieldType>();
-
-            foreach (var propertyInfo in type.GetProperties())
-            {
-                var field = BuildGraphQLFieldType(type, propertyInfo.PropertyType, propertyInfo.Name);
-                field.Name = propertyInfo.Name;
-
-                var fieldType = GetType(propertyInfo.PropertyType, typeList);
-
-
-                field.Type = fieldType;
-
-                list.Add(field);
-            }
-
             var graphQLType = new GraphQLObjectType
             {
-                Fields = list,
                 Name = type.Name
             };
 
@@ -58,6 +43,25 @@ namespace Graphene.TypeProvider
             {
                 typeList.AddType(type.Name, graphQLType);
             }
+
+            var list = new List<IGraphQLFieldType>();
+
+            foreach (var propertyInfo in type.GetProperties(
+                          BindingFlags.Public | 
+                          BindingFlags.Instance | 
+                          BindingFlags.DeclaredOnly))
+            {
+                var field = BuildGraphQLFieldType(type, propertyInfo.PropertyType, propertyInfo.Name);
+                field.Name = propertyInfo.Name;
+
+                var fieldType = GetType(propertyInfo.PropertyType, typeList);
+
+                field.Type = fieldType;
+
+                list.Add(field);
+            }
+
+            graphQLType.Fields = list;
         }
 
         private string[] GetType(Type type, ITypeList typeList)
@@ -70,8 +74,18 @@ namespace Graphene.TypeProvider
             {
                 return new[] {"Int"};
             }
-            Create(type, typeList);
-
+            if (type == typeof(float))
+            {
+                return new[] { "Float" };
+            }
+            if (type == typeof(bool))
+            {
+                return new[] { "Boolean" };
+            }
+            if (!typeList.HasType(type.Name))
+            {
+                Create(type, typeList);
+            }
             if (typeof(IEnumerable).IsAssignableFrom(type))
             {
                 return new[] {"List", type.GetGenericArguments().First().Name};

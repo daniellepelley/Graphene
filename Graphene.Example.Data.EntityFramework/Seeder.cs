@@ -13,6 +13,8 @@ namespace Graphene.Example.Data.EntityFramework
                 })
                 );
 
+            context.SaveChanges();
+
             20.Times(() =>
                 context.Companies.Add(new Company
                 {

@@ -19,21 +19,21 @@ namespace Graphene.Web
 
             //app.UseGraphQL(ExampleSchemas.CreateSchema2());
 
-            //app.UseGraphQL(ExampleSchemas.CreateGraphQLDemoDataContextSchema());
+            app.UseGraphQL(ExampleSchemas.CreateGraphQLDemoDataContextSchema());
             //app.UseGraphQL(Build);
 
 
-            app.UseGraphQL(builder =>
-            {
-                var context = new GraphQLDemoDataContext();
+            //app.UseGraphQL(builder =>
+            //{
+            //    var context = new GraphQLDemoDataContext();
 
-                var schema = builder
-                    .AsAggregateRoot(context.Companies.Include(x => x.Address).Include(x => x.Customers), "companies")
-                    .AsAggregateRoot(context.Persons.Include(x => x.Address), "people")
-                    .Build();
+            //    var schema = builder
+            //        .AsAggregateRoot(context.Companies.Include(x => x.Address).Include(x => x.Customers), "companies")
+            //        .AsAggregateRoot(context.Persons.Include(x => x.Address), "people")
+            //        .Build();
 
-                return schema;                
-            });
+            //    return schema;                
+            //});
         }
 
         private GraphQLSchema Build(SchemaBuilder builder)

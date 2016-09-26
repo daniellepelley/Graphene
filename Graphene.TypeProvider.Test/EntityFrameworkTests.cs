@@ -56,8 +56,7 @@ namespace Graphene.TypeProvider.Test
             Assert.AreEqual("Customer", customers.Type.Last());
 
             var customerType = typeList.LookUpType(customers.Type.Last());
-
-
+            Assert.IsNotNull(customerType);
         }
 
         [Test]
