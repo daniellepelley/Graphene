@@ -3,7 +3,7 @@ using Graphene.Core.Types.Object;
 
 namespace Graphene.Core.Types.Introspection
 {
-    public class __Directive: GraphQLObjectType
+    public class __Directive : GraphQLObjectType
     {
         private ITypeList _typeList;
 
@@ -20,37 +20,37 @@ namespace Graphene.Core.Types.Introspection
                 new GraphQLScalarField<GraphQLDirective, string>
                 {
                     Name = "name",
-                    Type = new ChainType(_typeList, "NonNull", "String"),
+                    Type = new[] {"NonNull", "String"},
                     Resolve = context => context.Source.Name
                 },
                 new GraphQLScalarField<GraphQLDirective, string>
                 {
                     Name = "description",
-                    Type = new ChainType(_typeList, "String"),
+                    Type = new[] {"String"},
                     Resolve = context => context.Source.Description
                 },
                 new GraphQLList<GraphQLDirective, IGraphQLArgument>
                 {
                     Name = "args",
-                    Type = new ChainType(_typeList, "NonNull", "List", "NonNull", "__InputValue"),
+                    Type = new[] {"NonNull", "List", "NonNull", "__InputValue"},
                     Resolve = context => context.Source.Arguments
                 },
                 new GraphQLScalarField<GraphQLDirective, bool>
                 {
                     Name = "onOperation",
-                    Type = new ChainType(_typeList, "NonNull", "Boolean"),
+                    Type = new[] {"NonNull", "Boolean"},
                     Resolve = context => context.Source.OnOperation
                 },
                 new GraphQLScalarField<GraphQLDirective, bool>
                 {
                     Name = "onFragment",
-                    Type = new ChainType(_typeList, "NonNull", "Boolean"),
+                    Type = new[] {"NonNull", "Boolean"},
                     Resolve = context => context.Source.OnFragment
                 },
                 new GraphQLScalarField<GraphQLDirective, bool>
                 {
                     Name = "onField",
-                    Type = new ChainType(_typeList, "NonNull", "Boolean"),
+                    Type = new[] {"NonNull", "Boolean"},
                     Resolve = context => context.Source.OnField
                 }
             };

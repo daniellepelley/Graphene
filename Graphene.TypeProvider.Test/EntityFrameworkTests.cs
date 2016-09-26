@@ -26,31 +26,38 @@ namespace Graphene.TypeProvider.Test
 
             var id = result.Fields.ElementAt(0);
             Assert.AreEqual("Id", id.Name);
-            Assert.AreEqual("Int", id.Type.Name);
+            Assert.AreEqual("Int", id.Type.Last());
 
             var name = result.Fields.ElementAt(1);
             Assert.AreEqual("Name", name.Name);
-            Assert.AreEqual("String", name.Type.Name);
+            Assert.AreEqual("String", name.Type.Last());
 
             var catchPhrase = result.Fields.ElementAt(2);
             Assert.AreEqual("CatchPhrase", catchPhrase.Name);
-            Assert.AreEqual("String", catchPhrase.Type.Name);
+            Assert.AreEqual("String", catchPhrase.Type.Last());
 
             var address = result.Fields.ElementAt(3);
             Assert.AreEqual("Address", address.Name);
-            Assert.AreEqual("Address", address.Type.Name);
+            Assert.AreEqual("Address", address.Type.Last());
 
-            var addressId = address.Type.GetFields().ElementAt(0);
+            var addressType = typeList.LookUpType(address.Type.Last());
+
+            var addressId = addressType.GetFields().ElementAt(0);
             Assert.AreEqual("Id", addressId.Name);
-            Assert.AreEqual("Int", addressId.Type.Name);
+            Assert.AreEqual("Int", addressId.Type.Last());
 
-            var addressStreetAddress = address.Type.GetFields().ElementAt(1);
+            var addressStreetAddress = addressType.GetFields().ElementAt(1);
             Assert.AreEqual("StreetAddress", addressStreetAddress.Name);
-            Assert.AreEqual("String", addressStreetAddress.Type.Name);
+            Assert.AreEqual("String", addressStreetAddress.Type.Last());
 
             var customers = result.Fields.ElementAt(4);
             Assert.AreEqual("Customers", customers.Name);
-            Assert.AreEqual("List", customers.Type.Name);
+            Assert.AreEqual("List", customers.Type.First());
+            Assert.AreEqual("Customer", customers.Type.Last());
+
+            var customerType = typeList.LookUpType(customers.Type.Last());
+
+
         }
 
         [Test]

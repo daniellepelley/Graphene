@@ -12,11 +12,11 @@ namespace Graphene.Test.Objects
 {
     public class IntrospectionFieldTests
     {
-        public object TestType(string fieldName, Func<ResolveObjectContext, IGraphQLFieldType> resolve, string selection = null)
+        public object TestType(string fieldName, Func<ResolveObjectContext, IGraphQLFieldType> resolve, string selection = null, ITypeList typeList = null)
         {
             var type = new __Field(TestSchemas.GetTypeList());
             var query = "__Field{" + fieldName + selection + "}";
-            var dictionary = TestHelpers.QueryAType(type, "__Field", query, resolve);
+            var dictionary = TestHelpers.QueryAType(type, "__Field", query, resolve, typeList);
             return dictionary[fieldName];
         }
 
@@ -47,12 +47,16 @@ namespace Graphene.Test.Objects
         [Test]
         public void Type()
         {
+            var typeList = TypeList.Create();
+            var bossType = TestSchemas.CreateBossType();
+            typeList.AddType(bossType.Name, bossType);
+
             var field = new GraphQLObjectField
             {
-                Type = TestSchemas.CreateBossType()
+                Type = new[] { bossType.Name }
             };
 
-            var actual = TestType("type", _ => field, "{name}");
+            var actual = TestType("type", _ => field, "{name}", typeList);
             var dictionary = (IDictionary<string, object>)actual;
 
             Assert.AreEqual("Boss", dictionary["name"]);

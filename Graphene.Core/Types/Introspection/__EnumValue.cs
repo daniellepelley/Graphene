@@ -19,25 +19,25 @@ namespace Graphene.Core.Types.Introspection
                 new GraphQLScalarField<IGraphQLKind, string>
                 {
                     Name = "name",
-                    Type= new ChainType(_typeList, "NonNull", "String"),
+                    Type= new [] { "NonNull", "String"},
                     Resolve = context => context.Source.Name
                 },
                 new GraphQLScalarField<IGraphQLKind, string>
                 {
                     Name = "description",
-                    Type= new ChainType(_typeList, "String"),
+                    Type= new [] {  "String"},
                     Resolve = context => context.Source.Description
                 },
                 new GraphQLScalarField<IGraphQLKind, bool>
                 {
                     Name = "isDeprecated",
-                    Type= new ChainType(_typeList, "NonNull", "Boolean"),
+                    Type= new [] { "NonNull", "Boolean"},
                     Resolve = context => false
                 },
                 new GraphQLScalarField<IGraphQLKind, string>
                 {
                     Name = "deprecationReason",
-                    Type= new ChainType(_typeList, "String"),
+                    Type= new [] { "String"},
                     Resolve = context => null
                 }
             };

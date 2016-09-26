@@ -9,32 +9,32 @@ namespace Graphene.Core.FieldTypes
 {
     public class GraphQLObjectFieldBase : IGraphQLFieldType
     {
-        public IGraphQLFieldType this[string name]
-        {
-            get
-            {
-                //TODO: Seperate out this into different class
+        //public IGraphQLFieldType this[string name]
+        //{
+        //    get
+        //    {
+        //        //TODO: Seperate out this into different class
 
-                var type = Type;
+        //        var type = Type;
 
-                var chainType = type as ChainType;
+        //        var chainType = type as ChainType;
 
-                while(type != null)
-                {
-                    if (chainType != null)
-                    {
-                        type = chainType.GetCurrentType();
-                        chainType = (ChainType)chainType.OfType;
-                    }
+        //        while (type != null)
+        //        {
+        //            if (chainType != null)
+        //            {
+        //                type = chainType.GetCurrentType();
+        //                chainType = (ChainType)chainType.OfType;
+        //            }
 
-                    if (type is GraphQLObjectType)
-                    {
-                        return ((GraphQLObjectType)type).Fields.FirstOrDefault(x => x.Name == name);
-                    }
-                }
-                throw new GraphQLException("Field {0} not found on {1} {2}", name, Type.Name, Type.Kind);
-            }
-        }
+        //            if (type is GraphQLObjectType)
+        //            {
+        //                return ((GraphQLObjectType)type).Fields.FirstOrDefault(x => x.Name == name);
+        //            }
+        //        }
+        //        throw new GraphQLException("Field {0} not found on {1} {2}", name, Type.Name, Type.Kind);
+        //    }
+        //}
 
         public string Kind
         {
@@ -44,7 +44,7 @@ namespace Graphene.Core.FieldTypes
         public string Name { get; set; }
         public string Description { get; set; }
         public IEnumerable<IGraphQLArgument> Arguments { get; set; }
-        public IGraphQLType Type { get; set; }
+        public string[] Type { get; set; }
         public bool IsDeprecated { get; set; }
         public string DeprecationReason { get; set; }
 

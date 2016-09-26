@@ -11,6 +11,13 @@ namespace Graphene.Execution
 {
     public class OperationValidator
     {
+        private ITypeList _typeList;
+
+        public OperationValidator(ITypeList typeList)
+        {
+            _typeList = typeList;
+        }
+
         public string[] Validate(GraphQLSchema schema, Operation operation)
         {
             var output = new List<string>();
@@ -48,7 +55,9 @@ namespace Graphene.Execution
                 ? graphQLFieldType.Arguments.ToArray()
                 : new IGraphQLArgument[0];
 
-            output.AddRange(Validate(field.Selections, graphQLFieldType.Type.GetFields().ToArray(), graphQLFieldType.Type.Name));
+            var type =_typeList.LookUpType(graphQLFieldType.Type.Last());
+
+            output.AddRange(Validate(field.Selections, type.GetFields().ToArray(), type.Name));
             output.AddRange(Validate(field.Arguments, graphQLArguments, graphQLFieldType.Name, typeName));
             return output.ToArray();
         }

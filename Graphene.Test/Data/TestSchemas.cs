@@ -76,7 +76,7 @@ namespace Graphene.Test.Data
                             {
                                 new GraphQLArgument {Name = "id", Type = new GraphQLString()}
                             },
-                            Type = userType,
+                            Type = new []{"User"},
                             Resolve =
                                 context =>
                                     Data.GetData()
@@ -106,6 +106,7 @@ namespace Graphene.Test.Data
             typeList.AddType("GraphQLEnum", new GraphQLEnum());
             typeList.AddType("Boolean", new GraphQLBoolean());
             typeList.AddType("Int", new GraphQLInt());
+            typeList.AddType("Boss", CreateBossType());
             //schema.Types.AddType("QueryType", schema.QueryType.Type);
             //schema.Types.AddType("GraphQLString", new GraphQLString());
             //schema.Types.AddType("User", userType);
@@ -135,13 +136,13 @@ namespace Graphene.Test.Data
                     {
                         Name = "id",
                         Resolve = context => context.Source.Id,
-                        Type = new GraphQLString()
+                        Type = new []{"String"}
                     },
                     new GraphQLScalarField<User, string>
                     {
                         Name = "name",
                         Resolve = context => context.Source.Name,
-                        Type = new GraphQLString()
+                        Type = new []{"String"}
                     },
                     //new GraphQLObjectField<User, Boss>
                     //{
@@ -165,19 +166,19 @@ namespace Graphene.Test.Data
                     {
                         Name = "id",
                         Resolve = context => context.Source.Id,
-                        Type = new GraphQLString()
+                        Type = new []{"String"}
                     },
                     new GraphQLScalarField<User, string>
                     {
                         Name = "name",
                         Resolve = context => context.Source.Name,
-                        Type = new GraphQLString()
+                        Type = new []{"String"}
                     },
                     new GraphQLObjectField<User, Boss>
                     {
                         Name = "boss",
                         Resolve = context => context.Source.Boss,
-                        Type =  CreateBossType()
+                        Type =  new [] { CreateBossType().Name }
                     }
                 }
             };
@@ -196,13 +197,13 @@ namespace Graphene.Test.Data
                     new GraphQLScalarField<Boss, int>
                     {
                         Name = "id",
-                        Type = new GraphQLInt(),
+                        Type = new [] {"Int"},
                         Resolve = context => context.Source.Id
                     },
                     new GraphQLScalarField<Boss, string>
                     {
                         Name = "name",
-                        Type= new GraphQLString(),
+                        Type = new [] {"String"},
                         Resolve = context => context.Source.Name
                     }
                 }

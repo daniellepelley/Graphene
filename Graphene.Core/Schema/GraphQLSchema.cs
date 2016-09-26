@@ -25,13 +25,13 @@ namespace Graphene.Core.Types
                     new GraphQLObjectField<GraphQLSchema>
                     {
                         Name = "__schema",
-                        Type = new ChainType(Types, "__Schema"),
+                        Type = new [] {"__Schema"},
                         Resolve = _ => this
                     },
                     new GraphQLObjectField<IGraphQLType>
                     {
                         Name = "__type",
-                        Type = new __Type(Types),
+                        Type = new [] { "__Type" },
                         Arguments = new IGraphQLArgument[]
                         {
                             new GraphQLArgument
@@ -111,6 +111,11 @@ namespace Graphene.Core.Types
         public IEnumerable<IGraphQLType> GetTypes()
         {
             return Types;
+        }
+
+        public ITypeList TypeList
+        {
+            get { return Types; }
         }
     }
 

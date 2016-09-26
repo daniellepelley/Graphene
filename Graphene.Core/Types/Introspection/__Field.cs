@@ -20,37 +20,37 @@ namespace Graphene.Core.Types.Introspection
                 new GraphQLScalarField<IGraphQLFieldType, string>
                 {
                     Name = "name",
-                    Type = new ChainType(_typeList, "NonNull", "String"),
+                    Type = new[] {"NonNull", "String"},
                     Resolve = context => context.Source.Name
                 },
                 new GraphQLScalarField<IGraphQLFieldType, string>
                 {
                     Name = "description",
-                    Type = new ChainType(_typeList, "String"),
+                    Type = new[] {"String"},
                     Resolve = context => context.Source.Description
                 },
                 new GraphQLList<IGraphQLFieldType, IGraphQLArgument>
                 {
                     Name = "args",
-                    Type = new ChainType(_typeList, "NonNull", "List", "NonNull", "__InputValue"),
+                    Type = new[] {"NonNull", "List", "NonNull", "__InputValue"},
                     Resolve = context => context.Source.Arguments
                 },
                 new GraphQLObjectField<IGraphQLFieldType, IGraphQLType>
                 {
                     Name = "type",
-                    Type = new ChainType(_typeList, "NonNull", "__Type"),
-                    Resolve = context => context.Source.Type
+                    Type = new[] {"NonNull", "__Type"},
+                    Resolve = context => new ChainType(typeList, context.Source.Type)
                 },
                 new GraphQLScalarField<IGraphQLFieldType, bool>
                 {
                     Name = "isDeprecated",
-                    Type = new ChainType(_typeList, "NonNull", "Boolean"),
+                    Type = new[] {"NonNull", "Boolean"},
                     Resolve = context => context.Source.IsDeprecated
                 },
                 new GraphQLScalarField<IGraphQLFieldType, string>
                 {
                     Name = "deprecationReason",
-                    Type = new ChainType(_typeList, "String"),
+                    Type = new[] {"String"},
                     Resolve = context => context.Source.DeprecationReason
                 }
             };

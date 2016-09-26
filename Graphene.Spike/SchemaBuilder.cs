@@ -55,12 +55,12 @@ namespace Graphene.Spike
             return this;
         }
 
-        public SchemaBuilder WithField(string name, GraphQLObjectType createUserType)
+        public SchemaBuilder WithField(string name, string[] type)
         {
             _fields.Add(new GraphQLObjectField
             {
                 Name = name,
-                Type = createUserType
+                Type = type
             });
             return this;
         }
@@ -166,7 +166,7 @@ namespace Graphene.Spike
         public ObjectFieldBuilder<T> Type(GraphQLObjectType type)
         {
             _typeList.AddType(type.Name, type);
-            _graphQLObjectField.Type = new ChainType(_typeList,type.Name);
+            _graphQLObjectField.Type = new [] {type.Name};
             return this;
         }
 
@@ -185,7 +185,7 @@ namespace Graphene.Spike
 
         public ObjectFieldBuilder<T> Type(params string[] types)
         {
-            _graphQLObjectField.Type = new ChainType(_typeList, types);
+            _graphQLObjectField.Type = types;
             return this;
         }
     }
@@ -215,7 +215,7 @@ namespace Graphene.Spike
         public ObjectFieldBuilder<TInput, TOutput> Type(GraphQLObjectType type)
         {
             _typeList.AddType(type.Name, type);
-            _graphQLObjectField.Type = new ChainType(_typeList, type.Name);
+            _graphQLObjectField.Type = new [] {type.Name};
             return this;
         }
 
@@ -234,7 +234,7 @@ namespace Graphene.Spike
 
         public ObjectFieldBuilder<TInput, TOutput> Type(params string[] types)
         {
-            _graphQLObjectField.Type = new ChainType(_typeList, types);
+            _graphQLObjectField.Type = types;
             return this;
         }
     }
@@ -264,7 +264,7 @@ namespace Graphene.Spike
         public ScalarFieldBuilder<TInput, TOutput> Type(GraphQLObjectType type)
         {
             _typeList.AddType(type.Name, type);
-            _graphQLScalarField.Type = new ChainType(_typeList, type.Name);
+            _graphQLScalarField.Type = new [] {type.Name};
             return this;
         }
 
@@ -282,7 +282,7 @@ namespace Graphene.Spike
 
         public ScalarFieldBuilder<TInput, TOutput> Type(params string[] types)
         {
-            _graphQLScalarField.Type = new ChainType(_typeList, types);
+            _graphQLScalarField.Type = types;
             return this;
         }
     }

@@ -10,7 +10,7 @@ namespace Graphene.Core.FieldTypes
     public abstract class GraphQLScalar<TInput> : IGraphQLScalarField
     {
         public abstract ExecutionNode ToExecutionNode(string fieldName, Func<TInput> getInput);
-        public IGraphQLType Type { get; set; }
+        public string[] Type { get; set; }
     }
 
     public class GraphQLScalarField<TInput, TOutput>
@@ -27,11 +27,6 @@ namespace Graphene.Core.FieldTypes
         public IEnumerable<IGraphQLArgument> Arguments { get; set; }
         public bool IsDeprecated { get; set; }
         public string DeprecationReason { get; set; }
-
-        public IGraphQLFieldType this[string name]
-        {
-            get { throw new GraphQLException("Can't access field on scalar value"); }
-        }
 
         public Func<ResolveFieldContext<TInput>, TOutput> Resolve;
 

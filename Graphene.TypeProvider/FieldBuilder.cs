@@ -12,19 +12,27 @@ namespace Graphene.TypeProvider
 {
     public class FieldBuilder
     {
-        public GraphQLList<TOutput> CreateAggregateRoot<TOutput>(IQueryable<TOutput> queryable, string name, ITypeList typeList)
+        public GraphQLList<TOutput> CreateAggregateRoot<TOutput>(IQueryable<TOutput> queryable, string name,
+            ITypeList typeList)
         {
             Create(typeof(TOutput), typeList);
             return new GraphQLList<TOutput>
             {
                 Name = name,
-                Type = new ChainType(typeList, typeof(TOutput).Name),
+                Type = new[] {typeof(TOutput).Name},
                 Resolve = context => queryable
             };
         }
 
         public void Create(Type type, ITypeList typeList)
         {
+            if (typeof(IEnumerable).IsAssignableFrom(type))
+            {
+                var innerType = type.GetGenericArguments().First();
+                Create(innerType, typeList);
+                return;
+            }
+
             var list = new List<IGraphQLFieldType>();
 
             foreach (var propertyInfo in type.GetProperties())
@@ -32,10 +40,10 @@ namespace Graphene.TypeProvider
                 var field = BuildGraphQLFieldType(type, propertyInfo.PropertyType, propertyInfo.Name);
                 field.Name = propertyInfo.Name;
 
-                var fieldType = GetType(propertyInfo.PropertyType, typeList);                    
+                var fieldType = GetType(propertyInfo.PropertyType, typeList);
 
 
-                    field.Type = fieldType;
+                field.Type = fieldType;
 
                 list.Add(field);
             }
@@ -48,67 +56,90 @@ namespace Graphene.TypeProvider
 
             if (!typeList.HasType(type.Name))
             {
-                typeList.AddType(type.Name, graphQLType);                
+                typeList.AddType(type.Name, graphQLType);
             }
         }
 
-        private IGraphQLType GetType(Type type, ITypeList typeList)
+        private string[] GetType(Type type, ITypeList typeList)
         {
             if (type == typeof(string))
             {
-                return new ChainType(typeList, "String");
+                return new[] {"String"};
             }
             if (type == typeof(int))
             {
-                return new ChainType(typeList, "Int");
+                return new[] {"Int"};
             }
             Create(type, typeList);
 
             if (typeof(IEnumerable).IsAssignableFrom(type))
             {
-                return new ChainType(typeList, "List", type.Name);
+                return new[] {"List", type.GetGenericArguments().First().Name};
             }
 
-            return new ChainType(typeList, type.Name);
+            return new[] {type.Name};
         }
 
         public IGraphQLFieldType BuildGraphQLFieldType(Type inputType, Type outputType, string name)
         {
-            var method = GetType().GetMethod("BuildFieldType");
-            var genericMethod = method.MakeGenericMethod(inputType, outputType);
-            return (IGraphQLFieldType)genericMethod.Invoke(this, new object[] { name });
-        }
-
-        public IGraphQLFieldType BuildFieldType<TInput, TTOutput>(string name)
-        {
-            if (typeof (TTOutput) == typeof (string) ||
-                typeof (TTOutput) == typeof (int))
+            if (typeof(IEnumerable).IsAssignableFrom(outputType) && outputType.GenericTypeArguments.Any())
             {
-                var graphQLFieldType = new GraphQLScalarField<TInput, TTOutput>();
+                var method = GetType().GetMethod("BuildListFieldType");
+                var genericMethod = method.MakeGenericMethod(inputType, outputType.GenericTypeArguments.First());
+                return (IGraphQLFieldType) genericMethod.Invoke(this, new object[] {name});
+            }
+            else
+            {
+                var method = GetType().GetMethod("BuildFieldType");
+                var genericMethod = method.MakeGenericMethod(inputType, outputType);
+                return (IGraphQLFieldType) genericMethod.Invoke(this, new object[] {name});
+            }
+        }
+        
+        public IGraphQLFieldType BuildFieldType<TInput, TOutput>(string name)
+        {
+            if (typeof(TOutput) == typeof(string) ||
+                typeof(TOutput) == typeof(int))
+            {
+                var graphQLFieldType = new GraphQLScalarField<TInput, TOutput>();
 
-                var parameterExpression = Expression.Parameter(typeof (TInput), "source");
+                var parameterExpression = Expression.Parameter(typeof(TInput), "source");
                 var propertyExpression = Expression.Property(parameterExpression, name);
 
                 var lambda =
-                    Expression.Lambda<Func<TInput, TTOutput>>(propertyExpression, parameterExpression).Compile();
+                    Expression.Lambda<Func<TInput, TOutput>>(propertyExpression, parameterExpression).Compile();
                 graphQLFieldType.Resolve = context => lambda(context.Source);
 
                 return graphQLFieldType;
             }
             else
             {
-                var graphQLFieldType = new GraphQLObjectField<TInput, TTOutput>();
+                var graphQLFieldType = new GraphQLObjectField<TInput, TOutput>();
 
                 var parameterExpression = Expression.Parameter(typeof(TInput), "source");
                 var propertyExpression = Expression.Property(parameterExpression, name);
 
                 var lambda =
-                    Expression.Lambda<Func<TInput, TTOutput>>(propertyExpression, parameterExpression).Compile();
+                    Expression.Lambda<Func<TInput, TOutput>>(propertyExpression, parameterExpression).Compile();
                 graphQLFieldType.Resolve = context => lambda(context.Source);
 
                 return graphQLFieldType;
             }
         }
 
+        public IGraphQLFieldType BuildListFieldType<TInput, TOutput>(string name)
+        {
+            var graphQLFieldType = new GraphQLList<TInput, TOutput>();
+
+            var parameterExpression = Expression.Parameter(typeof(TInput), "source");
+            var propertyExpression = Expression.Property(parameterExpression, name);
+
+            var lambda =
+                Expression.Lambda<Func<TInput, IEnumerable<TOutput>>>(propertyExpression, parameterExpression)
+                    .Compile();
+            graphQLFieldType.Resolve = context => lambda(context.Source);
+
+            return graphQLFieldType;
+        }
     }
 }

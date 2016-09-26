@@ -21,26 +21,26 @@ namespace Graphene.Core.Types.Introspection
                 new GraphQLScalarField<IGraphQLArgument, string>
                 {
                     Name = "name",
-                    Type = new ChainType(_typeList, "NonNull", "String"),
+                    Type = new [] { "NonNull", "String" },
                     Resolve = context => context.Source.Name
                 },
                 new GraphQLScalarField<IGraphQLArgument, string>
                 {
                     Name = "description",
-                    Type = new ChainType(_typeList, "String"),
+                    Type = new [] { "String"},
                     Resolve = context => context.Source.Description
                 },
                 new GraphQLObjectField<IGraphQLArgument, IGraphQLType>
                 {
                     Name = "type",
-                    Type = new ChainType(_typeList, "NonNull", "__Type"),
+                    Type = new [] { "NonNull", "__Type"},
                     Resolve = context => context.Source.Type
                 },
                 new GraphQLScalarField<IGraphQLArgument, string>
                 {
                     Name = "defaultValue",
                     Description = "A GraphQL-formatted string representing the default value for this input value.",
-                    Type = new ChainType(_typeList, "String"),
+                    Type = new [] { "String"},
                     Resolve = context => context.Source.DefaultValue
                 }
             };

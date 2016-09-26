@@ -19,13 +19,13 @@ namespace Graphene.Test.Spike
         public void BuildSchemaWith1Field()
         {
             var builder = new SchemaBuilder();
-            builder.WithField("user", TestSchemas.CreateUserType());
+            builder.WithField("user", new [] { TestSchemas.CreateUserType().Name });
 
             var schema = builder.Build();
 
             Assert.AreEqual(1, schema.QueryType.Fields.Count());
             Assert.AreEqual("user", schema.QueryType.Fields.First().Name);
-            Assert.AreEqual(TestSchemas.CreateUserType().Name, schema.QueryType.Fields.First().Type.Name);
+            Assert.AreEqual(TestSchemas.CreateUserType().Name, schema.QueryType.Fields.First().Type.Last());
         }
 
         [Test]
@@ -34,14 +34,14 @@ namespace Graphene.Test.Spike
             var schema = new SchemaBuilder()
                 .RegisterTypes()
                 .WithField(x => x.Name("user").Type(TestSchemas.CreateUserType()))
-                .WithField("boss", TestSchemas.CreateBossType())
+                .WithField("boss", new [] { TestSchemas.CreateBossType().Name })
                 .Build();
 
             Assert.AreEqual(2, schema.QueryType.Fields.Count());
             Assert.AreEqual("user", schema.QueryType.Fields.ElementAt(0).Name);
-            Assert.AreEqual(TestSchemas.CreateUserType().Name, schema.QueryType.Fields.ElementAt(0).Type.Name);
+            Assert.AreEqual(TestSchemas.CreateUserType().Name, schema.QueryType.Fields.ElementAt(0).Type.Last());
             Assert.AreEqual("boss", schema.QueryType.Fields.ElementAt(1).Name);
-            Assert.AreEqual(TestSchemas.CreateBossType().Name, schema.QueryType.Fields.ElementAt(1).Type.Name);
+            Assert.AreEqual(TestSchemas.CreateBossType().Name, schema.QueryType.Fields.ElementAt(1).Type.Last());
         }
 
         [Test]
@@ -56,9 +56,9 @@ namespace Graphene.Test.Spike
 
             Assert.AreEqual(2, schema.QueryType.Fields.Count());
             Assert.AreEqual("user", schema.QueryType.Fields.ElementAt(0).Name);
-            Assert.AreEqual(TestSchemas.CreateUserType().Name, schema.QueryType.Fields.ElementAt(0).Type.Name);
+            Assert.AreEqual(TestSchemas.CreateUserType().Name, schema.QueryType.Fields.ElementAt(0).Type.Last());
             Assert.AreEqual("boss", schema.QueryType.Fields.ElementAt(1).Name);
-            Assert.AreEqual(TestSchemas.CreateBossType().Name, schema.QueryType.Fields.ElementAt(1).Type.Name);
+            Assert.AreEqual(TestSchemas.CreateBossType().Name, schema.QueryType.Fields.ElementAt(1).Type.Last());
         }
 
         [Test]

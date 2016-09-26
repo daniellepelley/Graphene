@@ -28,7 +28,7 @@ namespace Graphene.Web
                 var context = new GraphQLDemoDataContext();
 
                 var schema = builder
-                    .AsAggregateRoot(context.Companies.Include(x => x.Address), "companies")
+                    .AsAggregateRoot(context.Companies.Include(x => x.Address).Include(x => x.Customers), "companies")
                     .AsAggregateRoot(context.Persons.Include(x => x.Address), "people")
                     .Build();
 

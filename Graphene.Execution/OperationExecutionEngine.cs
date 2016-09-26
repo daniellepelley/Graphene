@@ -11,7 +11,7 @@ namespace Graphene.Execution
     {
         public object Execute(Operation operation, GraphQLSchema schema)
         {
-            var errors = new OperationValidator().Validate(schema, operation);
+            var errors = new OperationValidator(schema.TypeList).Validate(schema, operation);
 
             if (errors.Any())
             {
@@ -26,7 +26,8 @@ namespace Graphene.Execution
             var executionBranch =
                 new ExecutionBranchBuilder().Build(
                     schema.GetMergedRoot().GetField(operation.Selections.First().Field.Name) as IToExecutionBranch,
-                    operation.Selections.First().Field);
+                    operation.Selections.First().Field,
+                    schema.TypeList);
 
             return new[] {executionBranch.Execute()}.ToDictionary(x => x.Key, x => x.Value);
 

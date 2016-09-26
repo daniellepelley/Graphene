@@ -7,91 +7,91 @@ using Graphene.Core.Types.Object;
 
 namespace Graphene.TypeProvider
 {
-    public class SimpleTypeBuilder
-    {
-        public GraphQLObjectField<object> Build(Type type)
-        {
-            var graphQLObjectType = new GraphQLObjectField<object>
-            {
-                Name = type.Name,
-                Type = new GraphQLObjectType()
-            };
+    //public class SimpleTypeBuilder
+    //{
+    //    public GraphQLObjectField<object> Build(Type type)
+    //    {
+    //        var graphQLObjectType = new GraphQLObjectField<object>
+    //        {
+    //            Name = type.Name,
+    //            Type = new string[0]
+    //        };
 
-            var properties = type.GetProperties(BindingFlags.Public | BindingFlags.Instance);
+    //        var properties = type.GetProperties(BindingFlags.Public | BindingFlags.Instance);
 
-            foreach (var property in properties)
-            {
-                MapField(property, graphQLObjectType);
-            }
+    //        foreach (var property in properties)
+    //        {
+    //            MapField(property, graphQLObjectType);
+    //        }
 
-            return graphQLObjectType;
-        }
+    //        return graphQLObjectType;
+    //    }
 
-        private void MapField(PropertyInfo propertyInfo, GraphQLObjectField<object> graphQLObjectField)
-        {
-            var graphQLObjectType = (GraphQLObjectType) graphQLObjectField.Type;
+    //    private void MapField(PropertyInfo propertyInfo, GraphQLObjectField<object> graphQLObjectField)
+    //    {
+    //        var graphQLObjectType = (GraphQLObjectType) graphQLObjectField.Type;
 
-            var list = graphQLObjectType.Fields.ToList();
-            list.Add(CreateField(propertyInfo));
-            graphQLObjectType.Fields = list;
-        }
+    //        var list = graphQLObjectType.Fields.ToList();
+    //        list.Add(CreateField(propertyInfo));
+    //        graphQLObjectType.Fields = list;
+    //    }
 
-        private IGraphQLFieldType CreateField(PropertyInfo propertyInfo)
-        {
-            if (new[]
-            {
-                typeof (string),
-                typeof (int)
-            }.Contains(propertyInfo.PropertyType))
-            {
-                return new GraphQLScalarField<object, object>
-                {
-                    Name = propertyInfo.Name,
-                    Resolve = context => propertyInfo.GetValue(context.Source),
-                };
-            }
+    //    private IGraphQLFieldType CreateField(PropertyInfo propertyInfo)
+    //    {
+    //        if (new[]
+    //        {
+    //            typeof (string),
+    //            typeof (int)
+    //        }.Contains(propertyInfo.PropertyType))
+    //        {
+    //            return new GraphQLScalarField<object, object>
+    //            {
+    //                Name = propertyInfo.Name,
+    //                Resolve = context => propertyInfo.GetValue(context.Source),
+    //            };
+    //        }
 
-            return new GraphQLObjectField<object, object>
-            {
-                Name = propertyInfo.Name,
-                Resolve = context => propertyInfo.GetValue(context.Source),
-                Type = new GraphQLObjectType
-                {
-                    Fields = propertyInfo.PropertyType.GetProperties().Select(CreateField).ToList()
-                }
-            };
-        }
-    }
+    //        return new GraphQLObjectField<object, object>
+    //        {
+    //            Name = propertyInfo.Name,
+    //            Resolve = context => propertyInfo.GetValue(context.Source),
+    //            Type = new GraphQLObjectType
+    //            {
+    //                Fields = propertyInfo.PropertyType.GetProperties().Select(CreateField).ToList()
+    //            }
+    //        };
+    //    }
+    //}
 
-    public static class ExpressionTree
-    {
-        private static MemberExpression CreateMemberExpression<T>(string propertyName)
-        {
-            var pe = Expression.Parameter(typeof(T), "source");
-            return Expression.Property(pe, "Name");
-        }
+    //public static class ExpressionTree
+    //{
+    //    private static MemberExpression CreateMemberExpression<T>(string propertyName)
+    //    {
+    //        var pe = Expression.Parameter(typeof(T), "source");
+    //        return Expression.Property(pe, "Name");
+    //    }
 
-        private static Expression CreateAggregateRoot<T>(string propertyName)
-        {
-            var pe = Expression.Parameter(typeof(T), "source");
-            var me = Expression.Property(pe, "Name");
-            return Expression.Lambda<Func<T, string>>(me, pe);
-        }
+    //    private static Expression CreateAggregateRoot<T>(string propertyName)
+    //    {
+    //        var pe = Expression.Parameter(typeof(T), "source");
+    //        var me = Expression.Property(pe, "Name");
+    //        return Expression.Lambda<Func<T, string>>(me, pe);
+    //    }
 
-        private static Func<TEntity, object> GetPropGetter<TEntity>(string propertyName)
-        {
-            var parameterExpression = Expression.Parameter(typeof(TEntity), "x");
+    //    private static Func<TEntity, object> GetPropGetter<TEntity>(string propertyName)
+    //    {
+    //        var parameterExpression = Expression.Parameter(typeof(TEntity), "x");
 
-            var body = propertyName.Split('.')
-                .Aggregate<string, Expression>(parameterExpression, (current, property) =>
-                    Expression.Condition(
-                    Expression.Equal(current, Expression.Default(current.Type)),
-                    Expression.Default(Expression.PropertyOrField(current, property).Type),
-                    Expression.PropertyOrField(current, property)));
+    //        var body = propertyName.Split('.')
+    //            .Aggregate<string, Expression>(parameterExpression, (current, property) =>
+    //                Expression.Condition(
+    //                Expression.Equal(current, Expression.Default(current.Type)),
+    //                Expression.Default(Expression.PropertyOrField(current, property).Type),
+    //                Expression.PropertyOrField(current, property)));
 
-            return Expression.Lambda<Func<TEntity, object>>(body, parameterExpression).Compile();
-        }
-    }
+    //        return Expression.Lambda<Func<TEntity, object>>(body, parameterExpression).Compile();
+    //    }
+    //}
 
     //public class FieldBuilder
     //{

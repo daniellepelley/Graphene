@@ -9,9 +9,8 @@ namespace Graphene.Core.FieldTypes
         string Name { get; set; }
         string Kind { get; }
         string Description { get; set; }
-        IGraphQLFieldType this[string name] { get; }
         IEnumerable<IGraphQLArgument> Arguments { get; set; }
-        IGraphQLType Type { get; set; }
+        string[] Type { get; set; }
         bool IsDeprecated { get; set; }
         string DeprecationReason { get; set; }
     }

@@ -63,14 +63,14 @@ namespace Graphene.Core.Types.Introspection
                 {
                     Name = "types",
                     Description = "A list of all types supported by this server.",
-                    Type = new ChainType(_typeList, "NonNull", "List", "NonNull", "__Type"),
+                    Type = new [] { "NonNull", "List", "NonNull", "__Type"},
                     Resolve = context => context.Source.GetTypes()
                 },
                 new GraphQLObjectField<GraphQLSchema, IGraphQLType>
                 {
                     Name = "queryType",
                     Description = "The type that query operations will be rooted at.",
-                    Type = new ChainType(_typeList, "__Type"),
+                    Type = new [] {"__Type"},
                     Resolve = context => context.Source.QueryType
                 },
                 new GraphQLObjectField<GraphQLSchema, IGraphQLType>
@@ -78,7 +78,7 @@ namespace Graphene.Core.Types.Introspection
                     Name = "mutationType",
                     Description =
                         "If this server supports mutation, the type that mutation operations will be rooted at.",
-                    Type = new ChainType(_typeList, "__Type"),
+                    Type = new [] {"__Type"},
                     Resolve = context => context.Source.MutationType
                 },
                 new GraphQLObjectField<GraphQLSchema, GraphQLObjectFieldBase>
@@ -86,14 +86,14 @@ namespace Graphene.Core.Types.Introspection
                     Name = "subscriptionType",
                     Description =
                         "If this server support subscription, the type that subscription operations will be rooted at.",
-                    Type = new ChainType(_typeList, "__Type"),
+                    Type = new [] {"__Type"},
                     Resolve = context => null
                 },
                 new GraphQLList<GraphQLSchema, GraphQLDirective>
                 {
                     Name = "directives",
                     Description = "A list of all directives supported by this server.",
-                    Type = new ChainType(_typeList, "NonNull", "List", "NonNull", "__Directive"),
+                    Type = new [] {"NonNull", "List", "NonNull", "__Directive"},
                     Resolve = context => context.Source.GetDirectives()
                 }
             };
